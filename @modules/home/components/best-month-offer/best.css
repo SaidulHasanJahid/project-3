@@ -1,0 +1,57 @@
+.card-text-container {
+    margin: 10px 30px;
+    height: 473px;
+    background-color: rgba(255, 255, 255, 0.705);
+    color: #1B1B1E;
+    cursor: pointer;
+}
+.card-text-first{
+    font-size: 17px;
+    font-weight: 500;
+    color: #f3612e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+.card-sec-first{
+   margin-top: 26px;
+
+}
+.card-th-first{
+   margin-top: 15px;
+}
+.cter-text{
+    font-size: 30px;
+    font-weight: bold;
+    width: 190px;
+}
+.last-text{
+    font-size: 18px;
+    font-weight: 600;
+}
+.sub-title {
+    font-size: 18px;
+    font-weight: 400;
+    color: #767678;
+}
+.third-card{
+    text-align: left;
+    line-height: 30px;
+}
+.th-first-card{
+font-size: 18px;
+font-weight: 400;
+color: #767678;
+}
+.th-sec-card{
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #1B1B1E;
+}
+.th-th-card{
+    font-size: 18px;
+    color: #1B1B1E;
+    margin-top: 30px;
+    font-weight: 600;
+   
+}
