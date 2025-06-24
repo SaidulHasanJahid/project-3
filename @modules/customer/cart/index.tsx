@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import Link from "next/link";
+import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
 
-const CartPage = () => {
+const CustomerCart = () => {
   const [quantity, setQuantity] = useState(2);
 
   const price = 100;
@@ -21,7 +21,12 @@ const CartPage = () => {
         }}
       >
         <h1 className="text-3xl font-bold">Cart</h1>
-        <p className="text-sm mt-1   "><Link href={'/'}><span className='text-[16px]'>Home</span></Link> / Cart</p>
+        <p className="text-sm mt-1   ">
+          <Link href={"/"}>
+            <span className="text-[16px]">Home</span>
+          </Link>{" "}
+          / Cart
+        </p>
       </div>
 
       {/* ✅ Cart Body */}
@@ -73,7 +78,9 @@ const CartPage = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="p-4 text-sm font-semibold text-gray-800">${subtotal}</td>
+                  <td className="p-4 text-sm font-semibold text-gray-800">
+                    ${subtotal}
+                  </td>
                   <td className="p-4 text-center">
                     <button className="text-red-500 hover:text-red-700">
                       <FaTimes />
@@ -86,7 +93,9 @@ const CartPage = () => {
 
           {/* Right - Cart Totals */}
           <div className="border border-gray-200 rounded p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">CART TOTALS</h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              CART TOTALS
+            </h2>
             <div className="flex justify-between py-2 border-b text-sm text-gray-700">
               <span>Subtotal</span>
               <span>${subtotal}</span>
@@ -100,7 +109,10 @@ const CartPage = () => {
               <span>${subtotal}</span>
             </div>
             <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300">
-             <Link href={'/customer/customardeatile'}> Proceed to checkout </Link>
+              <Link href={"/customer/customardeatile"}>
+                {" "}
+                Proceed to checkout{" "}
+              </Link>
             </button>
           </div>
         </div>
@@ -109,4 +121,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default CustomerCart;
