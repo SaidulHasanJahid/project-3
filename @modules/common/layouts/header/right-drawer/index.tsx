@@ -10,7 +10,7 @@ const RightDrawer = () => {
     return (
         <div>
               <div className="md:hidden w-[100%]">
-            <FaBars size={22} onClick={() => setShowDrawer(true)} className="cursor-pointer text-[rgb(27,27,30)]" />
+            <FaBars size={22} onClick={() => setShowDrawer(true)} className="cursor-pointer text-[rgb(27,27,30)] w-[100%]" />
           </div>
              <div className={clsx("fixed top-0 left-0 w-[280px] h-full bg-white shadow-lg z-50 transform transition-transform duration-300", showDrawer ? "translate-x-0" : "-translate-x-full")}> 
         <div className="flex justify-between items-center p-4 border-b">

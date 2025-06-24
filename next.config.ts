@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -8,8 +9,10 @@ const nextConfig: NextConfig = {
       "source.unsplash.com",
       "images.unsplash.com",
       "plus.unsplash.com",
+      "via.placeholder.com",
     ],
   },
 };
 
 export default nextConfig;
+
