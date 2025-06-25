@@ -1,37 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { AiFillStar } from 'react-icons/ai';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import { useState } from "react";
+import { AiFillStar } from "react-icons/ai";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
+// interface Props {
+//   params: {
+//     slug: string;
+//     image: string;
+//     image1: string;
+//     image2: string;
+//     image3: string;
+//     price: number;
+//     oldPrice: number | null;
+//     discount: number | null;
+//     rating: number;
+//   };
+// }
 
-interface Props {
-  params: {
-    slug: string;
-    image: string;
-    image1: string;
-    image2: string;
-    price: number;
-    oldPrice: number | null;
-    discount: number | null;
-    rating: number;
-  };
-}
-
-
-
-export default function ProductPage({ params }: Props) {
-  const router = useRouter();
+export default function ProductPage({ params }: any) {
   const [quantity, setQuantity] = useState(1);
-  const { slug, image, image1 , image2 , image3 ,price, oldPrice,discount,rating  } = params;
+  const { slug, image, image1, image2, image3 } = params;
 
-    const productImages = [image, image1, image2, image3];
-console.log(productImages);
+  const productImages = [image, image1, image2, image3];
 
   return (
     <>
@@ -68,12 +63,16 @@ console.log(productImages);
 
         {/* Info */}
         <div className="space-y-4">
-          <h1 className="text-xl font-semibold">
-           { slug }
-          </h1>
+          <h1 className="text-xl font-semibold">{slug}</h1>
           <div className="flex items-center text-yellow-500">
-            {Array(5).fill(null).map((_, idx) => <AiFillStar key={idx} />)}
-            <span className="ml-2 text-sm text-gray-600">(681 Ratings | 44 Answered Questions)</span>
+            {Array(5)
+              .fill(null)
+              .map((_, idx) => (
+                <AiFillStar key={idx} />
+              ))}
+            <span className="ml-2 text-sm text-gray-600">
+              (681 Ratings | 44 Answered Questions)
+            </span>
           </div>
           <p className="text-sm text-gray-700">
             Brand: <span className="text-blue-600">No Brand</span>
@@ -96,9 +95,11 @@ console.log(productImages);
           <div className="flex items-center gap-3 mt-4">
             <p>Quantity</p>
             <button
-              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               className="px-3 py-1 bg-gray-200 rounded"
-            >-</button>
+            >
+              -
+            </button>
             <input
               type="text"
               readOnly
@@ -106,9 +107,11 @@ console.log(productImages);
               className="w-12 text-center border rounded"
             />
             <button
-              onClick={() => setQuantity(q => q + 1)}
+              onClick={() => setQuantity((q) => q + 1)}
               className="px-3 py-1 bg-gray-200 rounded"
-            >+</button>
+            >
+              +
+            </button>
           </div>
 
           <div className="flex gap-4 mt-6">
@@ -121,8 +124,6 @@ console.log(productImages);
           </div>
         </div>
       </div>
-
- 
     </>
   );
 }
