@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FaHeart,
   FaRandom,
@@ -16,230 +16,453 @@ import TopBar from "./top-bar";
 export default function Header() {
   const [showProductDropdown, setShowProductDropdown] = useState(false);
   const [showPagesDropdown, setShowPagesDropdown] = useState(false);
-  const [mobileExpand, setMobileExpand] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [showInlineSearch, setShowInlineSearch] = useState(false);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchRef.current &&
+        !(searchRef.current as HTMLElement).contains(event.target as Node)
+      ) {
+        setShowInlineSearch(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchRef]);
+
+  const getSearchBarSize = () => {
+    if (windowWidth <= 420)
+      return { height: 36, width: "100%", textSize: "text-xs" };
+    if (windowWidth <= 768)
+      return { height: 40, width: "100%", textSize: "text-sm" };
+    if (windowWidth <= 1000)
+      return { height: 44, width: "100%", textSize: "text-base" };
+    return { height: 44, width: 260, textSize: "text-base" };
+  };
+
+  const { height: searchHeight, width: searchWidth, textSize } = getSearchBarSize();
+
+  const menuItems = ["HOME", "PRODUCT", "PAGES", "BLOG", "FAQ", "CONTACT"];
 
   return (
-    <header className="sticky lg:h-[142px] leading-13 top-0 z-50 bg-[#fcf9f8] shadow-md font-sans transition-all duration-300">
+    <header className="sticky top-0 z-50 bg-[#fcf9f8] shadow-md font-sans transition-all duration-300">
       <TopBar />
 
-      {/* Main Container */}
-      <div className="max-w-[1240px] w-[90%] mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Left: Logo + Nav */}
-          <div className="flex items-center gap-4">
-            <div className="lg:hidden">
-              <RightDrawer />
-            </div>
-
-            {/* Logo */}
-            <Image
-              src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
-              alt="Logo"
-              width={165}
-              height={30}
-              className="cursor-pointer lg:w-[165px] lg:h-[25px] w-[224px] h-[44px]"
+      <div className="w-[90%] mx-auto px-4 py-4">
+        <div className="flex items-center justify-between flex-wrap">
+          {windowWidth > 1260 ? (
+            <DesktopHeader
+              menuItems={menuItems}
+              showProductDropdown={showProductDropdown}
+              showPagesDropdown={showPagesDropdown}
+              setShowProductDropdown={setShowProductDropdown}
+              setShowPagesDropdown={setShowPagesDropdown}
+              searchHeight={searchHeight}
+              searchWidth={searchWidth}
+              textSize={textSize}
             />
-
-            {/* Nav Links - only on large */}
-            <nav className="hidden lg:ml-10 lg:flex gap-6 text-sm font-semibold text-[#424A4D] text-[13px]">
-              {["HOME", "PRODUCT", "PAGES", "BLOG", "FAQ", "CONTACT"].map(
-                (item) => {
-                  const isProduct = item === "PRODUCT";
-                  const isPages = item === "PAGES";
-                  return (
-                    <div
-                      key={item}
-                      className="relative group cursor-pointer"
-                      onMouseEnter={() => {
-                        if (isProduct) setShowProductDropdown(true);
-                        if (isPages) setShowPagesDropdown(true);
-                      }}
-                      onMouseLeave={() => {
-                        if (isProduct) setShowProductDropdown(false);
-                        if (isPages) setShowPagesDropdown(false);
-                      }}
-                    >
-                      <span className="flex items-center gap-1">
-                        {item}
-                        {(isProduct || isPages) && (
-                          <FaChevronDown className="text-xs" />
-                        )}
-                      </span>
-
-                      {/* Product Dropdown */}
-                      {isProduct && (
-                        <div
-                          className={clsx(
-                            "absolute left-0 top-full mt-4 w-[900px] lg:ml-[-200px] bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
-                            showProductDropdown
-                              ? "opacity-100 visible scale-100"
-                              : "opacity-0 invisible scale-95"
-                          )}
-                          style={{
-                            fontSize: "13px",
-                            color: "rgb(27,27,30)",
-                            lineHeight: "35px",
-                          }}
-                        >
-                          {[
-                            {
-                              title: "ELECTRONIC",
-                              items: [
-                                "TELEVISION",
-                                "REFRIGERATOR",
-                                "WASHING MACHINE",
-                                "AIR CONDITIONERS",
-                                "SPORT & OUTDOOR",
-                                "TOYS & HOBBIES",
-                                "OUTDOOR, RECREATION",
-                              ],
-                            },
-                            {
-                              title: "FASHION & BEAUTY",
-                              items: [
-                                "ACCESSORIES",
-                                "BAGS",
-                                "CLOTHINGS",
-                                "SHOES",
-                                "JEWELRY & WATCHES",
-                                "AUTOMOBILES",
-                                "SURVEILLANCE SAFETY",
-                              ],
-                            },
-                            {
-                              title: "CAMERA & PHOTO",
-                              items: [
-                                "DSLR",
-                                "Camera Phone",
-                                "Action Camera",
-                                "Digital Camera",
-                                "HEALTH & BEAUTY",
-                                "HOME DECORATION",
-                              ],
-                            },
-                            {
-                              title: "SMART PHONE & TABLE",
-                              items: [
-                                "APPLE",
-                                "SAMSUNG",
-                                "LG",
-                                "SONY",
-                                "BOOKS & OFFICE",
-                                "PORTABLE & PERSONAL",
-                              ],
-                            },
-                          ].map((section, i) => (
-                            <div key={i}>
-                              <h3 className="font-bold text-[13px] mb-2">
-                                {section.title}
-                              </h3>
-                              <ul className="space-y-1">
-                                {section.items.map((item, j) => (
-                                  <li key={j} className="hover:text-[#6b3d2e]">
-                                    {item}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Pages Dropdown */}
-                      {isPages && (
-                        <div
-                          className={clsx(
-                            "absolute left-0 top-full mt-4 w-48 bg-white p-4 shadow-xl rounded-md z-50 transition-all duration-300",
-                            showPagesDropdown
-                              ? "opacity-100 visible scale-100"
-                              : "opacity-0 invisible scale-95"
-                          )}
-                          style={{ fontSize: "13px", color: "rgb(27,27,30)" }}
-                        >
-                          <ul className="space-y-2">
-                            {["About Us", "Team", "Services", "404 Page"].map(
-                              (page, i) => (
-                                <li key={i}>{page}</li>
-                              )
-                            )}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </nav>
-          </div>
-
-          {/* Right: Search icon (mobile) / full bar (desktop) */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setMobileExpand(!mobileExpand)}
-              className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center text-[14px]"
-              aria-label="Toggle search"
-            >
-              <FaSearch />
-            </button>
-          </div>
-
-          {/* Show full search bar + icons only on large */}
-          <div className="hidden lg:flex items-center gap-4">
-            <SearchBar />
-            <HeaderIcons />
-          </div>
-        </div>
-
-        {/* Slide-out for small devices */}
-        <div
-          className={clsx(
-            "lg:hidden overflow-hidden transition-all duration-500 ease-in-out",
-            mobileExpand ? "max-h-[60px] mt-4 opacity-100" : "max-h-0 opacity-0"
+          ) : (
+            <ResponsiveHeader
+              windowWidth={windowWidth}
+              menuItems={menuItems}
+              searchHeight={searchHeight}
+              searchWidth={searchWidth}
+              textSize={textSize}
+              showInlineSearch={showInlineSearch}
+              setShowInlineSearch={setShowInlineSearch}
+              showProductDropdown={showProductDropdown}
+              showPagesDropdown={showPagesDropdown}
+              setShowProductDropdown={setShowProductDropdown}
+              setShowPagesDropdown={setShowPagesDropdown}
+              searchRef={searchRef}
+            />
           )}
-        >
-          <div className="flex items-center gap-3">
-            <SearchBar />
-            <HeaderIcons />
-          </div>
         </div>
       </div>
     </header>
   );
 }
 
-// SearchBar with hidden category select on very small devices
-function SearchBar() {
+function DesktopHeader({
+  menuItems,
+  showProductDropdown,
+  showPagesDropdown,
+  setShowProductDropdown,
+  setShowPagesDropdown,
+  searchHeight,
+  textSize,
+}: any) {
   return (
-    <div className="flex items-center h-[40px] rounded-full overflow-hidden border border-gray-200 w-full sm:w-auto max-w-full bg-transparent">
+    <div className="w-full flex justify-between items-center gap-6">
+      <div className="flex items-center gap-6">
+        <Image
+          src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
+          alt="Logo"
+          width={220}
+          height={40}
+          className="object-contain cursor-pointer"
+        />
+      </div>
+
+      <nav className="flex gap-6 text-sm font-semibold text-[#424A4D] text-[13px] relative">
+        {menuItems.map((item: string) => {
+          const isProduct = item === "PRODUCT";
+          const isPages = item === "PAGES";
+
+          return (
+            <div
+              key={item}
+              className="relative group cursor-pointer"
+              onMouseEnter={() => {
+                if (isProduct) setShowProductDropdown(true);
+                if (isPages) setShowPagesDropdown(true);
+              }}
+              onMouseLeave={() => {
+                if (isProduct) setShowProductDropdown(false);
+                if (isPages) setShowPagesDropdown(false);
+              }}
+            >
+              <span className="flex items-center gap-1">
+                {item}
+                {(isProduct || isPages) && <FaChevronDown className="text-xs" />}
+              </span>
+
+              {/* Product Dropdown */}
+              {isProduct && (
+                <DropdownMenu
+                  isOpen={showProductDropdown}
+                  type="product"
+                />
+              )}
+
+              {/* Pages Dropdown */}
+              {isPages && (
+                <DropdownMenu
+                  isOpen={showPagesDropdown}
+                  type="pages"
+                />
+              )}
+            </div>
+          );
+        })}
+      </nav>
+
+      <div className="w-full max-w-[300px]">
+        <SearchBar
+          searchHeight={searchHeight}
+          searchWidth="100%"
+          textSize={textSize}
+        />
+      </div>
+      <HeaderIcons iconSize="xl" />
+    </div>
+  );
+}
+
+function ResponsiveHeader({
+  windowWidth,
+  menuItems,
+  searchHeight,
+  textSize,
+  showInlineSearch,
+  setShowInlineSearch,
+  showProductDropdown,
+  showPagesDropdown,
+  setShowProductDropdown,
+  setShowPagesDropdown,
+  searchRef,
+}: any) {
+  return (
+    <>
+      <div className="flex w-full justify-between items-center">
+        <div className="flex items-center gap-4 w-full">
+          <div className="lg:hidden">
+            <RightDrawer />
+          </div>
+
+          <div className="hidden min-[420px]:flex items-center gap-4">
+            <Image
+              src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
+              alt="Logo"
+              width={180}
+              height={40}
+              className="object-contain cursor-pointer"
+            />
+          </div>
+
+          {windowWidth >= 1000 && windowWidth <= 1260 && (
+            <nav className="flex gap-6 text-sm font-semibold text-[#424A4D] text-[13px] relative">
+              {menuItems.map((item: string) => {
+                const isProduct = item === "PRODUCT";
+                const isPages = item === "PAGES";
+
+                return (
+                  <div
+                    key={item}
+                    className="relative group cursor-pointer"
+                    onMouseEnter={() => {
+                      if (isProduct) setShowProductDropdown(true);
+                      if (isPages) setShowPagesDropdown(true);
+                    }}
+                    onMouseLeave={() => {
+                      if (isProduct) setShowProductDropdown(false);
+                      if (isPages) setShowPagesDropdown(false);
+                    }}
+                  >
+                    <span className="flex items-center gap-1">
+                      {item}
+                      {(isProduct || isPages) && (
+                        <FaChevronDown className="text-xs" />
+                      )}
+                    </span>
+
+                    {isProduct && (
+                      <DropdownMenu isOpen={showProductDropdown} type="product" />
+                    )}
+
+                    {isPages && (
+                      <DropdownMenu isOpen={showPagesDropdown} type="pages" />
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3">
+          {windowWidth >= 1000 && windowWidth <= 1260 && (
+            <button
+              onClick={() => setShowInlineSearch(!showInlineSearch)}
+              className="bg-black text-white p-2 rounded-full"
+            >
+              <FaSearch />
+            </button>
+          )}
+          <HeaderIcons iconSize="lg" />
+        </div>
+      </div>
+
+      {showInlineSearch && windowWidth >= 1000 && windowWidth <= 1260 && (
+        <div
+          ref={searchRef}
+          className="mt-4 bg-white p-3 rounded-md transition-all duration-300"
+        >
+          <SearchBar
+            searchHeight={searchHeight}
+            searchWidth="100%"
+            textSize={textSize}
+          />
+        </div>
+      )}
+
+      {windowWidth < 1000 && (
+        <div className="mt-3 w-full">
+          <SearchBarFullWidth searchHeight={searchHeight} textSize={textSize} />
+        </div>
+      )}
+    </>
+  );
+}
+
+function DropdownMenu({ isOpen, type }: { isOpen: boolean; type: "product" | "pages" }) {
+  if (type === "product") {
+    const productData = [
+      {
+        title: "ELECTRONIC",
+        items: [
+          "TELEVISION", "REFRIGERATOR", "WASHING MACHINE",
+          "AIR CONDITIONERS", "SPORT & OUTDOOR", "TOYS & HOBBIES", "OUTDOOR, RECREATION",
+        ],
+      },
+      {
+        title: "FASHION & BEAUTY",
+        items: [
+          "ACCESSORIES", "BAGS", "CLOTHINGS", "SHOES",
+          "JEWELRY & WATCHES", "AUTOMOBILES", "SURVEILLANCE SAFETY",
+        ],
+      },
+      {
+        title: "CAMERA & PHOTO",
+        items: [
+          "DSLR", "Camera Phone", "Action Camera",
+          "Digital Camera", "HEALTH & BEAUTY", "HOME DECORATION",
+        ],
+      },
+      {
+        title: "SMART PHONE & TABLE",
+        items: [
+          "APPLE", "SAMSUNG", "LG", "SONY", "BOOKS & OFFICE", "PORTABLE & PERSONAL",
+        ],
+      },
+    ];
+
+    return (
+      <div
+        className={clsx(
+          "absolute md:left-[-290px] lg:left-[-300px] m-auto top-full mt-4 md:w-[900px] lg:w-[1150px]  bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
+          isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
+        )}
+        style={{
+          fontSize: "13px",
+          color: "rgb(27,27,30)",
+          lineHeight: "35px",
+        }}
+      >
+        {productData.map((section, i) => (
+          <div key={i}>
+            <h3 className="font-bold text-[13px] mb-2 m-auto ">{section.title}</h3>
+            <ul className="space-y-1">
+              {section.items.map((item, j) => (
+                <li key={j} className="hover:text-[#6b3d2e] cursor-pointer">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const pages = ["About Us", "Team", "Services", "404 Page"];
+  return (
+    <div
+      className={clsx(
+        "absolute left-0 top-full mt-4 w-48 bg-white p-4 shadow-xl rounded-md z-50 transition-all duration-300",
+        isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
+      )}
+      style={{ fontSize: "13px", color: "rgb(27,27,30)" }}
+    >
+      <ul className="space-y-2">
+        {pages.map((page, i) => (
+          <li key={i} className="cursor-pointer hover:text-[#6b3d2e]">
+            {page}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SearchBar({
+  searchHeight,
+  searchWidth,
+  textSize,
+}: {
+  searchHeight: number;
+  searchWidth: number | string;
+  textSize: string;
+}) {
+  return (
+    <div
+      className="flex items-center rounded-full overflow-hidden border border-gray-200 bg-transparent"
+      style={{ height: searchHeight, minWidth: searchWidth }}
+    >
       <input
         type="text"
         placeholder="Search Product For"
-        className="px-3 py-1 w-full sm:w-[180px] text-sm text-[#444444] outline-none"
-        style={{ border: "none" }}
+        className={`px-3 outline-none ${textSize} text-[#444444] w-full`}
+        style={{ height: searchHeight }}
       />
-      <select className="hidden min-[500px]:block px-2 text-sm text-[#444444]" style={{ border: "none", outline: "none" }}>
+      <select
+        className={`text-[#444444] pr-3 ${textSize} hidden min-[500px]:block`}
+        style={{
+          height: searchHeight,
+          border: "none",
+          outline: "none",
+          background: "transparent",
+        }}
+      >
         <option>All Categories</option>
         <option>Smartphone</option>
         <option>Laptop</option>
         <option>Gaming</option>
       </select>
-      <button className="bg-black h-full text-white px-3 flex items-center justify-center text-[14px] min-[500px]:text-[16px]">
-        <FaSearch />
+      <button
+        className="bg-black text-white flex items-center justify-center px-3"
+        style={{ height: searchHeight, minWidth: searchHeight }}
+        aria-label="Search submit"
+      >
+        <FaSearch className={textSize} />
       </button>
     </div>
   );
 }
 
-// Smaller icons on very small screens
-function HeaderIcons() {
+function SearchBarFullWidth({
+  searchHeight,
+  textSize,
+}: {
+  searchHeight: number;
+  textSize: string;
+}) {
   return (
-    <div className="flex gap-2 justify-center">
+    <div
+      className="flex items-center rounded-full overflow-hidden border border-gray-200 bg-transparent w-full"
+      style={{ height: searchHeight, width: "100%" }}
+    >
+      <input
+        type="text"
+        placeholder="Search Product For"
+        className={`px-4 outline-none ${textSize} text-[#444444] w-full`}
+        style={{ height: searchHeight }}
+      />
+      <select
+        className={`text-[#444444] pr-3 ${textSize} hidden min-[500px]:block`}
+        style={{
+          height: searchHeight,
+          border: "none",
+          outline: "none",
+          background: "transparent",
+        }}
+      >
+        <option>All Categories</option>
+        <option>Smartphone</option>
+        <option>Laptop</option>
+        <option>Gaming</option>
+      </select>
+      <button
+        className="bg-black text-white flex items-center justify-center px-4"
+        style={{ height: searchHeight, minWidth: searchHeight }}
+        aria-label="Search submit"
+      >
+        <FaSearch className={textSize} />
+      </button>
+    </div>
+  );
+}
+
+function HeaderIcons({ iconSize = "md" }: { iconSize?: "md" | "lg" | "xl" }) {
+  const sizeClassMap = {
+    md: "w-6 h-6 text-[12px]",
+    lg: "w-10 h-10 text-[16px]",
+    xl: "w-12 h-12 text-[20px]",
+  };
+  const sizeClass = sizeClassMap[iconSize];
+
+  return (
+    <div className="flex gap-2 items-center">
       {[FaHeart, FaRandom, FaShoppingCart].map((Icon, i) => (
         <div
           key={i}
-          className="relative w-8 h-8 min-[500px]:w-[45px] min-[500px]:h-[45px] rounded-full bg-gray-200 flex items-center justify-center cursor-pointer"
+          className={`relative ${sizeClass} rounded-full  flex items-center justify-center cursor-pointer`}
         >
-          <Icon className="text-gray-700 text-[14px] min-[500px]:text-[18px]" />
+          <Icon className="text-gray-700" />
           <span className="absolute -top-1 -right-1 w-[16px] h-[16px] text-[10px] bg-[#424A4D] text-white rounded-full flex items-center justify-center">
             0
           </span>

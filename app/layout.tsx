@@ -1,10 +1,10 @@
 import Footer from "@/@modules/common/layouts/footer";
-import Header from "@/@modules/common/layouts/header";
 import StateProvider from "@/providers/state-provider";
 import type { Metadata } from "next";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./globals.css";
+import Header from "@/@modules/common/layouts/header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
