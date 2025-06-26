@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import {
   FaCreditCard,
-  FaListAlt,
   FaShoppingCart,
   FaUser,
 } from "react-icons/fa";
@@ -24,6 +23,23 @@ const CustomerCheckout = () => {
   );
   return (
     <>
+      
+      {/* ✅ Top Banner Section with Background Image */}
+      <div
+        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center"
+        style={{
+          backgroundImage:
+            'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
+        }}
+      >
+        <h1 className="text-3xl font-bold">Cart</h1>
+        <p className="text-sm mt-1   ">
+          <Link href={"/"}>
+            <span className="text-[16px]">Home</span>
+          </Link>{" "}
+          / Cart
+        </p>
+      </div>
       <div className="w-full max-w-4xl mx-auto p-8">
         <div className="flex items-center gap-5">
           {/* Step 1 - Address (Active) */}
@@ -64,38 +80,11 @@ const CustomerCheckout = () => {
           </div>
         </div>
       </div>
-      {/* ✅ Top Banner Section with Background Image */}
-      <div
-        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
-        }}
-      >
-        <h1 className="text-3xl font-bold">Cart</h1>
-        <p className="text-sm mt-1   ">
-          <Link href={"/"}>
-            <span className="text-[16px]">Home</span>
-          </Link>{" "}
-          / Cart
-        </p>
-      </div>
       <div className="p-4 md:p-10 font-sans bg-white text-gray-800 text-[14px]">
         <div className="flex flex-col md:flex-row gap-6 animate-fade-in">
           {/* Left Column */}
           <div className="flex-1 border border-[#767678] rounded-xl p-6 space-y-6 shadow-sm transition-all duration-300 ease-in-out">
-            {/* Progress Bar */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2 text-white bg-gray-700 px-4 py-1 rounded-full">
-                <span>1</span> <span>Address</span> <FaUser />
-              </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <span>2</span> <span>Orders</span> <FaListAlt />
-              </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <span>3</span> <span>Payment</span> <FaCreditCard />
-              </div>
-            </div>
+            
 
             {/* Personal Info */}
             <div className="space-y-4 border-b border-[#767678] pb-6">

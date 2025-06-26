@@ -109,7 +109,7 @@ const CustomerCart = () => {
               <span>${subtotal}</span>
             </div>
             <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300">
-              <Link href={"/customer/customardeatile"}>
+              <Link href={"/customer/checkout"}>
                 {" "}
                 Proceed to checkout{" "}
               </Link>

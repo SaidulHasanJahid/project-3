@@ -3,7 +3,6 @@ import {
   productDecrement,
   productIncrement,
 } from "@/appstore/products/product-slice";
-import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const IncrementDecrementButton = () => {
@@ -12,7 +11,7 @@ const IncrementDecrementButton = () => {
   return (
     <div>
       <div className="flex items-center gap-3 mt-4">
-        <p>Quantity</p>
+    
         <button
           onClick={() => dispatch(productDecrement())}
           className="px-3 py-1 bg-gray-200 rounded"
