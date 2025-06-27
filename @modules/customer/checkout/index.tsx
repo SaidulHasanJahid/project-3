@@ -1,5 +1,6 @@
 "use client";
 
+import './index.css';
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import {
@@ -80,27 +81,29 @@ const CustomerCheckout = () => {
           </div>
         </div>
       </div>
-      <div className="p-4 md:p-10 font-sans bg-white text-gray-800 text-[14px]">
+
+
+      <div className="p-6 md:p-10 font-sans bg-white leftinput ">
         <div className="flex flex-col md:flex-row gap-6 animate-fade-in">
           {/* Left Column */}
-          <div className="flex-1 border border-[#767678] rounded-xl p-6 space-y-6 shadow-sm transition-all duration-300 ease-in-out">
+          <div className="flex-1 border border-[#BDCCDB]  p-6 space-y-6 shadow-sm transition-all duration-300 ease-in-out">
             
 
             {/* Personal Info */}
-            <div className="space-y-4 border-b border-[#767678] pb-6">
-              <h2 className="font-semibold text-lg border-b border-[#767678] pb-2">
+            <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
+              <h2 className="font-bold text-[#141926] border-b border-[#BDCCDB] pb-2 text-[18px]">
                 Personal Information :
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="Enter Your Name"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0 transition-all duration-300"
+                  className="border border-[#BDCCDB] w-[348px] h-[45px] px-4 py-2 rounded-md focus:outline-none focus:ring-0 transition-all duration-300"
                 />
                 <input
                   type="email"
                   placeholder="Enter Your Email"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0 transition-all duration-300"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0 transition-all duration-300"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -116,13 +119,13 @@ const CustomerCheckout = () => {
             </div>
 
             {/* Billing Info */}
-            <div className="space-y-4 border-b border-[#767678] pb-6">
-              <h2 className="font-semibold text-lg border-b border-[#767678] pb-2">
+            <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
+              <h2 className="font-bold text-[18px] text-[#141926] border-b border-[#BDCCDB] pb-2">
                 Billing Details
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <select
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0 transition-all duration-300"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0 transition-all  text-[#767678] duration-300"
                   value={shipTo}
                   onChange={(e) => setShipTo(e.target.value)}
                 >
@@ -133,35 +136,35 @@ const CustomerCheckout = () => {
                 <input
                   type="text"
                   placeholder="Full Name"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <input
                   type="email"
                   placeholder="Email"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <input
                   type="text"
                   placeholder="Phone Number"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <input
                   type="text"
                   placeholder="Address"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <input
                   type="text"
                   placeholder="City"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <input
                   type="text"
                   placeholder="Postal Code"
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                 />
                 <select
-                  className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0 text-[#767678]"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                 >
@@ -180,46 +183,46 @@ const CustomerCheckout = () => {
                   checked={showShipping}
                   onChange={(e) => setShowShipping(e.target.checked)}
                 />
-                <label htmlFor="diffAddress" className="text-sm">
+                <label htmlFor="diffAddress" className="text-[14px] font-bold text-[#767678]">
                   Ship to a Different Address?
                 </label>
               </div>
 
               {showShipping && (
-                <div className="space-y-4 border-t border-[#767678] pt-4 transition-all duration-300">
-                  <h2 className="font-semibold">Shipping Details</h2>
+                <div className="space-y-4 border-t border-[#BDCCDB] pt-4 transition-all duration-300">
+                  <h2 className="font-bold text-[18px] text-[#141926] ">Shipping Details</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input
                       type="text"
                       placeholder="Full Name"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       placeholder="Phone Number"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       placeholder="Address"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       placeholder="Postal Code"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       placeholder="City"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       placeholder="State"
-                      className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
                     />
-                    <select className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0">
+                    <select className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0 text-[#767678]">
                       <option>Select Country</option>
                       <option>Bangladesh</option>
                       <option>India</option>
@@ -232,91 +235,95 @@ const CustomerCheckout = () => {
               <input
                 type="text"
                 placeholder="Order Note (Optional)"
-                className="border border-[#767678] px-4 py-2 rounded-md w-full focus:outline-none focus:ring-0"
-              />
-              <button className="bg-gray-800 text-white px-6 py-2 rounded-md transition hover:bg-gray-700 w-fit">
+                className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0"
+              /> <br />
+              <button className="bg-[#424A4D] cursor-pointer text-white px-6 py-2 rounded-md transition hover:bg-gray-700 w-fit">
                 Continue
               </button>
             </div>
           </div>
 
           {/* Right Column */}
-          <div className="w-full md:w-[350px] border border-[#767678] rounded-xl p-6 shadow-sm text-[14px] transition-all duration-300 ease-in-out">
-            <h2 className="font-semibold mb-4">PRICE DETAILS</h2>
-            <div className="flex justify-between text-sm mb-2">
+          <div className="w-full md:w-[350px] border border-[#BDCCDB]  py-10 px-6 shadow-sm  transition-all duration-300 ease-in-out">
+            <h2 className="font-bold text-[16px] text-[#142350] mb-4">PRICE DETAILS</h2>
+            <div className="flex justify-between text-[#767678] text-[16px] mb-2 w-2xs h-11 border-b   border-[#BDCCDB]">
               <span>Total MRP</span>
               <span>$200</span>
             </div>
-            <div className="flex justify-between font-semibold mb-4">
+            <div className="flex justify-between w-2xs h-11   text-[16px] text-[#767678] font-bold mb-4">
               <span>Total</span>
               <span>${basePrice}</span>
             </div>
             <a
               href="#"
-              className="text-sm text-blue-600 underline mb-4 inline-block"
+              className="text-[#767678] text-[14px] underline mb-5 mt-4 ml-[60px] font-bold  "
             >
               Have a promotion code?
             </a>
 
             <div className="mt-4">
-              <h3 className="font-medium text-sm mb-2">Shipping Method</h3>
+              <h3 className="font-bold text-[#142350] text-[16px] mb-2">Shipping Method</h3>
               <div className="space-y-2">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="shipping"
-                    value="free"
-                    checked={shipping === "free"}
-                    onChange={() => setShipping("free")}
-                  />
-                  <span className="text-sm">Free Shipping (10 - 12 days)</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="shipping"
-                    value="express"
-                    checked={shipping === "express"}
-                    onChange={() => setShipping("express")}
-                  />
-                  <span className="text-sm">
-                    Express Shipping + $10 (5 - 6 days)
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <h3 className="font-medium text-sm mb-2">Packaging</h3>
-              <div className="space-y-2">
-                <label className="flex items-start gap-2">
-                  <input
-                    type="radio"
-                    name="packaging"
-                    value="default"
-                    checked={packaging === "default"}
-                    onChange={() => setPackaging("default")}
-                  />
-                  <span className="text-sm">
-                    Default Packaging
-                    <br />
-                    <span className="text-xs text-gray-500">
-                      Default packaging by store
-                    </span>
-                  </span>
-                </label>
-                <label className="flex items-start gap-2">
-                  <input
+        <label className="flex items-start gap-2 mt-6">
+                    <input
+                    className=' w-[20px] h-[20px]'
                     type="radio"
                     name="packaging"
                     value="gift"
                     checked={packaging === "gift"}
                     onChange={() => setPackaging("gift")}
                   />
-                  <span className="text-sm">
+                  <span className="text-[16px] font-bold text-[#767678]">Free Shipping (10 - 12 days)</span>
+                </label>
+          <label className="flex items-start gap-2 mt-6">
+                    <input
+                    className=' w-[20px] h-[20px]'
+                    type="radio"
+                    name="packaging"
+                    value="gift"
+                    checked={packaging === "gift"}
+                    onChange={() => setPackaging("gift")}
+                  />
+                  <span className=" text-[16px] font-bold text-[#767678]">
+                    Express Shipping + $10 (5 - 6 days)
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div className="mt-4 mb-4">
+              <h3 className="font-bold text-[#142350] text-[16px] mb-3 mt-3">Packaging</h3>
+              <div className="space-y-2">
+                <label className="flex items-start gap-2 mt-6">
+                    <input
+                    className='mt-4 w-[20px] h-[20px]'
+                    type="radio"
+                    name="packaging"
+                    value="gift"
+                    checked={packaging === "gift"}
+                    onChange={() => setPackaging("gift")}
+                  />
+                  <span className=" text-[16px] font-bold text-[#767678]">
+                    Default Packaging
+                    <br />
+                    <span className="text-[16px] font-bold text-[#767678]">
+                      Default packaging by store
+                    </span>
+                  </span>
+                </label>
+                <label className="flex items-start gap-2 mt-6">
+                  <input
+                  className='mt-4 w-[20px] h-[20px]'
+                    type="radio"
+                    name="packaging"
+                    value="gift"
+                    checked={packaging === "gift"}
+                    onChange={() => setPackaging("gift")}
+                  />
+                  <span className="text-[16px] font-bold text-[#767678] ">
                     Gift Packaging + $15
                     <br />
-                    <span className="text-xs text-gray-500">
+                    <span className="text-[16px] font-bold text-[#767678] mt-4">
                       Exclusive Gift packaging
                     </span>
                   </span>
@@ -324,9 +331,9 @@ const CustomerCheckout = () => {
               </div>
             </div>
 
-            <div className="flex justify-between font-semibold mt-6">
-              <span>Final Price :</span>
-              <span>${finalPrice}</span>
+            <div className="flex justify-between font-semibold mt-6 w-2xs h-11 border-t  border-[#BDCCDB] ">
+              <span className=' text-[16px] font-bold pt-2 text-[#767678]'>Final Price :</span>
+              <span className=' text-[16px] font-bold pt-2 text-[#767678]'> ${finalPrice}</span>
             </div>
           </div>
         </div>
