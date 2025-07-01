@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "plus.unsplash.com",
       "via.placeholder.com",
+      'picsum.photos',
     ],
   },
 };
