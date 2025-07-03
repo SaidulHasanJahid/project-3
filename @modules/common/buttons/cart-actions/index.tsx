@@ -1,12 +1,13 @@
 "use client";
 import { addToCart, decreaseQuantity } from "@/appstore/cart/cart-slice";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 
 const CartActions = ({ product }: { product: any }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => state.cart);
   const cartItem = cart.items.find((item: any) => item.id === product.id);
-  console.log(cartItem);
+  console.log(cart);
   const cartPayload = {
     id: product.id,
     title: product.title,
@@ -17,6 +18,7 @@ const CartActions = ({ product }: { product: any }) => {
     image: product.image,
     quantity: 1,
   };
+
 
   return (
     <div className="flex items-center space-x-2 my-4 mt-4">
@@ -47,7 +49,7 @@ const CartActions = ({ product }: { product: any }) => {
         Add to Cart
       </button>
       <button className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full	 mt-3 text-[14px] w-[118px] h-[30px] cursor-pointer hover:bg-[#23272b] transition-all">
-        Buy Now
+        <Link href={'/customer/cart'} >Buy Now</Link>
       </button>
     </div>
   );

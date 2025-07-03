@@ -9,7 +9,6 @@ import { FaChevronDown, FaSearch } from "react-icons/fa";
 const CartDropdown = dynamic(() => import("./cart-dropdown"), {
   ssr: false,
 });
-
 import RightDrawer from "./right-drawer";
 import TopBar from "./top-bar";
 
@@ -64,7 +63,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#fff] font-sans transition-all duration-300">
-      <div className="px-[70px] mx-auto py-3 ">
+      <div className="px-[70px] mx-auto py-3">
         <TopBar />
       </div>
 
@@ -103,6 +102,16 @@ export default function Header() {
   );
 }
 
+// ✅ Route mapping
+const routeMap: { [key: string]: string } = {
+  HOME: "/",
+  PRODUCT: "/products",
+  PAGES: "#",
+  BLOG: "/blog",
+  FAQ: "/faq",
+  CONTACT: "/contact",
+};
+
 function DesktopHeader({
   menuItems,
   showProductDropdown,
@@ -115,15 +124,13 @@ function DesktopHeader({
   return (
     <div className="w-full flex justify-between items-center gap-6">
       <Link href="/">
-        <div className="flex items-center gap-6">
-          <Image
-            src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
-            alt="Logo"
-            width={220}
-            height={40}
-            className="object-contain cursor-pointer"
-          />
-        </div>
+        <Image
+          src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
+          alt="Logo"
+          width={220}
+          height={40}
+          className="object-contain cursor-pointer"
+        />
       </Link>
 
       <nav className="flex gap-6 text-sm font-semibold text-[#424A4D] text-[13px] relative">
@@ -144,19 +151,16 @@ function DesktopHeader({
                 if (isPages) setShowPagesDropdown(false);
               }}
             >
-              <span className="flex items-center gap-1">
-                {item}
-                {(isProduct || isPages) && (
-                  <FaChevronDown className="text-xs" />
-                )}
-              </span>
+              <Link href={routeMap[item] || "#"}>
+                <span className="flex items-center gap-1">
+                  {item}
+                  {(isProduct || isPages) && <FaChevronDown className="text-xs" />}
+                </span>
+              </Link>
 
-              {/* Product Dropdown */}
               {isProduct && (
                 <DropdownMenu isOpen={showProductDropdown} type="product" />
               )}
-
-              {/* Pages Dropdown */}
               {isPages && (
                 <DropdownMenu isOpen={showPagesDropdown} type="pages" />
               )}
@@ -227,20 +231,16 @@ function ResponsiveHeader({
                       if (isPages) setShowPagesDropdown(false);
                     }}
                   >
-                    <span className="flex items-center gap-1">
-                      {item}
-                      {(isProduct || isPages) && (
-                        <FaChevronDown className="text-xs" />
-                      )}
-                    </span>
+                    <Link href={routeMap[item] || "#"}>
+                      <span className="flex items-center gap-1">
+                        {item}
+                        {(isProduct || isPages) && <FaChevronDown className="text-xs" />}
+                      </span>
+                    </Link>
 
                     {isProduct && (
-                      <DropdownMenu
-                        isOpen={showProductDropdown}
-                        type="product"
-                      />
+                      <DropdownMenu isOpen={showProductDropdown} type="product" />
                     )}
-
                     {isPages && (
                       <DropdownMenu isOpen={showPagesDropdown} type="pages" />
                     )}
@@ -297,71 +297,25 @@ function DropdownMenu({
     const productData = [
       {
         title: "ELECTRONIC",
-        items: [
-          "TELEVISION",
-          "REFRIGERATOR",
-          "WASHING MACHINE",
-          "AIR CONDITIONERS",
-          "SPORT & OUTDOOR",
-          "TOYS & HOBBIES",
-          "OUTDOOR, RECREATION",
-        ],
+        items: ["TELEVISION", "REFRIGERATOR", "WASHING MACHINE"],
       },
       {
         title: "FASHION & BEAUTY",
-        items: [
-          "ACCESSORIES",
-          "BAGS",
-          "CLOTHINGS",
-          "SHOES",
-          "JEWELRY & WATCHES",
-          "AUTOMOBILES",
-          "SURVEILLANCE SAFETY",
-        ],
-      },
-      {
-        title: "CAMERA & PHOTO",
-        items: [
-          "DSLR",
-          "Camera Phone",
-          "Action Camera",
-          "Digital Camera",
-          "HEALTH & BEAUTY",
-          "HOME DECORATION",
-        ],
-      },
-      {
-        title: "SMART PHONE & TABLE",
-        items: [
-          "APPLE",
-          "SAMSUNG",
-          "LG",
-          "SONY",
-          "BOOKS & OFFICE",
-          "PORTABLE & PERSONAL",
-        ],
+        items: ["ACCESSORIES", "BAGS", "CLOTHINGS"],
       },
     ];
 
     return (
       <div
         className={clsx(
-          "absolute md:left-[-290px] lg:left-[-300px] m-auto top-full mt-4 md:w-[900px] lg:w-[1150px]  bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
-          isOpen
-            ? "opacity-100 visible scale-100"
-            : "opacity-0 invisible scale-95"
+          "absolute md:left-[-290px] lg:left-[-300px] top-full mt-4 md:w-[900px] lg:w-[1150px]  bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
+          isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
         )}
-        style={{
-          fontSize: "13px",
-          color: "rgb(27,27,30)",
-          lineHeight: "35px",
-        }}
+        style={{ fontSize: "13px", color: "rgb(27,27,30)", lineHeight: "35px" }}
       >
         {productData.map((section, i) => (
           <div key={i}>
-            <h3 className="font-bold text-[13px] mb-2 m-auto ">
-              {section.title}
-            </h3>
+            <h3 className="font-bold text-[13px] mb-2">{section.title}</h3>
             <ul className="space-y-1">
               {section.items.map((item, j) => (
                 <li key={j} className="hover:text-[#6b3d2e] cursor-pointer">
@@ -380,9 +334,7 @@ function DropdownMenu({
     <div
       className={clsx(
         "absolute left-0 top-full mt-4 w-48 bg-white p-4 shadow-xl rounded-md z-50 transition-all duration-300",
-        isOpen
-          ? "opacity-100 visible scale-100"
-          : "opacity-0 invisible scale-95"
+        isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
       )}
       style={{ fontSize: "13px", color: "rgb(27,27,30)" }}
     >
@@ -419,12 +371,7 @@ function SearchBar({
       />
       <select
         className={`text-[#444444] pr-3 ${textSize} hidden min-[500px]:block`}
-        style={{
-          height: searchHeight,
-          border: "none",
-          outline: "none",
-          background: "transparent",
-        }}
+        style={{ height: searchHeight, background: "transparent" }}
       >
         <option>All Categories</option>
         <option>Smartphone</option>
@@ -434,7 +381,6 @@ function SearchBar({
       <button
         className="bg-black text-white flex items-center justify-center px-3"
         style={{ height: searchHeight, minWidth: searchHeight }}
-        aria-label="Search submit"
       >
         <FaSearch className={textSize} />
       </button>
@@ -452,7 +398,7 @@ function SearchBarFullWidth({
   return (
     <div
       className="flex items-center rounded-full overflow-hidden border border-gray-200 bg-transparent w-full"
-      style={{ height: searchHeight, width: "100%" }}
+      style={{ height: searchHeight }}
     >
       <input
         type="text"
@@ -462,12 +408,7 @@ function SearchBarFullWidth({
       />
       <select
         className={`text-[#444444] pr-3 ${textSize} hidden min-[500px]:block`}
-        style={{
-          height: searchHeight,
-          border: "none",
-          outline: "none",
-          background: "transparent",
-        }}
+        style={{ height: searchHeight, background: "transparent" }}
       >
         <option>All Categories</option>
         <option>Smartphone</option>
@@ -477,7 +418,6 @@ function SearchBarFullWidth({
       <button
         className="bg-black text-white flex items-center justify-center px-4"
         style={{ height: searchHeight, minWidth: searchHeight }}
-        aria-label="Search submit"
       >
         <FaSearch className={textSize} />
       </button>

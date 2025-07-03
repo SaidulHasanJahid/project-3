@@ -19,7 +19,7 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: isBrowser ? JSON.parse(localStorage.getItem("cart") || "null") : [],
+  items: isBrowser ? JSON.parse(localStorage.getItem("cart") || "[]") : [],
 };
 
 const cartSlice = createSlice({

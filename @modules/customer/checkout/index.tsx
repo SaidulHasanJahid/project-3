@@ -82,7 +82,8 @@ const CustomerCheckout = () => {
         </div>
       </div>
 
-
+<div className="container">
+    
       <div className="p-6 md:p-10 font-sans bg-white leftinput ">
         <div className="flex flex-col md:flex-row gap-6 animate-fade-in">
           {/* Left Column */}
@@ -237,9 +238,11 @@ const CustomerCheckout = () => {
                 placeholder="Order Note (Optional)"
                 className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0"
               /> <br />
+              <Link href={'/orderchackout'}>
               <button className="bg-[#424A4D] cursor-pointer text-white px-6 py-2 rounded-md transition hover:bg-gray-700 w-fit">
                 Continue
               </button>
+              </Link>
             </div>
           </div>
 
@@ -338,6 +341,7 @@ const CustomerCheckout = () => {
           </div>
         </div>
       </div>
+</div>
     </>
   );
 };
