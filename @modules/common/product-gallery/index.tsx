@@ -22,7 +22,7 @@ const ProductGallery = ({ galleryImages }: PropsType) => {
           ref={swiperRef}
           spaceBetween={10}
           slidesPerView={1}
-          navigation
+          navigation={false}
           modules={[Navigation]}
           pagination={{ clickable: true }}
           loop={true}
@@ -36,7 +36,7 @@ const ProductGallery = ({ galleryImages }: PropsType) => {
                   alt={`Product Image ${idx}`}
                   width={500}
                   height={500}
-                  className="w-full h-[400px] object-contain"
+                  className="w-full h-[400px] object-cover rounded-lg"
                 />
               </SwiperSlide>
             );

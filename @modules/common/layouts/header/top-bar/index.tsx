@@ -1,18 +1,9 @@
-import React from 'react';
-import { FaChevronDown, FaGlobe, FaUser } from 'react-icons/fa';
+import React from "react";
+import { FaChevronDown, FaGlobe, FaUser } from "react-icons/fa";
 
 const TopBar = () => {
   return (
-    <div
-      className="
-        hidden 
-        max-[1000px]:hidden  
-        min-[1001px]:flex    
-        justify-between items-center 
-        text-[15px] text-[#767678] 
-        px-4 sm:px-6 md:px-8 lg:px-10 xl:px-0 
-        w-[90%] mx-auto mt-[-10px]"
-    >
+    <div className="  flex  justify-between items-center  text-[15px] text-[#767678]">
       {/* Left side */}
       <div>Contact & Support : 00 000 000 000</div>
 

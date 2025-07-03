@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 type Category = {
   title: string;
@@ -10,41 +10,47 @@ type Category = {
 
 const categories: Category[] = [
   {
-    title: 'Electronic',
+    title: "Electronic",
     count: 13,
-    image: 'https://eco.rafiinternational.com/assets/images/categories/1663059283category-12png.png',
+    image:
+      "https://eco.rafiinternational.com/assets/images/categories/1663059283category-12png.png",
   },
   {
-    title: 'Fashion & Beauty',
+    title: "Fashion & Beauty",
     count: 9,
-    image: 'https://eco.rafiinternational.com/assets/images/categories/1663059291category-10png.png',
+    image:
+      "https://eco.rafiinternational.com/assets/images/categories/1663059291category-10png.png",
   },
   {
-    title: 'Camera & Photo',
+    title: "Camera & Photo",
     count: 0,
-    image: 'https://eco.rafiinternational.com/assets/images/categories/1663059299category-13png.png',
+    image:
+      "https://eco.rafiinternational.com/assets/images/categories/1663059299category-13png.png",
   },
   {
-    title: 'Smart Phone & Table',
+    title: "Smart Phone & Table",
     count: 1,
-    image: 'https://eco.rafiinternational.com/assets/images/categories/1663059270category-11png.png',
+    image:
+      "https://eco.rafiinternational.com/assets/images/categories/1663059270category-11png.png",
   },
   {
-    title: 'Sport & Outdoor',
+    title: "Sport & Outdoor",
     count: 1,
-    image: 'https://eco.rafiinternational.com/assets/images/categories/1663059162category-13png.png',
+    image:
+      "https://eco.rafiinternational.com/assets/images/categories/1663059162category-13png.png",
   },
   {
-    title: 'Jewelry & Watches',
+    title: "Jewelry & Watches",
     count: 0,
-    image: 'https://unsplash.it/400/500?image=60',
+    image: "https://unsplash.it/400/500?image=60",
   },
 ];
 
 export default function FirstCard() {
   return (
-    <section className="w-full bg-white py-10 px-[20px] sm:px-[40px] lg:px-[60px]">
-      <div className="flex flex-wrap justify-center gap-6">
+    <section className=" bg-white px-[70px] py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        {/* <div className="flex flex-wrap justify-center gap-6"> */}
         {categories.map((item, id) => (
           <div
             key={id}
@@ -53,29 +59,16 @@ export default function FirstCard() {
               transition duration-500 ease-in-out
               relative
 
-              /* Base: < 765px — 2 per row */
-              w-[47%] h-[230px]
-
-              /* 370px – 460px: 1 per row, full width */
-              [@media_(min-width:370px)_and_(max-width:460px)]:w-full
-
-              /* 765px – 1200px: 3 per row */
-              [@media_(min-width:765px)_and_(max-width:1200px)]:w-[30%]
-              [@media_(min-width:765px)_and_(max-width:1200px)]:h-[408px]
-
-              /* > 1200px: all in 1 row */
-              [@media_(min-width:1201px)]:w-[358px]
-              [@media_(min-width:1201px)]:h-[408px]
             `}
           >
             <Image
               src={item.image}
               alt={item.title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 358px"
-              className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+              height={400}
+              width={358}
+              className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110 w-full h-full"
             />
-            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 h-[75px] w-[90%] bg-white text-center py-2 px-3 rounded shadow-md transition-all duration-500 ease-in-out group-hover:-translate-y-1">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[75px] w-[90%] bg-white text-center py-2 px-3 rounded shadow-md transition-all duration-500 ease-in-out group-hover:-translate-y-1">
               <h3 className="font-semibold text-gray-900 mt-1">{item.title}</h3>
               <p className="text-gray-500">({item.count})</p>
             </div>

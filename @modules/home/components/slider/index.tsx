@@ -1,39 +1,42 @@
-'use client';
+"use client";
 
-import './ind.css';
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import "./ind.css";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const slides = [
   {
     id: 1,
-    title: 'Best Furniture',
-    discount: 'Get Up to 40% Off',
+    title: "Best Furniture",
+    discount: "Get Up to 40% Off",
     subtitle:
-      'Furniture must have personality, as well as be beautiful and make your home Gorgeous.',
-    button: 'SHOP NOW',
-    image: 'https://eco.rafiinternational.com/assets/images/sliders/164743050917png.png',
+      "Furniture must have personality, as well as be beautiful and make your home Gorgeous.",
+    button: "SHOP NOW",
+    image:
+      "https://eco.rafiinternational.com/assets/images/sliders/164743050917png.png",
   },
   {
     id: 2,
-    title: 'Top Picks',
-    discount: 'Save Big This Season',
-    subtitle: 'Stylish and comfy essentials that fit your lifestyle.',
-    button: 'SHOP NOW',
-    image: 'https://eco.rafiinternational.com/assets/images/sliders/16474305667png.png',
+    title: "Top Picks",
+    discount: "Save Big This Season",
+    subtitle: "Stylish and comfy essentials that fit your lifestyle.",
+    button: "SHOP NOW",
+    image:
+      "https://eco.rafiinternational.com/assets/images/sliders/16474305667png.png",
   },
   {
     id: 3,
-    title: 'Top Picks',
-    discount: 'Save Big This Season',
-    subtitle: 'Stylish and comfy essentials that fit your lifestyle.',
-    button: 'SHOP NOW',
-    image: 'https://eco.rafiinternational.com/assets/images/sliders/164743055618png.png',
+    title: "Top Picks",
+    discount: "Save Big This Season",
+    subtitle: "Stylish and comfy essentials that fit your lifestyle.",
+    button: "SHOP NOW",
+    image:
+      "https://eco.rafiinternational.com/assets/images/sliders/164743055618png.png",
   },
 ];
 
@@ -43,8 +46,8 @@ export default function HeroCarousel() {
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
         }}
         pagination={{ clickable: true }}
         autoplay={{ delay: 4000, disableOnInteraction: false }}
@@ -64,11 +67,15 @@ export default function HeroCarousel() {
               />
 
               {/* Text Content */}
-              <div className="absolute inset-0 flex items-center justify-start pl-5 sm:pl-10">
-                <div className="bg-white/0 text-black max-w-md px-5 py-3 md:ml-60">
+              <div className="absolute inset-0 flex items-center justify-start pl-5 sm:pl-10 w-full">
+                <div className=" text-black max-w-md px-5 py-3 md:ml-60 w-[700px] ">
                   <h4 className="text-xl font-semibold mb-2">{slide.title}</h4>
-                  <h1 className="text-4xl md:text-6xl font-bold mb-4">{slide.discount}</h1>
-                  <p className="text-base md:text-lg font-semibold mb-4">{slide.subtitle}</p>
+                  <h1 className="text-4xl md:text-[70px] font-bold mb-4 whitespace-nowrap text-[1B1B1E]">
+                    {slide.discount}
+                  </h1>
+                  <p className="text-base md:text-lg font-semibold mb-4 whitespace-nowrap">
+                    {slide.subtitle}
+                  </p>
                   <button className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
                     {slide.button}
                   </button>
@@ -88,7 +95,6 @@ export default function HeroCarousel() {
       </Swiper>
 
       {/* Pagination bullets customization */}
-
     </div>
   );
 }

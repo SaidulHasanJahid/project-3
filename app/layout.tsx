@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./globals.css";
+import "@/styles/main.scss";
 import Header from "@/@modules/common/layouts/header";
 
 export const metadata: Metadata = {

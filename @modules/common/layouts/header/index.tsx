@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import {
-  FaHeart,
-  FaRandom,
-  FaShoppingCart,
-  FaSearch,
-  FaChevronDown,
-} from "react-icons/fa";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { FaChevronDown, FaSearch } from "react-icons/fa";
+const CartDropdown = dynamic(() => import("./cart-dropdown"), {
+  ssr: false,
+});
+
 import RightDrawer from "./right-drawer";
 import TopBar from "./top-bar";
 
@@ -54,15 +54,21 @@ export default function Header() {
     return { height: 44, width: 260, textSize: "text-base" };
   };
 
-  const { height: searchHeight, width: searchWidth, textSize } = getSearchBarSize();
+  const {
+    height: searchHeight,
+    width: searchWidth,
+    textSize,
+  } = getSearchBarSize();
 
   const menuItems = ["HOME", "PRODUCT", "PAGES", "BLOG", "FAQ", "CONTACT"];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#fcf9f8] shadow-md font-sans transition-all duration-300">
-      <TopBar />
+    <header className="sticky top-0 z-50 bg-[#fff] font-sans transition-all duration-300">
+      <div className="px-[70px] mx-auto py-3 ">
+        <TopBar />
+      </div>
 
-      <div className="w-[90%] mx-auto px-4 py-4">
+      <div className="px-[70px] py-4">
         <div className="flex items-center justify-between flex-wrap">
           {windowWidth > 1260 ? (
             <DesktopHeader
@@ -108,15 +114,17 @@ function DesktopHeader({
 }: any) {
   return (
     <div className="w-full flex justify-between items-center gap-6">
-      <div className="flex items-center gap-6">
-        <Image
-          src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
-          alt="Logo"
-          width={220}
-          height={40}
-          className="object-contain cursor-pointer"
-        />
-      </div>
+      <Link href="/">
+        <div className="flex items-center gap-6">
+          <Image
+            src="https://eco.rafiinternational.com/assets/images/1685267209logopng.png"
+            alt="Logo"
+            width={220}
+            height={40}
+            className="object-contain cursor-pointer"
+          />
+        </div>
+      </Link>
 
       <nav className="flex gap-6 text-sm font-semibold text-[#424A4D] text-[13px] relative">
         {menuItems.map((item: string) => {
@@ -138,23 +146,19 @@ function DesktopHeader({
             >
               <span className="flex items-center gap-1">
                 {item}
-                {(isProduct || isPages) && <FaChevronDown className="text-xs" />}
+                {(isProduct || isPages) && (
+                  <FaChevronDown className="text-xs" />
+                )}
               </span>
 
               {/* Product Dropdown */}
               {isProduct && (
-                <DropdownMenu
-                  isOpen={showProductDropdown}
-                  type="product"
-                />
+                <DropdownMenu isOpen={showProductDropdown} type="product" />
               )}
 
               {/* Pages Dropdown */}
               {isPages && (
-                <DropdownMenu
-                  isOpen={showPagesDropdown}
-                  type="pages"
-                />
+                <DropdownMenu isOpen={showPagesDropdown} type="pages" />
               )}
             </div>
           );
@@ -168,7 +172,7 @@ function DesktopHeader({
           textSize={textSize}
         />
       </div>
-      <HeaderIcons iconSize="xl" />
+      <CartDropdown iconSize="xl" />
     </div>
   );
 }
@@ -231,7 +235,10 @@ function ResponsiveHeader({
                     </span>
 
                     {isProduct && (
-                      <DropdownMenu isOpen={showProductDropdown} type="product" />
+                      <DropdownMenu
+                        isOpen={showProductDropdown}
+                        type="product"
+                      />
                     )}
 
                     {isPages && (
@@ -253,7 +260,7 @@ function ResponsiveHeader({
               <FaSearch />
             </button>
           )}
-          <HeaderIcons iconSize="lg" />
+          <CartDropdown iconSize="lg" />
         </div>
       </div>
 
@@ -279,34 +286,59 @@ function ResponsiveHeader({
   );
 }
 
-function DropdownMenu({ isOpen, type }: { isOpen: boolean; type: "product" | "pages" }) {
+function DropdownMenu({
+  isOpen,
+  type,
+}: {
+  isOpen: boolean;
+  type: "product" | "pages";
+}) {
   if (type === "product") {
     const productData = [
       {
         title: "ELECTRONIC",
         items: [
-          "TELEVISION", "REFRIGERATOR", "WASHING MACHINE",
-          "AIR CONDITIONERS", "SPORT & OUTDOOR", "TOYS & HOBBIES", "OUTDOOR, RECREATION",
+          "TELEVISION",
+          "REFRIGERATOR",
+          "WASHING MACHINE",
+          "AIR CONDITIONERS",
+          "SPORT & OUTDOOR",
+          "TOYS & HOBBIES",
+          "OUTDOOR, RECREATION",
         ],
       },
       {
         title: "FASHION & BEAUTY",
         items: [
-          "ACCESSORIES", "BAGS", "CLOTHINGS", "SHOES",
-          "JEWELRY & WATCHES", "AUTOMOBILES", "SURVEILLANCE SAFETY",
+          "ACCESSORIES",
+          "BAGS",
+          "CLOTHINGS",
+          "SHOES",
+          "JEWELRY & WATCHES",
+          "AUTOMOBILES",
+          "SURVEILLANCE SAFETY",
         ],
       },
       {
         title: "CAMERA & PHOTO",
         items: [
-          "DSLR", "Camera Phone", "Action Camera",
-          "Digital Camera", "HEALTH & BEAUTY", "HOME DECORATION",
+          "DSLR",
+          "Camera Phone",
+          "Action Camera",
+          "Digital Camera",
+          "HEALTH & BEAUTY",
+          "HOME DECORATION",
         ],
       },
       {
         title: "SMART PHONE & TABLE",
         items: [
-          "APPLE", "SAMSUNG", "LG", "SONY", "BOOKS & OFFICE", "PORTABLE & PERSONAL",
+          "APPLE",
+          "SAMSUNG",
+          "LG",
+          "SONY",
+          "BOOKS & OFFICE",
+          "PORTABLE & PERSONAL",
         ],
       },
     ];
@@ -315,7 +347,9 @@ function DropdownMenu({ isOpen, type }: { isOpen: boolean; type: "product" | "pa
       <div
         className={clsx(
           "absolute md:left-[-290px] lg:left-[-300px] m-auto top-full mt-4 md:w-[900px] lg:w-[1150px]  bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
-          isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
+          isOpen
+            ? "opacity-100 visible scale-100"
+            : "opacity-0 invisible scale-95"
         )}
         style={{
           fontSize: "13px",
@@ -325,7 +359,9 @@ function DropdownMenu({ isOpen, type }: { isOpen: boolean; type: "product" | "pa
       >
         {productData.map((section, i) => (
           <div key={i}>
-            <h3 className="font-bold text-[13px] mb-2 m-auto ">{section.title}</h3>
+            <h3 className="font-bold text-[13px] mb-2 m-auto ">
+              {section.title}
+            </h3>
             <ul className="space-y-1">
               {section.items.map((item, j) => (
                 <li key={j} className="hover:text-[#6b3d2e] cursor-pointer">
@@ -344,7 +380,9 @@ function DropdownMenu({ isOpen, type }: { isOpen: boolean; type: "product" | "pa
     <div
       className={clsx(
         "absolute left-0 top-full mt-4 w-48 bg-white p-4 shadow-xl rounded-md z-50 transition-all duration-300",
-        isOpen ? "opacity-100 visible scale-100" : "opacity-0 invisible scale-95"
+        isOpen
+          ? "opacity-100 visible scale-100"
+          : "opacity-0 invisible scale-95"
       )}
       style={{ fontSize: "13px", color: "rgb(27,27,30)" }}
     >
@@ -443,31 +481,6 @@ function SearchBarFullWidth({
       >
         <FaSearch className={textSize} />
       </button>
-    </div>
-  );
-}
-
-function HeaderIcons({ iconSize = "md" }: { iconSize?: "md" | "lg" | "xl" }) {
-  const sizeClassMap = {
-    md: "w-6 h-6 text-[12px]",
-    lg: "w-10 h-10 text-[16px]",
-    xl: "w-12 h-12 text-[20px]",
-  };
-  const sizeClass = sizeClassMap[iconSize];
-
-  return (
-    <div className="flex gap-2 items-center">
-      {[FaHeart, FaRandom, FaShoppingCart].map((Icon, i) => (
-        <div
-          key={i}
-          className={`relative ${sizeClass} rounded-full  flex items-center justify-center cursor-pointer`}
-        >
-          <Icon className="text-gray-700" />
-          <span className="absolute -top-1 -right-1 w-[16px] h-[16px] text-[10px] bg-[#424A4D] text-white rounded-full flex items-center justify-center">
-            0
-          </span>
-        </div>
-      ))}
     </div>
   );
 }
