@@ -2,6 +2,7 @@ import ProductGallery from "@/@modules/@common/product-gallery";
 import { ProductType } from "@/types/types";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
+import products from "@/@mock-data/product.json";
 
 import CartActions from "@/@modules/@common/buttons/cart-actions";
 import {
@@ -15,13 +16,15 @@ import {
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
-import ProductTabSlider from "./product-tab";
+import RelatedProductsSlider from "@/@modules/@components/related-product";
 
 const ProductDetails = ({ product }: { product: ProductType }) => {
   const { gallery_images } = product || {};
 
-  console.log("gallery_images", gallery_images);
-
+  const relatedProducts = products.filter(
+    (p) => p.category_id === product.category_id
+  );
+  console.log(relatedProducts, "relatedProducts");
   return (
     <>
       <div
@@ -214,7 +217,7 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
         </div>
       </div>
 
-      <ProductTabSlider />
+      <RelatedProductsSlider relatedProducts={relatedProducts} />
     </>
   );
 };

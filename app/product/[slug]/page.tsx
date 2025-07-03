@@ -1,5 +1,5 @@
 import products from "@/@mock-data/product.json";
-import ProductDetails from "@/@modules/home/product-details";
+import ProductDetails from "@/@modules/product/product-details";
 
 export default async function ProductDetailsPage({
   params,

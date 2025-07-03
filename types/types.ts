@@ -11,10 +11,15 @@ export interface ProductType {
   rating: number;
   reviews: number;
   discount: string | null;
-  category: string;
+  category?: string;
+  category_id?: number;
   image: string;
-  image1: string;
-  image2: string;
-  image3: string;
-  gallery_images: GalleryType[]; // <-- now optional
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  gallery_images?: GalleryType[]; // <-- now optional
+}
+
+export interface ClassesType {
+  root: string;
 }

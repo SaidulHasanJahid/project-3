@@ -1,21 +1,19 @@
-import React from "react";
-import LatestPost from "./components/latest-post";
-import Tab from "./components/tab";
 import BestMonthOffer from "./components/best-month-offer";
 import FirstCard from "./components/category";
-import HeroCarousel from "./components/slider";
+import CategoryWiseProducts from "./components/category-wise-products";
 import DealOfTheDay from "./components/deal-of-the-day";
 import FeaturedProducts from "./components/featured-products";
 import InfoBanner from "./components/InfoBanner";
+import LatestPost from "./components/latest-post";
+import HeroCarousel from "./components/slider";
 
 const Home = () => {
-
   return (
     <div>
       <HeroCarousel />
       <FirstCard />
       <BestMonthOffer />
-      <Tab />
+      <CategoryWiseProducts />
       <FeaturedProducts />
       <InfoBanner />
       <DealOfTheDay />

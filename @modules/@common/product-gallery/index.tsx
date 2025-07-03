@@ -28,19 +28,20 @@ const ProductGallery = ({ galleryImages }: PropsType) => {
           loop={true}
           initialSlide={selectedImageIndex} // Ensure the main image corresponds to the selected thumbnail
         >
-          {galleryImages.map((item, idx) => {
-            return (
-              <SwiperSlide key={idx}>
-                <Image
-                  src={item?.image_src}
-                  alt={`Product Image ${idx}`}
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover rounded-lg"
-                />
-              </SwiperSlide>
-            );
-          })}
+          {galleryImages?.length > 0 &&
+            galleryImages.map((item, idx) => {
+              return (
+                <SwiperSlide key={idx}>
+                  <Image
+                    src={item?.image_src}
+                    alt={`Product Image ${idx}`}
+                    width={500}
+                    height={500}
+                    className="w-full h-[400px] object-cover rounded-lg"
+                  />
+                </SwiperSlide>
+              );
+            })}
         </Swiper>
         <div className="flex gap-2 mt-4">
           {galleryImages.map((item, idx) => (
