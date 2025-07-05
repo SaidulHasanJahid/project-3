@@ -105,7 +105,7 @@ export default function Header() {
 // ✅ Route mapping
 const routeMap: { [key: string]: string } = {
   HOME: "/",
-  PRODUCT: "/products",
+  PRODUCT: "/productpage",
   PAGES: "#",
   BLOG: "/blog",
   FAQ: "/faq",
@@ -295,6 +295,14 @@ function DropdownMenu({
 }) {
   if (type === "product") {
     const productData = [
+      {
+        title: "ELECTRONIC",
+        items: ["TELEVISION", "REFRIGERATOR", "WASHING MACHINE"],
+      },
+      {
+        title: "FASHION & BEAUTY",
+        items: ["ACCESSORIES", "BAGS", "CLOTHINGS"],
+      },
       {
         title: "ELECTRONIC",
         items: ["TELEVISION", "REFRIGERATOR", "WASHING MACHINE"],

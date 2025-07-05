@@ -17,6 +17,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import RelatedProductsSlider from "@/@modules/@components/related-product";
+import ProductTabSlider from "@/@modules/home/product-details/product-tab";
 
 const ProductDetails = ({ product }: { product: ProductType }) => {
   const { gallery_images } = product || {};
@@ -213,10 +214,11 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
                 </div>
               </div>
             </div>
+          
           </div>
         </div>
       </div>
-
+  <ProductTabSlider />
       <RelatedProductsSlider relatedProducts={relatedProducts} />
     </>
   );

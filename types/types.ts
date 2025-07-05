@@ -23,3 +23,13 @@ export interface ProductType {
 export interface ClassesType {
   root: string;
 }
+export type Product = {
+  id: number;
+  title: string;
+  price: number;
+  oldPrice?: number;
+  discount?: number;
+  image: string;
+};
+
+export const products: Product[] = [/* your 12 product objects from earlier */];
