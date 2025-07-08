@@ -155,6 +155,7 @@ export default function ProductTabSlider() {
           </div>
 
           {/* Right Product Slider */}
+
           <div className="">
             <motion.div
               className="w-full  text-[14px] "
@@ -239,6 +240,7 @@ export default function ProductTabSlider() {
               </AnimatePresence>
             </motion.div>
           </div>
+          
         </motion.div>
       </div>
     </section>

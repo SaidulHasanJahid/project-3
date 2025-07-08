@@ -3,7 +3,7 @@ import { FaChevronDown, FaGlobe, FaUser } from "react-icons/fa";
 
 const TopBar = () => {
   return (
-    <div className="  flex  justify-between items-center  text-[15px] text-[#767678]">
+    <div className="flex justify-between items-center text-[15px] text-[#767678] max-[1000px]:hidden">
       {/* Left side */}
       <div>Contact & Support : 00 000 000 000</div>
 
