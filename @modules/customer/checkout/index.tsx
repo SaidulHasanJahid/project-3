@@ -27,7 +27,7 @@ const CustomerCheckout = () => {
       
       {/* ✅ Top Banner Section with Background Image */}
       <div
-        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center"
+        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
         style={{
           backgroundImage:
             'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',

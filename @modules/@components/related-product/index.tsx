@@ -28,7 +28,7 @@ export default function RelatedProductsSlider({ relatedProducts }: PropsType) {
           <div className="flex items-center gap-3 text-sm font-medium">
             <span
               ref={(node) => setPrevEl(node)}
-              className="cursor-pointer text-gray-400 hover:text-black transition"
+              className="cursor-pointer text-gray-400 hover:text-black transition "
             >
               Prev
             </span>
@@ -59,13 +59,13 @@ export default function RelatedProductsSlider({ relatedProducts }: PropsType) {
             relatedProducts.map((product, index) => (
               <SwiperSlide key={product.id}>
                 <div
-                  className={`group relative p-4 transition-all duration-300 hover:shadow-xl bg-white rounded-md ${
+                  className={`group relative p-4 transition-all duration-300 hover:shadow-xl bg-white rounded-md cursor-pointer ${
                     index === 0 ? "col-span-5 w-full" : ""
                   }`}
                 >
                   {/* Discount badge */}
-                  <div className="absolute top-2 right-2 z-20 bg-black text-white text-xs px-2 py-1 rounded">
-                    -{product.discount}%
+                  <div className="absolute top-2 right-2 z-20 bg-black text-white text-xs  py-1 rounded">
+                    {product.discount}%
                   </div>
 
                   {/* Product image */}
@@ -107,7 +107,7 @@ export default function RelatedProductsSlider({ relatedProducts }: PropsType) {
                   )}
 
                   {/* Product Info */}
-                  <div className="mt-4 text-center text-[#141926]">
+                  <div className="mt-4 text-center text-[#141926] cursor-pointer">
                     <h3 className="text-sm font-medium line-clamp-2">
                       {product.title}
                     </h3>

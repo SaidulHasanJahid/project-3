@@ -15,13 +15,13 @@ const OrderChackOutPage = () => {
            
       {/* ✅ Top Banner Section with Background Image */}
       <div
-        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center"
+        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
         style={{
           backgroundImage:
             'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
         }}
       >
-        <h1 className="text-3xl font-bold">Cart</h1>
+        <h1 className="text-3xl font-bold">orderchackout</h1>
         <p className="text-sm mt-1   ">
           <Link href={"/"}>
             <span className="text-[16px]">Home</span>
