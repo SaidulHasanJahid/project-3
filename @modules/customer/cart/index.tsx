@@ -1,18 +1,58 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
 
 const CustomerCart = () => {
-  const [quantity, setQuantity] = useState(2);
+  // Get cart from Redux store
+  const cart = useSelector((state: any) => state?.cart?.items || []);
+  const dispatch = useDispatch();
 
-  const price = 100;
-  const subtotal = quantity * price;
+  // Local state to keep track of quantity per product id
+  // Initialize with quantity=1 for each product
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+
+  // When cart changes, reset quantities for new items with default 1
+  useEffect(() => {
+    const qtys: { [key: string]: number } = {};
+    cart.forEach((item: any) => {
+      qtys[item.id] = quantities[item.id] || 1;
+    });
+    setQuantities(qtys);
+  }, [cart]);
+
+  // Handle quantity change per product id
+  const handleQuantityChange = (id: string | number, delta: number) => {
+    setQuantities((prev) => {
+      const currentQty = prev[id] || 1;
+      let newQty = currentQty + delta;
+      if (newQty < 1) newQty = 1;
+      return { ...prev, [id]: newQty };
+    });
+  };
+
+  // Calculate subtotal for each product
+  const getSubtotal = (price: number, id: string | number) => {
+    const qty = quantities[id] || 1;
+    return price * qty;
+  };
+
+  // Calculate total for whole cart
+  const total = cart.reduce((acc: number, item: any) => {
+    const qty = quantities[item.id] || 1;
+    return acc + item.price * qty;
+  }, 0);
+
+  // Dispatch remove action (replace with your actual redux action)
+  const handleRemove = (id: string | number) => {
+    dispatch({ type: "cart/removeFromCart", payload: id });
+  };
 
   return (
     <div className="w-full bg-white">
-      {/* ✅ Top Banner Section with Background Image */}
+      {/* Top Banner */}
       <div
         className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
         style={{
@@ -21,15 +61,15 @@ const CustomerCart = () => {
         }}
       >
         <h1 className="text-3xl font-bold">Cart</h1>
-        <p className="text-sm mt-1   ">
+        <p className="text-sm mt-1">
           <Link href={"/"}>
-            <span className="text-[16px]">Home</span>
+            <span className="text-[16px] cursor-pointer">Home</span>
           </Link>{" "}
           / Cart
         </p>
       </div>
 
-      {/* ✅ Cart Body */}
+      {/* Cart Body */}
       <div className="py-10 px-4 md:px-8 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left - Cart Table */}
@@ -45,76 +85,85 @@ const CustomerCart = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-200">
-                  <td className="p-4 flex items-center gap-4 max-w-[250px]">
-                    <div className="min-w-[64px] min-h-[64px]">
-                      <img
-                        src="https://via.placeholder.com/80"
-                        alt="Product"
-                        width={64}
-                        height={64}
-                        className="object-cover border rounded"
-                      />
-                    </div>
-                    <span className="truncate font-medium text-gray-800 text-sm">
-                      Top Rated product title will be her...
-                    </span>
-                  </td>
-                  <td className="p-4 text-sm text-gray-700">${price}</td>
-                  <td className="p-4">
-                    <div className="flex items-center border rounded w-[100px]">
+                {cart.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="text-center p-4 text-gray-500">
+                      Your cart is empty
+                    </td>
+                  </tr>
+                )}
+                {cart.map((item: any, index: number) => (
+                  <tr key={item.id || index} className="border-t border-gray-200">
+                    <td className="p-4 flex items-center gap-4 max-w-[250px]">
+                      <div className="min-w-[64px] min-h-[64px]">
+                        <img
+                          src={item.image}
+                          alt={item.name || "Product"}
+                          width={64}
+                          height={64}
+                          className="object-cover rounded"
+                        />
+                      </div>
+                      <span className="truncate font-medium text-gray-800 text-sm">
+                        {item.name || "Product Title"}
+                      </span>
+                    </td>
+                    <td className="p-4 text-sm text-[#767678]">${item.price.toFixed(2)}</td>
+                    <td className="p-4">
+                      <div className="flex items-center border-[#767678] border rounded w-[100px]">
+                        <button
+                          onClick={() => handleQuantityChange(item.id, -1)}
+                          className="w-8 h-8 text-lg font-semibold flex items-center justify-center cursor-pointer"
+                        >
+                          -
+                        </button>
+                        <span className="w-8 text-center">{quantities[item.id] || 1}</span>
+                        <button
+                          onClick={() => handleQuantityChange(item.id, 1)}
+                          className="w-8 h-8 text-lg font-semibold flex items-center justify-center cursor-pointer"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td className="p-4 text-sm font-semibold text-[#767678]">
+                      ${getSubtotal(item.price, item.id).toFixed(2)}
+                    </td>
+                    <td className="p-4 text-center">
                       <button
-                        onClick={() => setQuantity((q) => (q > 1 ? q - 1 : 1))}
-                        className="w-8 h-8 text-lg font-semibold flex items-center justify-center"
+                        onClick={() => handleRemove(item.id)}
+                        className="text-red-500 hover:text-red-700 cursor-pointer"
+                        aria-label={`Remove ${item.name}`}
                       >
-                        -
+                        <FaTimes />
                       </button>
-                      <span className="w-8 text-center">{quantity}</span>
-                      <button
-                        onClick={() => setQuantity((q) => q + 1)}
-                        className="w-8 h-8 text-lg font-semibold flex items-center justify-center"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td className="p-4 text-sm font-semibold text-gray-800">
-                    ${subtotal}
-                  </td>
-                  <td className="p-4 text-center">
-                    <button className="text-red-500 hover:text-red-700">
-                      <FaTimes />
-                    </button>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
           {/* Right - Cart Totals */}
           <div className="border border-gray-200 rounded p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-              CART TOTALS
-            </h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">CART TOTALS</h2>
             <div className="flex justify-between py-2 border-b text-sm text-gray-700">
               <span>Subtotal</span>
-              <span>${subtotal}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between py-2 border-b text-sm text-gray-700">
               <span>Discount</span>
-              <span>$0</span>
+              <span>$0.00</span>
             </div>
             <div className="flex justify-between py-2 font-semibold text-base text-gray-900">
               <span>Total</span>
-              <span>${subtotal}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
             <Link href={"/customer/checkout"}>
-            <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300 cursor-pointer ">
-              
-                {" "}
-                Proceed to checkout{" "}
-            </button>
-              </Link>
+              <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300 cursor-pointer ">
+                Proceed to checkout
+              </button>
+            </Link>
           </div>
         </div>
       </div>

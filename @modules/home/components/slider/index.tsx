@@ -8,41 +8,21 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Link from "next/link";
 
-const slides = [
-  {
-    id: 1,
-    title: "Best Furniture",
-    discount: "Get Up to 40% Off",
-    subtitle:
-      "Furniture must have personality, as well as be beautiful and make your home Gorgeous.",
-    button: "SHOP NOW",
-    image:
-      "https://eco.rafiinternational.com/assets/images/sliders/164743050917png.png",
-  },
-  {
-    id: 2,
-    title: "Top Picks",
-    discount: "Save Big This Season",
-    subtitle: "Stylish and comfy essentials that fit your lifestyle.",
-    button: "SHOP NOW",
-    image:
-      "https://eco.rafiinternational.com/assets/images/sliders/16474305667png.png",
-  },
-  {
-    id: 3,
-    title: "Top Picks",
-    discount: "Save Big This Season",
-    subtitle: "Stylish and comfy essentials that fit your lifestyle.",
-    button: "SHOP NOW",
-    image:
-      "https://eco.rafiinternational.com/assets/images/sliders/164743055618png.png",
-  },
-];
+interface Banner {
+  id: number | string;
+  title: string;
+  image: string;
+}
 
-export default function HeroCarousel() {
+interface HeroCarouselProps {
+  bannerItem: Banner[];
+}
+
+export default function HeroCarousel({ bannerItem }: HeroCarouselProps) {
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-[60vh] sm:h-[80vh] md:h-screen">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation={{
@@ -54,47 +34,74 @@ export default function HeroCarousel() {
         loop
         className="w-full h-full"
       >
-        {slides.map((slide) => (
+        {bannerItem.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div className="relative w-full h-full">
-              {/* Next.js Image for background */}
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                className="object-cover"
-                priority
-              />
+              <Link href={"/productpage"}>
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 max-w-7xl mx-auto flex items-center justify-start px-5 sm:px-10 w-full">
+                  <div className="text-[#1B1B1E] max-w-xl md:max-w-3xl lg:max-w-4xl px-4 py-3 w-full md:ml-20">
+                    <h4 className="text-xl md:text-2xl font-semibold mb-2 leading-snug">
+                      {slide.title}
+                    </h4>
+                    <p className="text-4xl md:text-[70px] font-bold mb-4 leading-tight whitespace-nowrap text-[#1B1B1E]">
+                      Get Up to 40% Off
+                    </p>
+                    <p className="text-base md:text-lg font-bold mb-6 max-w-full leading-relaxed">
+                      Furniture must have personality, as well as be beautiful
+                      and make your home Gorgeous
+                    </p>
 
-              {/* Text Content */}
-              <div className="absolute inset-0 flex items-center justify-start pl-5 sm:pl-10 w-full">
-                <div className=" text-black max-w-md px-5 py-3 md:ml-60 w-[700px] ">
-                  <h4 className="text-xl font-semibold mb-2">{slide.title}</h4>
-                  <h1 className="text-4xl md:text-[70px] font-bold mb-4 whitespace-nowrap text-[1B1B1E]">
-                    {slide.discount}
-                  </h1>
-                  <p className="text-base md:text-lg font-semibold mb-4 whitespace-nowrap">
-                    {slide.subtitle}
-                  </p>
-                  <button className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
-                    {slide.button}
-                  </button>
+                    <button className="bg-[#424a4d] hover:bg-transparent hover:transition-shadow hover:text-[#1B1B1E] hover:border hover:border-[#1B1B1E] text-white font-bold py-2 px-6 rounded cursor-pointer ">
+                      Shop NOW
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </SwiperSlide>
         ))}
 
-        {/* Custom Arrows */}
-        <div className="swiper-button-prev z-50 absolute top-1/2 left-4 transform -translate-y-1/2 text-white icon-pev">
-          <FaChevronLeft size={40} />
+        {/* Prev Arrow */}
+        <div className="swiper-button-prev z-50 absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer text-white">
+          <FaChevronLeft size={40} color="#fff" />
         </div>
-        <div className="swiper-button-next z-50 icon-next absolute top-1/2 right-4 transform -translate-y-1/2 text-white">
-          <FaChevronRight size={50} />
+
+        {/* Next Arrow */}
+        <div className="swiper-button-next z-50 absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-white">
+          <FaChevronRight size={40} color="#fff" />
         </div>
       </Swiper>
 
-      {/* Pagination bullets customization */}
+      {/* Custom styles for pagination bullets as lines */}
+      <style jsx>{`
+        /* Pagination bullets become horizontal white lines */
+        :global(.swiper-pagination-bullet) {
+          width: 30px !important;
+          height: 4px !important;
+          border-radius: 2px !important;
+          background-color: transparent !important;
+          border: 2px solid #fff !important;
+          opacity: 0.5 !important;
+          margin: 0 6px !important;
+          transition: background-color 0.3s, opacity 0.3s;
+          cursor: pointer;
+        }
+        :global(.swiper-pagination-bullet-active) {
+          background-color: #fff !important;
+          opacity: 1 !important;
+        }
+        :global(.swiper-pagination-bullet:hover) {
+          opacity: 1 !important;
+        }
+      `}</style>
     </div>
   );
 }

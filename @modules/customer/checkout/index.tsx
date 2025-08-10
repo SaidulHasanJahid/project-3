@@ -1,31 +1,67 @@
-"use client";
+'use client';
 
-import './index.css';
-import Link from "next/link";
-import { useState, useMemo } from "react";
-import {
-  FaCreditCard,
-  FaShoppingCart,
-  FaUser,
-} from "react-icons/fa";
-const CustomerCheckout = () => {
-  const [shipTo, setShipTo] = useState("Home");
-  const [country, setCountry] = useState("");
-  const [shipping, setShipping] = useState("free");
-  const [packaging, setPackaging] = useState("default");
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { FaUser, FaShoppingCart, FaCreditCard } from 'react-icons/fa';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+export default function CheckoutForm() {
   const [showShipping, setShowShipping] = useState(false);
+  const [packaging, setPackaging] = useState('free');
+  const [packagingType, setPackagingType] = useState('default');
+
+  const initialValues = {
+    name: '',
+    email: '',
+    createAccount: false,
+    shipTo: 'Home',
+    fullNameBilling: '',
+    emailBilling: '',
+    phoneBilling: '',
+    addressBilling: '',
+    cityBilling: '',
+    postalBilling: '',
+    countryBilling: '',
+    diffAddress: false,
+    fullNameShipping: '',
+    phoneShipping: '',
+    addressShipping: '',
+    postalShipping: '',
+    cityShipping: '',
+    stateShipping: '',
+    countryShipping: '',
+    orderNote: '',
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    fullNameBilling: Yup.string().required('Required'),
+    emailBilling: Yup.string().email('Invalid email').required('Required'),
+    phoneBilling: Yup.string().required('Required'),
+    addressBilling: Yup.string().required('Required'),
+    cityBilling: Yup.string().required('Required'),
+    postalBilling: Yup.string().required('Required'),
+    countryBilling: Yup.string().required('Required'),
+    fullNameShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    phoneShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    addressShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    postalShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    cityShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    stateShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+    countryShipping: showShipping ? Yup.string().required('Required') : Yup.string(),
+  });
 
   const basePrice = 200;
-  const shippingPrice = shipping === "express" ? 10 : 0;
-  const packagingPrice = packaging === "gift" ? 15 : 0;
-  const finalPrice = useMemo(
-    () => basePrice + shippingPrice + packagingPrice,
-    [shipping, packaging]
-  );
+  const finalPrice =
+    basePrice +
+    (packaging === 'express' ? 10 : 0) +
+    (packagingType === 'gift' ? 15 : 0);
+
   return (
     <>
-      
-      {/* ✅ Top Banner Section with Background Image */}
+       {/* ✅ Top Banner Section with Background Image */}
       <div
         className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
         style={{
@@ -33,15 +69,21 @@ const CustomerCheckout = () => {
             'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
         }}
       >
-        <h1 className="text-3xl font-bold">Cart</h1>
+        <h1 className="text-3xl font-bold">orderchackout</h1>
         <p className="text-sm mt-1   ">
           <Link href={"/"}>
             <span className="text-[16px]">Home</span>
           </Link>{" "}
-          / Cart
+          / orderchackout
         </p>
       </div>
-      <div className="w-full max-w-4xl mx-auto p-8">
+
+
+  <div className="container">
+    <div className=" mx-auto p-4 md:p-8">
+      {/* Stepper */}
+      <div className="flex flex-wrap items-center gap-3 md:gap-5 justify-center md:justify-start mb-8">
+    <div className="w-full max-w-4xl mx-auto p-8">
         <div className="flex items-center gap-5">
           {/* Step 1 - Address (Active) */}
           <div className="relative flex items-center">
@@ -82,268 +124,379 @@ const CustomerCheckout = () => {
         </div>
       </div>
 
-<div className="container">
-    
-      <div className="p-6 md:p-10 font-sans bg-white leftinput ">
-        <div className="flex flex-col md:flex-row gap-6 animate-fade-in">
-          {/* Left Column */}
-          <div className="flex-1 border border-[#BDCCDB]  p-6 space-y-6 shadow-sm transition-all duration-300 ease-in-out">
-            
 
-            {/* Personal Info */}
-            <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
-              <h2 className="font-bold text-[#141926] border-b border-[#BDCCDB] pb-2 text-[18px]">
-                Personal Information :
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Enter Your Name"
-                  className="border border-[#BDCCDB] w-[348px] h-[45px] px-4 py-2 rounded-md focus:outline-none focus:ring-0 transition-all duration-300"
-                />
-                <input
-                  type="email"
-                  placeholder="Enter Your Email"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0 transition-all duration-300"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="createAccount"
-                  className="accent-gray-800 focus:outline-none focus:ring-0"
-                />
-                <label htmlFor="createAccount" className="text-sm">
-                  Create an account ?
-                </label>
-              </div>
-            </div>
 
-            {/* Billing Info */}
-            <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
-              <h2 className="font-bold text-[18px] text-[#141926] border-b border-[#BDCCDB] pb-2">
-                Billing Details
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0 transition-all  text-[#767678] duration-300"
-                  value={shipTo}
-                  onChange={(e) => setShipTo(e.target.value)}
-                >
-                  <option>Home</option>
-                  <option>Office</option>
-                  <option>Other</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <input
-                  type="text"
-                  placeholder="City"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <input
-                  type="text"
-                  placeholder="Postal Code"
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                />
-                <select
-                  className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0 text-[#767678]"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                >
-                  <option>Select Country</option>
-                  <option>Bangladesh</option>
-                  <option>India</option>
-                  <option>USA</option>
-                  <option>UK</option>
-                </select>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="diffAddress"
-                  className="accent-gray-800 focus:outline-none focus:ring-0"
-                  checked={showShipping}
-                  onChange={(e) => setShowShipping(e.target.checked)}
-                />
-                <label htmlFor="diffAddress" className="text-[14px] font-bold text-[#767678]">
-                  Ship to a Different Address?
-                </label>
-              </div>
 
-              {showShipping && (
-                <div className="space-y-4 border-t border-[#BDCCDB] pt-4 transition-all duration-300">
-                  <h2 className="font-bold text-[18px] text-[#141926] ">Shipping Details</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      placeholder="Full Name"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
+      </div>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        validateOnMount
+        onSubmit={(values, { setSubmitting }) => {
+          console.log('Submitted:', values);
+          setTimeout(() => setSubmitting(false), 1000);
+        }}
+      >
+        {({ values, isSubmitting, isValid, setFieldValue }) => (
+          <Form>
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Left Column */}
+              <div className="flex-1 border border-[#BDCCDB] p-4 md:p-6 space-y-6 shadow-sm max-w-full">
+                {/* Personal Info */}
+                <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
+                  <h2 className="font-bold text-[#141926] border-b border-[#BDCCDB] pb-2 text-lg">
+                    Personal Information :
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Field
+                        name="name"
+                        type="text"
+                        placeholder="Enter Your Name"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage
+                        name="name"
+                        component="div"
+                        className="text-red-500 text-sm mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Field
+                        name="email"
+                        type="email"
+                        placeholder="Enter Your Email"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="text-red-500 text-sm mt-1"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Field
+                      type="checkbox"
+                      id="createAccount"
+                      name="createAccount"
+                      className="accent-gray-800 focus:outline-none focus:ring-0"
                     />
-                    <input
-                      type="text"
-                      placeholder="Phone Number"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Address"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Postal Code"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                    />
-                    <input
-                      type="text"
-                      placeholder="City"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                    />
-                    <input
-                      type="text"
-                      placeholder="State"
-                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0"
-                    />
-                    <select className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px]focus:outline-none focus:ring-0 text-[#767678]">
-                      <option>Select Country</option>
-                      <option>Bangladesh</option>
-                      <option>India</option>
-                      <option>USA</option>
-                    </select>
+                    <label htmlFor="createAccount" className="text-sm">
+                      Create an account ?
+                    </label>
                   </div>
                 </div>
-              )}
 
-              <input
-                type="text"
-                placeholder="Order Note (Optional)"
-                className="border border-[#BDCCDB] px-4 py-2 rounded-md w-[348px] h-[45px] focus:outline-none focus:ring-0"
-              /> <br />
-              <Link href={'/orderchackout'}>
-              <button className="bg-[#424A4D] cursor-pointer text-white px-6 py-2 rounded-md transition hover:bg-gray-700 w-fit">
-                Continue
-              </button>
-              </Link>
-            </div>
-          </div>
+                {/* Billing Info */}
+                <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
+                  <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
+                    Billing Details
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Field
+                      as="select"
+                      name="shipTo"
+                      className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
+                      onChange={(e) => setFieldValue('shipTo', e.target.value)}
+                      value={values.shipTo}
+                    >
+                      <option value="Home">Home</option>
+                      <option value="Office">Office</option>
+                      <option value="Other">Other</option>
+                    </Field>
 
-          {/* Right Column */}
-          <div className="w-full md:w-[350px] border border-[#BDCCDB]  py-10 px-6 shadow-sm  transition-all duration-300 ease-in-out">
-            <h2 className="font-bold text-[16px] text-[#142350] mb-4">PRICE DETAILS</h2>
-            <div className="flex justify-between text-[#767678] text-[16px] mb-2 w-2xs h-11 border-b   border-[#BDCCDB]">
-              <span>Total MRP</span>
-              <span>$200</span>
-            </div>
-            <div className="flex justify-between w-2xs h-11   text-[16px] text-[#767678] font-bold mb-4">
-              <span>Total</span>
-              <span>${basePrice}</span>
-            </div>
-            <a
-              href="#"
-              className="text-[#767678] text-[14px] underline mb-5 mt-4 ml-[60px] font-bold  "
-            >
-              Have a promotion code?
-            </a>
+                    <div>
+                      <Field
+                        name="fullNameBilling"
+                        type="text"
+                        placeholder="Full Name"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="fullNameBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        name="emailBilling"
+                        type="email"
+                        placeholder="Email"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="emailBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        name="phoneBilling"
+                        type="text"
+                        placeholder="Phone Number"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="phoneBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        name="addressBilling"
+                        type="text"
+                        placeholder="Address"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="addressBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        name="cityBilling"
+                        type="text"
+                        placeholder="City"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="cityBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        name="postalBilling"
+                        type="text"
+                        placeholder="Postal Code"
+                        className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                      />
+                      <ErrorMessage name="postalBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div>
+                      <Field
+                        as="select"
+                        name="countryBilling"
+                        className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
+                        onChange={(e) => setFieldValue('countryBilling', e.target.value)}
+                        value={values.countryBilling}
+                      >
+                        <option value="">Select Country</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="India">India</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                      </Field>
+                      <ErrorMessage name="countryBilling" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                  </div>
 
-            <div className="mt-4">
-              <h3 className="font-bold text-[#142350] text-[16px] mb-2">Shipping Method</h3>
-              <div className="space-y-2">
-        <label className="flex items-start gap-2 mt-6">
-                    <input
-                    className=' w-[20px] h-[20px]'
-                    type="radio"
-                    name="packaging"
-                    value="gift"
-                    checked={packaging === "gift"}
-                    onChange={() => setPackaging("gift")}
-                  />
-                  <span className="text-[16px] font-bold text-[#767678]">Free Shipping (10 - 12 days)</span>
-                </label>
-          <label className="flex items-start gap-2 mt-6">
-                    <input
-                    className=' w-[20px] h-[20px]'
-                    type="radio"
-                    name="packaging"
-                    value="gift"
-                    checked={packaging === "gift"}
-                    onChange={() => setPackaging("gift")}
-                  />
-                  <span className=" text-[16px] font-bold text-[#767678]">
-                    Express Shipping + $10 (5 - 6 days)
-                  </span>
-                </label>
+                  <div className="flex items-center gap-2 mt-4">
+                    <Field
+                      type="checkbox"
+                      id="diffAddress"
+                      name="diffAddress"
+                      className="accent-gray-800 focus:outline-none focus:ring-0"
+                      checked={values.diffAddress}
+                      onChange={(e) => {
+                        setFieldValue('diffAddress', e.target.checked);
+                        setShowShipping(e.target.checked);
+                      }}
+                    />
+                    <label htmlFor="diffAddress" className="text-sm font-bold text-[#767678]">
+                      Ship to a Different Address?
+                    </label>
+                  </div>
+
+                  {showShipping && (
+                    <div className="space-y-4 border-t border-[#BDCCDB] pt-4 transition-all duration-300">
+                      <h2 className="font-bold text-lg text-[#141926]">Shipping Details</h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Field
+                            name="fullNameShipping"
+                            type="text"
+                            placeholder="Full Name"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="fullNameShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            name="phoneShipping"
+                            type="text"
+                            placeholder="Phone Number"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="phoneShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            name="addressShipping"
+                            type="text"
+                            placeholder="Address"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="addressShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            name="postalShipping"
+                            type="text"
+                            placeholder="Postal Code"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="postalShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            name="cityShipping"
+                            type="text"
+                            placeholder="City"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="cityShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            name="stateShipping"
+                            type="text"
+                            placeholder="State"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                          />
+                          <ErrorMessage name="stateShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                        <div>
+                          <Field
+                            as="select"
+                            name="countryShipping"
+                            className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
+                            onChange={(e) => setFieldValue('countryShipping', e.target.value)}
+                            value={values.countryShipping}
+                          >
+                            <option value="">Select Country</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="India">India</option>
+                            <option value="USA">USA</option>
+                          </Field>
+                          <ErrorMessage name="countryShipping" component="div" className="text-red-500 text-sm mt-1" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-4">
+                    <Field
+                      name="orderNote"
+                      type="text"
+                      placeholder="Order Note (Optional)"
+                      className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                    />
+                  </div>
+                </div>
+
+            <Link href={'/customer/product-summary-p'}>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !isValid}
+                  className={`bg-[#424A4D] text-white px-6 py-2 rounded-md w-fit cursor-pointer transition hover:bg-gray-700  ${
+                    (isSubmitting || !isValid) && 'opacity-50 cursor-not-allowed'
+                  }`}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Continue'}
+                </button>
+            </Link>
               </div>
-            </div>
 
-            <div className="mt-4 mb-4">
-              <h3 className="font-bold text-[#142350] text-[16px] mb-3 mt-3">Packaging</h3>
-              <div className="space-y-2">
-                <label className="flex items-start gap-2 mt-6">
-                    <input
-                    className='mt-4 w-[20px] h-[20px]'
-                    type="radio"
-                    name="packaging"
-                    value="gift"
-                    checked={packaging === "gift"}
-                    onChange={() => setPackaging("gift")}
-                  />
-                  <span className=" text-[16px] font-bold text-[#767678]">
-                    Default Packaging
-                    <br />
-                    <span className="text-[16px] font-bold text-[#767678]">
-                      Default packaging by store
-                    </span>
-                  </span>
-                </label>
-                <label className="flex items-start gap-2 mt-6">
-                  <input
-                  className='mt-4 w-[20px] h-[20px]'
-                    type="radio"
-                    name="packaging"
-                    value="gift"
-                    checked={packaging === "gift"}
-                    onChange={() => setPackaging("gift")}
-                  />
-                  <span className="text-[16px] font-bold text-[#767678] ">
-                    Gift Packaging + $15
-                    <br />
-                    <span className="text-[16px] font-bold text-[#767678] mt-4">
-                      Exclusive Gift packaging
-                    </span>
-                  </span>
-                </label>
+              {/* Right Column */}
+              <div className="w-full md:w-[350px] border border-[#BDCCDB] py-10 px-6 shadow-sm transition-all duration-300 ease-in-out">
+                <h2 className="font-bold text-lg text-[#142350] mb-4">PRICE DETAILS</h2>
+                <div className="flex justify-between text-[#767678] text-lg mb-2 border-b border-[#BDCCDB] h-11">
+                  <span>Total MRP</span>
+                  <span>$200</span>
+                </div>
+                <div className="flex justify-between text-[#767678] font-bold mb-4 text-lg h-11">
+                  <span>Total</span>
+                  <span>${basePrice}</span>
+                </div>
+
+                <a href="#" className="text-[#767678] text-sm underline mb-5 mt-4 font-bold block text-center">
+                  Have a promotion code?
+                </a>
+
+                <div className="mt-4">
+                  <h3 className="font-bold text-[#142350] text-lg mb-2">Shipping Method</h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="shippingMethod"
+                        value="free"
+                        checked={packaging === 'free'}
+                        onChange={() => setPackaging('free')}
+                        className="w-5 h-5"
+                      />
+                      <span className="text-lg font-bold text-[#767678]">
+                        Free Shipping (10 - 12 days)
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="shippingMethod"
+                        value="express"
+                        checked={packaging === 'express'}
+                        onChange={() => setPackaging('express')}
+                        className="w-5 h-5"
+                      />
+                      <span className="text-lg font-bold text-[#767678]">
+                        Express Shipping + $10 (5 - 6 days)
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-4 mb-4">
+                  <h3 className="font-bold text-[#142350] text-lg mb-3 mt-3">Packaging</h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="packagingType"
+                        value="default"
+                        checked={packagingType === 'default'}
+                        onChange={() => setPackagingType('default')}
+                        className="w-5 h-5"
+                      />
+                      <span className="text-lg font-bold text-[#767678]">
+                        Default Packaging
+                        <br />
+                        <span className="text-sm font-normal">
+                          Default packaging by store
+                        </span>
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="packagingType"
+                        value="gift"
+                        checked={packagingType === 'gift'}
+                        onChange={() => setPackagingType('gift')}
+                        className="w-5 h-5"
+                      />
+                      <span className="text-lg font-bold text-[#767678]">
+                        Gift Packaging + $15
+                        <br />
+                        <span className="text-sm font-normal">
+                          Exclusive Gift packaging
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex justify-between font-semibold mt-6 h-11 border-t border-[#BDCCDB]">
+                  <span className="text-lg font-bold pt-2 text-[#767678]">Final Price :</span>
+                  <span className="text-lg font-bold pt-2 text-[#767678]">${finalPrice}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="flex justify-between font-semibold mt-6 w-2xs h-11 border-t  border-[#BDCCDB] ">
-              <span className=' text-[16px] font-bold pt-2 text-[#767678]'>Final Price :</span>
-              <span className=' text-[16px] font-bold pt-2 text-[#767678]'> ${finalPrice}</span>
+
             </div>
-          </div>
-        </div>
-      </div>
-</div>
-    </>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  </div>
+   </>
   );
-};
-
-export default CustomerCheckout;
+}

@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "title": "Physical Product Title will be here",
     "slug": "physical-product-title-will-be-here",
     "price": 345,
+    "title": "Physical Product Title will be here",
     "oldPrice": null,
     "rating": 4.5,
     "reviews": 10,

@@ -1,9 +1,6 @@
-.icon-pev{
-    color: #fff !important;
+
     
+.swiper-button-prev, .swiper-button-next{
+        color: #fff !important;
+
 }
-.icon-next{
-    color: #fff !important;
-}
-/* @media screen (max-width: 400px) { */
-    

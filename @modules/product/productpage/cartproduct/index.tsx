@@ -442,18 +442,18 @@ export default function CartProduct() {
   return (
     <div className="min-h-screen md:w-[1100px] lg:w-[1100px] px-4 py-6">
       {/* Header */}
-      <div className=" mx-auto md:h-[40px] lg:h-[40px]  p-8 bg-[#f8f8f8] flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+      <div className=" mx-auto md:h-[40px] lg:h-[40px] z-20 p-8 bg-[#f8f8f8] flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
         <h2 className="text-[15px] text-[#141629] font-semibold">Products</h2>
         <div className="flex items-center gap-4">
           <div className="relative">
             <button
-              className="flex items-center gap-1 border  py-1 bg-white h-[40px] shadow  text-[#767678] w-[148px] pl-10 cursor-pointer rounded-full border-none  "
+              className="flex items-center gap-1 border z-20  py-1 bg-white h-[40px] shadow  text-[#767678] w-[148px] pl-10 cursor-pointer rounded-full border-none  "
               onClick={() => setDropdownOpen((o) => !o)}
             >
               {sort} <FaChevronDown className="ml-2" />
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-1 bg-white w-[140px] rounded text-[15px] text-[#767678] shadow z-10">
+              <div className="absolute z-20 right-0 mt-1 bg-white w-[140px] rounded text-[15px] text-[#767678] shadow ">
                 {["latest", "oldest", "high", "low"].map((v) => (
                   <div
                     key={v}
