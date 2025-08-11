@@ -1,7 +1,7 @@
 import Home from "@/@modules/home";
 
 export default async function HomePage() {
-  // Fetch categories
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const resCategories = await fetch("http://api.eyniyl.com/category");
   if (!resCategories.ok) {
     throw new Error("Failed to fetch categories");
@@ -26,12 +26,10 @@ export default async function HomePage() {
   const productsItem = jsonProduct.data;
 
   // Fix banner image URLs
-  const baseUrl = "http://api.eyniyl.com/";
+  // const baseUrl = "http://api.eyniyl.com/";
   bannerItem = bannerItem.map((item: any) => ({
     ...item,
-    image: item.image.startsWith("http")
-      ? item.image
-      : baseUrl + item.image.replace(/^\/+/, ""),
+    image: `${baseUrl}/${item.image}`,
   }));
 
   return (
@@ -39,7 +37,7 @@ export default async function HomePage() {
       <Home
         categoriesItem={categoriesItem}
         bannerItem={bannerItem}
-        productsItem={productsItem} 
+        productsItem={productsItem}
       />
     </div>
   );

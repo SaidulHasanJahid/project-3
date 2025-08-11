@@ -1,14 +1,14 @@
 "use client";
 
-import "./ind.css";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import Link from "next/link";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import Link from "next/link";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./ind.css";
 
 interface Banner {
   id: number | string;
@@ -34,40 +34,43 @@ export default function HeroCarousel({ bannerItem }: HeroCarouselProps) {
         loop
         className="w-full h-full"
       >
-        {bannerItem.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <div className="relative w-full h-full">
-              <Link href={"/productpage"}>
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="100vw"
-                />
-                <div className="absolute inset-0 max-w-7xl mx-auto flex items-center justify-start px-5 sm:px-10 w-full">
-                  <div className="text-[#1B1B1E] max-w-xl md:max-w-3xl lg:max-w-4xl px-4 py-3 w-full md:ml-20">
-                    <h4 className="text-xl md:text-2xl font-semibold mb-2 leading-snug">
-                      {slide.title}
-                    </h4>
-                    <p className="text-4xl md:text-[70px] font-bold mb-4 leading-tight whitespace-nowrap text-[#1B1B1E]">
-                      Get Up to 40% Off
-                    </p>
-                    <p className="text-base md:text-lg font-bold mb-6 max-w-full leading-relaxed">
-                      Furniture must have personality, as well as be beautiful
-                      and make your home Gorgeous
-                    </p>
+        {bannerItem.map((slide) => {
+          console.log(slide);
+          return (
+            <SwiperSlide key={slide.id}>
+              <div className="relative w-full h-full">
+                <Link href={"/productpage"}>
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="100vw"
+                  />
+                  <div className="absolute inset-0 max-w-7xl mx-auto flex items-center justify-start px-5 sm:px-10 w-full">
+                    <div className="text-[#1B1B1E] max-w-xl md:max-w-3xl lg:max-w-4xl px-4 py-3 w-full md:ml-20">
+                      <h4 className="text-xl md:text-2xl font-semibold mb-2 leading-snug">
+                        {slide.title}
+                      </h4>
+                      <p className="text-4xl md:text-[70px] font-bold mb-4 leading-tight whitespace-nowrap text-[#1B1B1E]">
+                        Get Up to 40% Off
+                      </p>
+                      <p className="text-base md:text-lg font-bold mb-6 max-w-full leading-relaxed">
+                        Furniture must have personality, as well as be beautiful
+                        and make your home Gorgeous
+                      </p>
 
-                    <button className="bg-[#424a4d] hover:bg-transparent hover:transition-shadow hover:text-[#1B1B1E] hover:border hover:border-[#1B1B1E] text-white font-bold py-2 px-6 rounded cursor-pointer ">
-                      Shop NOW
-                    </button>
+                      <button className="bg-[#424a4d] hover:bg-transparent hover:transition-shadow hover:text-[#1B1B1E] hover:border hover:border-[#1B1B1E] text-white font-bold py-2 px-6 rounded cursor-pointer ">
+                        Shop NOW
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-          </SwiperSlide>
-        ))}
+                </Link>
+              </div>
+            </SwiperSlide>
+          );
+        })}
 
         {/* Prev Arrow */}
         <div className="swiper-button-prev z-50 absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer text-white">
