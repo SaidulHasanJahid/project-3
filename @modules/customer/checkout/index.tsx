@@ -199,7 +199,7 @@ export default function CheckoutForm() {
                       as="select"
                       name="shipTo"
                       className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                      onChange={(e) => setFieldValue('shipTo', e.target.value)}
+                      onChange={(e:any) => setFieldValue('shipTo', e.target.value)}
                       value={values.shipTo}
                     >
                       <option value="Home">Home</option>
@@ -266,7 +266,7 @@ export default function CheckoutForm() {
                         as="select"
                         name="countryBilling"
                         className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                        onChange={(e) => setFieldValue('countryBilling', e.target.value)}
+                        onChange={(e:any) => setFieldValue('countryBilling', e.target.value)}
                         value={values.countryBilling}
                       >
                         <option value="">Select Country</option>
@@ -286,7 +286,7 @@ export default function CheckoutForm() {
                       name="diffAddress"
                       className="accent-gray-800 focus:outline-none focus:ring-0"
                       checked={values.diffAddress}
-                      onChange={(e) => {
+                      onChange={(e:any) => {
                         setFieldValue('diffAddress', e.target.checked);
                         setShowShipping(e.target.checked);
                       }}
@@ -359,7 +359,7 @@ export default function CheckoutForm() {
                             as="select"
                             name="countryShipping"
                             className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                            onChange={(e) => setFieldValue('countryShipping', e.target.value)}
+                            onChange={(e:any) => setFieldValue('countryShipping', e.target.value)}
                             value={values.countryShipping}
                           >
                             <option value="">Select Country</option>

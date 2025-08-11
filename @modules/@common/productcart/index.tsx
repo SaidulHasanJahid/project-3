@@ -2,9 +2,9 @@
 
 import { FaCartPlus, FaHeart, FaEye, FaBalanceScale } from 'react-icons/fa';
 import Image from 'next/image';
-import { Product } from '../data/products';
+// import { Product } from '../data/products';
 
-export default function ProductCarddrop({ product }: { product: Product }) {
+export default function ProductCarddrop({ product }: { product: any }) {
   return (
     <div className="border rounded shadow-sm hover:shadow-md transition p-3 relative group">
       {product.discount && (

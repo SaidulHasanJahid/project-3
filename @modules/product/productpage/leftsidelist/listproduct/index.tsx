@@ -91,7 +91,7 @@ export default function ProductList() {
           max={MAX}
           values={priceRange}
           onChange={(values) => setPriceRange(values)}
-          renderTrack={({ props, children }) => {
+          renderTrack={({ props, children }:any) => {
             const { key, ...restProps } = props;
             return (
               <div

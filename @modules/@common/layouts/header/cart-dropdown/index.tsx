@@ -4,6 +4,7 @@ import { FaHeart, FaRandom, FaShoppingCart } from "react-icons/fa";
 import { removeFromCart, decreaseQuantity } from "@/appstore/cart/cart-slice";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
+import { number } from "yup";
 
 const CartDropdown = ({
   iconSize = "md",
@@ -29,7 +30,7 @@ const CartDropdown = ({
   );
 
   // Handle remove / decrease
-  const handleRemove = (id: number, quantity: number) => {
+  const handleRemove = (id: any, quantity: number) => {
     console.log("Remove clicked for id:", id, "quantity:", quantity);
     if (quantity > 1) {
       dispatch(decreaseQuantity(id));
