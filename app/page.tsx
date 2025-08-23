@@ -2,7 +2,9 @@ import Home from "@/@modules/home";
 
 export default async function HomePage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const resCategories = await fetch("http://api.eyniyl.com/category");
+
+  // Fetch categories
+  const resCategories = await fetch(`${baseUrl}/category`, { cache: "no-store" });
   if (!resCategories.ok) {
     throw new Error("Failed to fetch categories");
   }
@@ -10,15 +12,23 @@ export default async function HomePage() {
   const categoriesItem = jsonCategories.data;
 
   // Fetch banners
-  const resBanner = await fetch("http://api.eyniyl.com/banner");
+  const resBanner = await fetch(`${baseUrl}/banner`, { cache: "no-store" });
   if (!resBanner.ok) {
     throw new Error("Failed to fetch banner");
   }
   const jsonBanner = await resBanner.json();
   let bannerItem = jsonBanner.data;
 
+  // // Fetch featured products (fatherProduct)
+  // const resFeaturedProducts = await fetch(`${baseUrl}/featuredProducts`, { cache: "no-store" });
+  // if (!resFeaturedProducts.ok) {
+  //   throw new Error("Failed to fetch featured products");
+  // }
+  // const jsonFeaturedProducts = await resFeaturedProducts.json();
+  // const featuredProductsItem = jsonFeaturedProducts.data;
+
   // Fetch products
-  const resProduct = await fetch("http://api.eyniyl.com/products");
+  const resProduct = await fetch(`${baseUrl}/products`, { cache: "no-store" });
   if (!resProduct.ok) {
     throw new Error("Failed to fetch products");
   }
@@ -26,7 +36,6 @@ export default async function HomePage() {
   const productsItem = jsonProduct.data;
 
   // Fix banner image URLs
-  // const baseUrl = "http://api.eyniyl.com/";
   bannerItem = bannerItem.map((item: any) => ({
     ...item,
     image: `${baseUrl}/${item.image}`,
@@ -37,6 +46,7 @@ export default async function HomePage() {
       <Home
         categoriesItem={categoriesItem}
         bannerItem={bannerItem}
+        // featuredProductsItem={featuredProductsItem}
         productsItem={productsItem}
       />
     </div>

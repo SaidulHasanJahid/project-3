@@ -225,3 +225,87 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
 };
 
 export default ProductDetails;
+
+
+// import ProductGallery from "@/@modules/@common/product-gallery";
+// import { ProductType } from "@/types/types";
+// import Link from "next/link";
+// import { FaFlag, FaClock, FaTag, FaHeart, FaExchangeAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaPinterestP, FaWhatsapp } from "react-icons/fa";
+// import products from "@/@mock-data/product.json";
+
+// import CartActions from "@/@modules/@common/buttons/cart-actions";
+// import RelatedProductsSlider from "@/@modules/@components/related-product";
+// import ProductTabSlider from "@/@modules/home/product-details/product-tab";
+
+// // Helper for safe image URL
+// const getImageUrl = (url?: string) => {
+//   if (!url) return "/placeholder.png";
+//   if (url.startsWith("http")) return url;
+//   return `/products/${url}`;
+// };
+
+// const ProductDetails = ({ product }: { product: ProductType }) => {
+//   const galleryImages = product?.gallery_images?.map(getImageUrl) || [];
+
+//   const relatedProducts = products.filter(
+//     (p) => p.category_id === product.category_id && p.slug !== product.slug
+//   );
+
+//   return (
+//     <>
+//       {/* Banner */}
+//       <div
+//         className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
+//         style={{
+//           backgroundImage: `url("${getImageUrl(product?.thumbnail)}")`,
+//         }}
+//       >
+//         <h1 className="text-3xl font-bold">Product Details</h1>
+//         <p className="text-sm mt-1">
+//           <Link href={"/"}>Home</Link> / Product Details
+//         </p>
+//       </div>
+
+//       {/* Product Info */}
+//       <div className="container">
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
+//           <ProductGallery galleryImages={galleryImages} />
+
+//           <div className="w-full bg-white text-[#1c1c1c] font-sans leading-[1.6] text-[14px] lg:col-span-2">
+//             <h2 className="text-[24px] font-bold text-[#141926] mb-3">
+//               {product?.title || "Untitled Product"}
+//             </h2>
+
+//             <div className="flex items-center space-x-2 mb-2 mt-5">
+//               <span className="text-[16px] text-[#767678]">
+//                 {product.price ? `$${product.price}` : "Price not available"}
+//               </span>
+//               {product.oldPrice && (
+//                 <span className="line-through text-[#767678] text-[14px]">
+//                   ${product.oldPrice}
+//                 </span>
+//               )}
+//               {product.discount && (
+//                 <span className="bg-[#424A4D] text-white text-xs px-2 py-1.5 rounded">
+//                   {product.discount}% Off
+//                 </span>
+//               )}
+//             </div>
+
+//             <CartActions product={product} />
+
+//             {/* Social & Warranty/Color */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 leading-6 mt-6">
+//               {/* Warranty and Color options omitted for brevity */}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <ProductTabSlider />
+//       <RelatedProductsSlider relatedProducts={relatedProducts} />
+//     </>
+//   );
+// };
+
+// export default ProductDetails;

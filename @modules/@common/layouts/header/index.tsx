@@ -319,7 +319,7 @@ function DropdownMenu({
     return (
       <div
         className={clsx(
-          "absolute md:left-[-290px] lg:left-[-300px] top-full mt-4 md:w-[900px] lg:w-[1150px] bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
+          "absolute md:left-[-290px] lg:left-[-300px] top-full mt-4 md:w-[900px] lg:w-[1450px] bg-white p-6 grid grid-cols-4 gap-4 shadow-xl rounded-md z-50 transition-all duration-300",
           isOpen
             ? "opacity-100 visible scale-100"
             : "opacity-0 invisible scale-95"

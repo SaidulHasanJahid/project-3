@@ -1,15 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import {
-  FaHeart,
-  FaShoppingCart,
-  FaSmile,
-  FaShoppingBag,
-} from 'react-icons/fa';
+import CartIconActions from "@/@modules/@common/buttons/cart-icon-actions";
+import Image from "next/image";
 
 const products = [
- {
+  {
     id: 5,
     title: "Elegant Summer Hat",
     price: 45,
@@ -59,49 +54,43 @@ const products = [
   },
 ];
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts( ) {
+  
   return (
-    <section className="px-4 py-16 bg-white w-full">
+    <section className=" py-16 bg-white w-full">
       <div className="text-center mb-12">
         <p className="uppercase text-gray-500 text-sm">Featured Products</p>
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Our Featured Products</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+          Our Featured Products
+        </h2>
       </div>
 
       <div className="grid grid-cols-2 mt-9 cursor-pointer  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {products.map((product) => (
           <div
             key={product.id}
-            className="group relative bg-white p-4 rounded-md border border-gray-100 shadow transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.01]"
+            className="group relative bg-white py-4 rounded-md   transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
           >
             {/* Discount Badge */}
             {product.discount && (
-              <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-sm z-10">
+              <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs  py-1 rounded-sm z-10">
                 {product.discount}
               </span>
             )}
 
-            {/* Hover Icons */}
-            <div
-              className="absolute top-10 right-[30px] opacity-0 group-hover:opacity-100 translate-x-5 group-hover:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-3 z-20"
-            >
-              {[FaHeart, FaShoppingCart, FaShoppingBag, FaSmile].map((Icon, index) => (
-                <div
-                  key={index}
-                  className="w-10 h-10 bg-white border border-gray-300 rounded-sm flex items-center justify-center transition-all hover:shadow-md"
-                >
-                  <Icon className="text-black text-[16px]" />
-                </div>
-              ))}
-            </div>
+            <div className="relative overflow-hidden rounded-md group/card">
+              {/* Hover Icons */}
+              <div className="absolute  -translate-y-1/2 right-3 z-20 opacity-0 group-hover/card:opacity-100 translate-x-5 group-hover/card:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-2">
+                <CartIconActions />
+              </div>
 
-            {/* Product Image */}
-            <div className="overflow-hidden rounded-md">
+              {/* Product Image */}
               <Image
                 src={product.image}
                 alt={product.title}
-                width={300}
-                height={300}
-                className="w-full h-[260px] object-contain transition-transform duration-300 group-hover:scale-105"
+                width={450}
+                height={450}
+                className="w-full object-contain transition-transform duration-300 group-hover/card:scale-105"
               />
             </div>
 

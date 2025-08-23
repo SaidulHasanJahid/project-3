@@ -2,24 +2,30 @@ export interface GalleryType {
   image_src: string;
 }
 
-export interface ProductType {
-  id: number;
-  title: string;
-  slug: string;
-  price: number;
-  oldPrice: number | null;
-  rating: number;
-  reviews: number;
-  discount: string | null;
-  category?: string;
-  category_id?: number;
-  image: string;
-  image1?: string;
-  image2?: string;
-  image3?: string;
-  gallery_images?: GalleryType[]; // <-- now optional
-}
 
+export interface ProductType {
+  slug:string | number ;
+  category_id:any;
+  id:any;
+  sku: string;                 
+  name: string;              
+  image?: string;         
+  productGallery?: string[];   
+  price?: number | string;   
+  oldPrice?: number | string;  
+  discount?: number;           
+  size?: string[];             
+  colors?: string[];          
+  stock?: number;              
+  product_type?: string;       
+  rating?: number | string; 
+  reviews?: number;           
+  description?: string;       
+  details?: string;            
+  policy?: string;             
+  tags?: string[];            
+  category?: string;         
+}
 export interface ClassesType {
   root: string;
 }

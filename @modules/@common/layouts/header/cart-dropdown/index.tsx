@@ -74,7 +74,7 @@ const CartDropdown = ({
 
         {/* Dropdown */}
         {open && (
-          <div className="absolute top-10 right-0 w-[260px] bg-white shadow-lg border border-gray-200 rounded-md z-50 p-4">
+          <div className="absolute top-10 right-0 w-[400px]  bg-white shadow-lg border border-gray-200 rounded-md z-50 p-4">
             {cart.length === 0 ? (
               <p className="text-sm text-gray-500">Your cart is empty</p>
             ) : (
@@ -82,27 +82,27 @@ const CartDropdown = ({
                 {cart.map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="flex gap-3 mb-3 items-center"
+                    className="flex gap-3 mb-3 items-center  "
                     // optional: prevent hover from closing dropdown if needed
                     // onMouseEnter={() => setOpen(true)}
                   >
                     <Image
                       src={item.image}
                       alt={item.title}
-                      width={50}
-                      height={50}
-                      className="border"
+                      width={70}
+                      height={70}
+                      className="  "
                     />
                     <div className="flex-1">
-                      <p className="text-sm font-semibold line-clamp-2">
+                      <p className="text-[15px] line-clamp-2 text-[#141629] ml-5">
                         {item.title}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 cursor-pointer mt-3.5 ml-5 ">
                         {item.quantity} × {item.price}$
                       </p>
                     </div>
                     <button
-                      className="text-sm text-gray-400 hover:text-red-500"
+                      className="text-[15px] text-gray-400 hover:text-red-500 cursor-pointer "
                       onClick={(e) => {
                         e.stopPropagation();
                         handleRemove(item.id, item.quantity);
@@ -117,11 +117,11 @@ const CartDropdown = ({
                   <span>Total:</span>
                   <span>{total}$</span>
                 </div>
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-sm py-2 rounded">
+                <div className="flex gap-2 mt-5">
+                  <button className="flex-1 bg-gray-200 hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2  h-[50px] rounded  ">
                     View cart
                   </button>
-                  <button className="flex-1 bg-black text-white hover:bg-gray-800 text-sm py-2 rounded">
+                  <button className="flex-1 bg-[#141926] text-white hover:text-[#141926]  hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2  h-[50px] rounded">
                     Check out
                   </button>
                 </div>

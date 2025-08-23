@@ -9,7 +9,8 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import CartIconActions from "@/@modules/@common/buttons/cart-icon-actions";
-import ProductCard from "@/@modules/@common/cards/product-card";
+import Link from "next/link";
+import Image from "next/image";
 
 // ✅ Your original array
 type Product = {
@@ -331,7 +332,7 @@ const baseProducts: Product[] = [
     discount: "-14%",
     category_id: 3,
     image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1648013533z7DtA7li.jpg",
+      "https://eco.rafiinternational.com/assets/images/thumbnails/1639456386BpfFKqHN.jpg",
     image1: "https://source.unsplash.com/random/400x400?camera",
     image2: "https://source.unsplash.com/random/400x400?camera2",
     image3: "https://source.unsplash.com/random/400x400?camera3",
@@ -362,7 +363,7 @@ const baseProducts: Product[] = [
     discount: "-31%",
     category_id: 3,
     image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1648013550J3ng9oLp.jpg",
+      "https://eco.rafiinternational.com/assets/images/thumbnails/1639392738TGJsX6up.jpg",
     image1: "https://source.unsplash.com/random/400x400?earbuds",
     image2: "https://source.unsplash.com/random/400x400?earbuds2",
     image3: "https://source.unsplash.com/random/400x400?earbuds3",
@@ -393,7 +394,7 @@ const baseProducts: Product[] = [
     discount: "-18%",
     category_id: 3,
     image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1648013570BaPcuSiJ.jpg",
+      "https://eco.rafiinternational.com/assets/images/thumbnails/1639392531mZxqr9sa.jpg",
     image1: "https://source.unsplash.com/random/400x400?watch",
     image2: "https://source.unsplash.com/random/400x400?watch2",
     image3: "https://source.unsplash.com/random/400x400?watch3",
@@ -475,18 +476,63 @@ export default function CartProduct() {
       </div>
 
       {/* Product Grid */}
-      <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {visible.map((p) => (
-          <div
-            key={p.id}
-            className="group relative bg-white h-[350px]  w-[246px] transition overflow-hidden"
-          >
-            <ProductCard product={p} key={p.id} />
-            {/* Hover Icons */}
-            <CartIconActions />
-          </div>
-        ))}
-      </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  {visible.map((p) => (
+    <div
+      key={p.id}
+      className="group relative bg-white h-[350px] w-[246px] transition overflow-hidden  "
+    >
+      {/* Product Image */}
+  <Link href="/productpage" className="block relative cursor-pointer">
+                <div className="bg-white p-4 relative group/card border-none shadow-none">
+                  {/* Discount Badge */}
+                  {p.discount && (
+                    <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-sm z-10">
+                      {p.discount}
+                    </span>
+                  )}
+
+                  {/* Hover Icons */}
+                  <div className="absolute -translate-y-1/2 right-3 z-20 opacity-0 group-hover/card:opacity-100 translate-x-5 group-hover/card:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-2">
+                    <CartIconActions />
+                  </div>
+
+                  {/* Product Image */}
+                  <div className="overflow-hidden rounded-md">
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      width={450}
+                      height={450}
+                      className="w-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+                    />
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="text-center mt-4 space-y-1">
+                    <h3 className="text-sm text-gray-800">{p.title}</h3>
+                    <div className="font-bold text-gray-900 text-md">
+                      {p.price}$
+                      {p.oldPrice && (
+                        <span className="text-gray-500 font-normal line-through text-sm ml-2">
+                          {p.oldPrice}$
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-sm text-yellow-500 flex justify-center items-center gap-1">
+                      <span>★</span>
+                      <span className="text-gray-600">0.0 (0)</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+    </div>
+  ))}
+</div>
+
+
+
+
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-3 mt-8">
