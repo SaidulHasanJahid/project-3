@@ -9,7 +9,7 @@ interface PropsTypes {
   productsItem: ProductType | null;
 }
 
-const ProductCard = ({ classes, productsItem }: PropsTypes) => {
+const ProductCard = ({ classes, productsItem }: any) => {
   if (!productsItem) return null;
 
   // Safe numeric values
@@ -33,7 +33,10 @@ const ProductCard = ({ classes, productsItem }: PropsTypes) => {
         classes?.root ?? ""
       }`}
     >
-      <Link  href={`/products/${productsItem.slug || productsItem.id}`}  className="block">
+      <Link
+        href={`/products/${productsItem.slug || productsItem.id}`}
+        className="block"
+      >
         {/* Discount Badge */}
         {productsItem.discount && (
           <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">

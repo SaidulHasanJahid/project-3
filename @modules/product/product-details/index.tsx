@@ -19,7 +19,7 @@ import {
 import RelatedProductsSlider from "@/@modules/@components/related-product";
 import ProductTabSlider from "@/@modules/home/product-details/product-tab";
 
-const ProductDetails = ({ product }: { product: ProductType }) => {
+const ProductDetails = ({ product }: any) => {
   const { gallery_images } = product || {};
 
   const relatedProducts = products.filter(
@@ -214,7 +214,6 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
                 </div>
               </div>
             </div>
-          
           </div>
         </div>
       </div>
@@ -225,7 +224,6 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
 };
 
 export default ProductDetails;
-
 
 // import ProductGallery from "@/@modules/@common/product-gallery";
 // import { ProductType } from "@/types/types";

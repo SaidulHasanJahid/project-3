@@ -27,7 +27,7 @@ const newTabs = [
 export default function CategoryWiseProducts() {
   const [activeTab, setActiveTab] = useState<number>(1);
 
-  const filtered: ProductType[] =
+  const filtered: any[] =
     !activeTab || activeTab === 1
       ? products
       : products.filter((p) => p.category_id === activeTab);

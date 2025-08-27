@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import ProductTabSlider from "./product-tab";
 
-const ProductDetails = ({ product }: { product: ProductType }) => {
+const ProductDetails = ({ product }: any) => {
   const { gallery_images } = product || {};
 
   console.log("gallery_images", gallery_images);
@@ -209,7 +209,6 @@ const ProductDetails = ({ product }: { product: ProductType }) => {
                   </label>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

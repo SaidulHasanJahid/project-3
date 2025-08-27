@@ -15,7 +15,7 @@ interface PropsType {
   relatedProducts: ProductType[];
 }
 
-export default function RelatedProductsSlider({ relatedProducts }: PropsType) {
+export default function RelatedProductsSlider({ relatedProducts }: any) {
   const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
@@ -56,7 +56,7 @@ export default function RelatedProductsSlider({ relatedProducts }: PropsType) {
           modules={[Navigation, Pagination]}
         >
           {relatedProducts?.length > 0 &&
-            relatedProducts.map((product, index) => (
+            relatedProducts.map((product: any, index: any) => (
               <SwiperSlide key={product.id}>
                 <div
                   className={`group relative p-4 transition-all duration-300 hover:shadow-xl bg-white rounded-md cursor-pointer ${
