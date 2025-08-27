@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       "eco.rafiinternational.com",
+      "backend.shottershondhan.com",
       "unsplash.it",
       "source.unsplash.com",
       "images.unsplash.com",

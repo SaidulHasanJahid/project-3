@@ -19,13 +19,7 @@ export default async function HomePage() {
   const jsonBanner = await resBanner.json();
   let bannerItem = jsonBanner.data;
 
-  // // Fetch featured products (fatherProduct)
-  // const resFeaturedProducts = await fetch(`${baseUrl}/featuredProducts`, { cache: "no-store" });
-  // if (!resFeaturedProducts.ok) {
-  //   throw new Error("Failed to fetch featured products");
-  // }
-  // const jsonFeaturedProducts = await resFeaturedProducts.json();
-  // const featuredProductsItem = jsonFeaturedProducts.data;
+
 
   // Fetch products
   const resProduct = await fetch(`${baseUrl}/products`, { cache: "no-store" });
@@ -46,7 +40,6 @@ export default async function HomePage() {
       <Home
         categoriesItem={categoriesItem}
         bannerItem={bannerItem}
-        // featuredProductsItem={featuredProductsItem}
         productsItem={productsItem}
       />
     </div>

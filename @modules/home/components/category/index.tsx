@@ -1,5 +1,6 @@
 "use client";
 
+import { baseUrl } from "@/utils/url";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,13 +16,14 @@ type Category = {
 };
 
 export default function FirstCard({ categoriesItem }: { categoriesItem: Category[] }) {
+ 
   return (
     <section className="bg-white px-[70px] py-10">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {categoriesItem.length > 0 ? (
           categoriesItem.map((item, index) => {
             const imageUrl = item.image
-              ? `http://api.eyniyl.com/${item.image}`
+              ? `${baseUrl}/${item.image}`
               : "https://placehold.co/400x300?text=No+Image";
 
             return (

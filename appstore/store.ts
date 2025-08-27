@@ -4,7 +4,6 @@ import { apiSlice } from "./api-slice";
 import productSlice from "./products/product-slice";
 import cartSlice from "./cart/cart-slice";
 
-// Define the types for your state
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

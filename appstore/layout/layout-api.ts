@@ -4,7 +4,7 @@ export const layoutApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (build) => ({
     getMenuCategory: build.query<any, void>({
-      query: () => "/category/menu",
+      query: () => "/category/web/menu",
     }),
   }),
 });

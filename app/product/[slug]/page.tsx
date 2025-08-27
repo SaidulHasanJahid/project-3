@@ -35,7 +35,7 @@ export default async function ProductDetailsPage({
   const product = data.find((p: any) => p.slug === slug);
 
   if (!product) {
-    return <div>প্রোডাক্ট পাওয়া যায়নি</div>;
+    return <div>Product Not Found</div>;
   }
 
   return <ProductDetails product={product} />;
