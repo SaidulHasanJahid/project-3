@@ -1,6 +1,6 @@
 import BestMonthOffer from "./components/best-month-offer";
 import Best_Selling_Product from "./components/best-selling-products";
-import FirstCard from "./components/category";
+import CategoryCard from "./components/category";
 import CategoryWiseProducts from "./components/category-wise-products";
 import DealOfTheDay from "./components/deal-of-the-day";
 import FeaturedProducts from "./components/featured-products";
@@ -12,7 +12,7 @@ const Home = ({ categoriesItem, bannerItem, productsItem,   }: any) => {
   return (
     <div>
       <HeroCarousel bannerItem={bannerItem} />
-      <FirstCard categoriesItem={categoriesItem} />
+      <CategoryCard categoriesItem={categoriesItem} />
       <BestMonthOffer />
       <CategoryWiseProducts productsItem={productsItem}/>
       <FeaturedProducts  />

@@ -31,7 +31,6 @@ export default function Header() {
     }
   };
 
-  console.log(menuCategory, "menuCategory");
 
   useEffect(() => {
     function handleResize() {
@@ -69,7 +68,7 @@ export default function Header() {
         <TopBar />
       </div>
 
-      <div className="px-[70px] py-4">
+      <div className="px-[40px] py-4">
         <div className="flex items-center justify-between flex-wrap">
           {windowWidth >= 1464 ? (
             <div className="w-full flex justify-between items-center gap-6">
