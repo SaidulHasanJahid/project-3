@@ -1,63 +1,31 @@
 "use client";
 
-import CartIconActions from "@/@modules/@common/buttons/cart-icon-actions";
 import Image from "next/image";
+import Link from "next/link";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import CartIconActions from "@/@modules/@common/buttons/cart-icon-actions";
+import { useFeatureProductDataQuery } from "@/appstore/feature_product/feature";
+import { baseUrl } from "@/utils/url";
 
-const products = [
-  {
-    id: 5,
-    title: "Elegant Summer Hat",
-    price: 45,
-    oldPrice: 60,
-    rating: 4.6,
-    reviews: 5,
-    discount: "-25%",
-    category: "BEST SELLING",
-    image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1639378035XJWgisPU.jpg",
-  },
-  {
-    id: 6,
-    title: "Stylish Sneakers",
-    price: 120,
-    oldPrice: 150,
-    rating: 4.7,
-    reviews: 18,
-    discount: "-20%",
-    category: "TRENDING",
-    image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1639378156sxEgX2Pk.jpg",
-  },
-  {
-    id: 7,
-    title: "Modern Glasses",
-    price: 80,
-    oldPrice: 110,
-    rating: 4.3,
-    reviews: 9,
-    discount: "-27%",
-    category: "NEW ARRIVAL",
-    image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1639378418BxWim5Uq.jpg",
-  },
-  {
-    id: 8,
-    title: "Stylish Backpack",
-    price: 150,
-    oldPrice: 180,
-    rating: 4.4,
-    reviews: 12,
-    discount: "-16%",
-    category: "BEST SELLING",
-    image:
-      "https://eco.rafiinternational.com/assets/images/thumbnails/1639392364Li5C3bEO.jpg",
-  },
-];
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  old_price?: number;
+  discount?: string;
+  image: string;
+};
 
-export default function FeaturedProducts( ) {
-  
+export default function FeaturedProducts() {
+  const { data: featureProducts} = useFeatureProductDataQuery();
+
+
   return (
-    <section className=" py-16 bg-white w-full">
+    <section className="relative px-4 py-16 bg-white w-full">
       <div className="text-center mb-12">
         <p className="uppercase text-gray-500 text-sm">Featured Products</p>
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
@@ -65,54 +33,92 @@ export default function FeaturedProducts( ) {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 mt-9 cursor-pointer  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="group relative bg-white py-4 rounded-md   transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
-          >
-            {/* Discount Badge */}
-            {product.discount && (
-              <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs  py-1 rounded-sm z-10">
-                {product.discount}
-              </span>
-            )}
-
-            <div className="relative overflow-hidden rounded-md group/card">
-              {/* Hover Icons */}
-              <div className="absolute  -translate-y-1/2 right-3 z-20 opacity-0 group-hover/card:opacity-100 translate-x-5 group-hover/card:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-2">
-                <CartIconActions />
-              </div>
-
-              {/* Product Image */}
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={450}
-                height={450}
-                className="w-full object-contain transition-transform duration-300 group-hover/card:scale-105"
-              />
-            </div>
-
-            {/* Product Info */}
-            <div className="text-center mt-4 space-y-1">
-              <h3 className="text-sm text-gray-800">{product.title}</h3>
-              <div className="font-bold text-gray-900 text-md">
-                {product.price}$
-                {product.oldPrice && (
-                  <span className="text-gray-500 font-normal line-through text-sm ml-2">
-                    {product.oldPrice}$
-                  </span>
-                )}
-              </div>
-              <div className="text-sm text-yellow-500 flex justify-center items-center gap-1">
-                <span>★</span>
-                <span className="text-gray-600">0.0 (0)</span>
-              </div>
-            </div>
+      {featureProducts?.length > 0 && (
+        <div className="relative max-w-7xl mx-auto group">
+          {/* Navigation buttons */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-[-30px] z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              aria-label="Previous"
+              className="featured-swiper-button-prev p-8 w-16 h-16 cursor-pointer bg-black flex items-center justify-center rounded-full shadow-md hover:bg-gray-800 transition"
+            >
+              <AiOutlineLeft size={20} className="text-white" />
+            </button>
           </div>
-        ))}
-      </div>
+
+          <div className="absolute top-1/2 -translate-y-1/2 right-[-30px] z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              aria-label="Next"
+              className="featured-swiper-button-next p-8 w-16 h-16 cursor-pointer bg-black flex items-center justify-center rounded-full shadow-md hover:bg-gray-800 transition"
+            >
+              <AiOutlineRight size={20} className="text-white" />
+            </button>
+          </div>
+
+          <Swiper
+            modules={[Navigation]}
+            slidesPerView={4}
+            spaceBetween={10}
+            slidesPerGroup={1}
+            loop={false}
+            navigation={{
+              prevEl: ".featured-swiper-button-prev",
+              nextEl: ".featured-swiper-button-next",
+            }}
+            speed={500}
+          >
+            {featureProducts.map((product: Product) => (
+              <SwiperSlide key={product.id}>
+                <Link
+                  href={`/product/${product.id}`}
+                  className="block relative cursor-pointer"
+                >
+                  <div className="bg-white p-4 relative group/card border-none shadow-none">
+                    {/* Discount Badge */}
+                    {product.discount && (
+                      <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-sm z-10">
+                        {product.discount}
+                      </span>
+                    )}
+
+                    {/* Hover Icons */}
+                    <div className="absolute -translate-y-1/2 right-3 z-20 opacity-0 group-hover/card:opacity-100 translate-x-5 group-hover/card:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-2">
+                      <CartIconActions />
+                    </div>
+
+                    {/* Product Image */}
+                    <div className="overflow-hidden rounded-md flex justify-center">
+                      <Image
+                        src={`${baseUrl}/${product.image}`}
+                        alt={product.title}
+                        width={400}
+                        height={400}
+                        className="object-cover transition-transform duration-300 group-hover/card:scale-105"
+                      />
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="text-center mt-4 space-y-1">
+                      <h3 className="text-sm text-gray-800">{product.title}</h3>
+                      <div className="font-bold text-gray-900 text-md">
+                        {product.price}$
+                        {product.old_price && (
+                          <span className="text-gray-500 font-normal line-through text-sm ml-2">
+                            {product.old_price}$
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-sm text-yellow-500 flex justify-center items-center gap-1">
+                        <span>★</span>
+                        <span className="text-gray-600">0.0 (0)</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
     </section>
   );
 }

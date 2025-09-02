@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       "eco.rafiinternational.com",
-      "backend.shottershondhan.com",
       "unsplash.it",
       "source.unsplash.com",
       "images.unsplash.com",
@@ -13,7 +12,9 @@ const nextConfig: NextConfig = {
       "via.placeholder.com",
       "picsum.photos",
       "api.eyniyl.com",
+      
       "placehold.co",
+      "api.rafiinternational.com",
     ],
     // Optional: remotePatterns use korte chao
     // remotePatterns: [

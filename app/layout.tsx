@@ -7,6 +7,7 @@ import "./globals.css";
 import "@/styles/main.scss";
 import Header from "@/@modules/@common/layouts/header";
 import { UserProvider } from "@/@modules/context/user-context";
+import NewsletterModal from "@/@modules/modal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,8 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
           <UserProvider>
             <Header />
             {children}
+                <NewsletterModal ttlDays={0} />
+
             <Footer />
           </UserProvider>
         </StateProvider>
