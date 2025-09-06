@@ -63,12 +63,12 @@ export default function Header() {
   const menuItems = ["HOME", "PRODUCT", "PAGES", "BLOG", "FAQ", "CONTACT"];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#fff] font-sans transition-all duration-300">
+    <header className="sticky  top-0 z-50 bg-[#fff] font-sans transition-all duration-300">
       <div className="px-[70px] mx-auto py-3">
         <TopBar />
       </div>
 
-      <div className="px-[40px] py-4">
+      <div className="px-[40px] lg:px-[71px] py-4">
         <div className="flex items-center justify-between flex-wrap">
           {windowWidth >= 1464 ? (
             <div className="w-full flex justify-between items-center gap-6">

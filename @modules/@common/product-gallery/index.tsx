@@ -1,5 +1,6 @@
 "use client";
 import { GalleryType } from "@/types/types";
+import { baseUrl } from "@/utils/url";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Navigation } from "swiper/modules";
@@ -29,11 +30,11 @@ const ProductGallery = ({ galleryImages }: PropsType) => {
           initialSlide={selectedImageIndex} // Ensure the main image corresponds to the selected thumbnail
         >
           {galleryImages?.length > 0 &&
-            galleryImages.map((item, idx) => {
+            galleryImages.map((item:any, idx:any) => {
               return (
                 <SwiperSlide key={idx}>
                   <Image
-                    src={item?.image_src}
+                    src={`${baseUrl}/${item?.image_url}`}
                     alt={`Product Image ${idx}`}
                     width={500}
                     height={500}
@@ -44,10 +45,10 @@ const ProductGallery = ({ galleryImages }: PropsType) => {
             })}
         </Swiper>
         <div className="flex gap-2 mt-4">
-          {galleryImages.map((item, idx) => (
+          {galleryImages.map((item:any, idx:any) => (
             <Image
               key={idx}
-              src={item?.image_src}
+              src={`${baseUrl}/${item?.image_url}`}
               alt={`Thumb ${idx}`}
               width={100}
               height={100}

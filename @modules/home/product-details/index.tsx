@@ -18,9 +18,9 @@ import {
 import ProductTabSlider from "./product-tab";
 
 const ProductDetails = ({ product }: any) => {
-  const { gallery_images } = product || {};
+  console.log("product", product);
+  const { product_gallery } = product || {};
 
-  console.log("gallery_images", gallery_images);
 
   return (
     <>
@@ -44,19 +44,20 @@ const ProductDetails = ({ product }: any) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
           {/* Images */}
           <div className="">
-            <ProductGallery galleryImages={gallery_images || []} />
+            <ProductGallery galleryImages={product_gallery || []} />
           </div>
 
           {/* Info */}
           <div className="w-full bg-white text-[#1c1c1c] font-sans leading-[1.6] text-[14px] lg:col-span-2">
             <p className="text-[#141926] text-[16px] mb-3">
-              <Link href={"/"}> Home</Link> / <Link href={""}> Electronic</Link>{" "}
-              / <Link href={""}>TELEVISION</Link> /{" "}
-              <Link href={""}>LCD TV</Link>
+              <Link href={"/"}> Home</Link> / 
+              <Link href={""}> <span className="ml-1"> {product.category_id.name}</span></Link>{" "}
+             / <Link href={""}>TELEVISION</Link> /
+              <Link href={""}>LCD TV</Link> 
             </p>
 
             <h2 className="text-[24px] font-bold text-[#141926] mb-3">
-              {product.title}
+              {product.name}
             </h2>
 
             <div className="flex items-center space-x-2 text-[#6c757d] mb-2">
@@ -69,17 +70,17 @@ const ProductDetails = ({ product }: any) => {
             </div>
 
             <div className="flex items-center space-x-2 mb-2 mt-5">
-              <span className="text-[16px]  text-[#767678]">315$</span>
+              <span className="text-[16px]  text-[#767678]"> {product.price}$</span>
               <span className="line-through text-[#767678] text-[14px]">
-                545$
+                {product.discount_price}$
               </span>
               <span className="bg-[#424A4D] text-white text-xs px-2 py-1.5 rounded">
-                39% Off
+                {product.discount}% Off
               </span>
             </div>
 
-            <p className="text-[#388E3C] mb-2 font-[13px] mt-3">395 In Stock</p>
-
+            <p className="text-[#388E3C] mb-2 font-[13px] mt-3">{product.stock} In Stock</p>
+          
             <div className="  space-x-4  mb-3 mt-3">
               <div className="flex items-center text-[#767678] text-[16px] space-x-1">
                 <FaClock />
@@ -96,11 +97,10 @@ const ProductDetails = ({ product }: any) => {
                   <span className="text-[#141926] font-medium">
                     Product SKU:{" "}
                   </span>
-                  vrX2915O5c1
+                  {product.sku || "N/A"}
                 </span>
               </div>
             </div>
-
             <CartActions product={product} />
 
             <div className="flex items-center space-x-5 text-[12px] mb-6 text-[#1B1B1E] mt-6">
@@ -209,6 +209,8 @@ const ProductDetails = ({ product }: any) => {
                   </label>
                 </div>
               </div>
+
+              
             </div>
           </div>
         </div>

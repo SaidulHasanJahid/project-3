@@ -1,5 +1,6 @@
 "use client";
 
+import { baseUrl } from "@/utils/url";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
@@ -10,8 +11,6 @@ const CustomerCart = () => {
   const cart = useSelector((state: any) => state?.cart?.items || []);
   const dispatch = useDispatch();
 
-  // Local state to keep track of quantity per product id
-  // Initialize with quantity=1 for each product
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
   // When cart changes, reset quantities for new items with default 1
@@ -97,7 +96,7 @@ const CustomerCart = () => {
                     <td className="p-4 flex items-center gap-4 max-w-[250px]">
                       <div className="min-w-[64px] min-h-[64px]">
                         <img
-                          src={item.image}
+                          src={`${baseUrl}/${item?.thumbnail}`}
                           alt={item.name || "Product"}
                           width={64}
                           height={64}

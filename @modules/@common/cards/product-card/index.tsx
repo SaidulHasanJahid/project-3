@@ -11,6 +11,8 @@ import { baseUrl } from "@/utils/url";
 const ProductCard = ({ classes, productsItem }: any) => {
   if (!productsItem) return null;
 
+  console.log("productsItem in ProductCard:", productsItem);
+
   const price = productsItem.price ? Number(productsItem.price) : null;
   const oldPrice = productsItem.oldPrice ? Number(productsItem.oldPrice) : null;
   const rating = productsItem.rating ? Number(productsItem.rating) : 0;
@@ -38,7 +40,7 @@ const imageSrc = imagePath
         classes?.root ?? ""
       }`}
     >
-      <Link href={`/products/${productsItem.slug || productsItem.id}`} className="block">
+      <Link href={`/product/${productsItem.slug || productsItem.id}`} className="block">
         {/* Discount Badge */}
         {productsItem.discount && Number(productsItem.discount) > 0 && (
           <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">

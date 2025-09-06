@@ -96,13 +96,13 @@ export default function BestMonthOffer() {
           </Swiper>
 
           {/* Navigation */}
-          <div ref={prevRef} className="absolute top-1/2 -translate-y-1/2 left-0 z-50">
-            <button className="p-4 w-14 h-14 bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition-colors duration-300 cursor-pointer">
+          <div ref={prevRef} className="absolute z-20  top-1/2 -translate-y-1/2 left-0 z-50">
+            <button className="p-4 w-14 h-14 z-20 bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition-colors duration-300 cursor-pointer">
               <AiOutlineLeft size={24} className="text-white" />
             </button>
           </div>
-          <div ref={nextRef} className="absolute top-1/2 -translate-y-1/2 right-0 z-50">
-            <button className="p-4 w-14 h-14 bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition-colors duration-300 cursor-pointer">
+          <div ref={nextRef} className="absolute top-1/2 z-20  -translate-y-1/2 right-0 z-50">
+            <button className="p-4 w-14 h-14 bg-[#767678] z-20 flex items-center justify-center rounded-full shadow-md hover:bg-black transition-colors duration-300 cursor-pointer">
               <AiOutlineRight size={24} className="text-white" />
             </button>
           </div>

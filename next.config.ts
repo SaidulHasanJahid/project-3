@@ -1,10 +1,11 @@
-/** @type {import('next').NextConfig} */
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
     domains: [
-      "eco.rafiinternational.com",
+      "eco.rafiinternational.com", 
+      "api.rafiinternational.com",
+      "api.shottershondhan.com",
       "unsplash.it",
       "source.unsplash.com",
       "images.unsplash.com",
@@ -12,17 +13,8 @@ const nextConfig: NextConfig = {
       "via.placeholder.com",
       "picsum.photos",
       "api.eyniyl.com",
-      
       "placehold.co",
-      "api.rafiinternational.com",
     ],
-    // Optional: remotePatterns use korte chao
-    // remotePatterns: [
-    //   {
-    //     protocol: 'https',
-    //     hostname: 'api.eyniyl.com',
-    //   },
-    // ],
   },
 };
 

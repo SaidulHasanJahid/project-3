@@ -5,6 +5,7 @@ import { removeFromCart, decreaseQuantity } from "@/appstore/cart/cart-slice";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { number } from "yup";
+import { baseUrl } from "@/utils/url";
 
 const CartDropdown = ({
   iconSize = "md",
@@ -86,13 +87,13 @@ const CartDropdown = ({
                     // optional: prevent hover from closing dropdown if needed
                     // onMouseEnter={() => setOpen(true)}
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      width={70}
-                      height={70}
-                      className="  "
-                    />
+<Image
+  src={`${baseUrl}/${item?.thumbnail}`}
+  alt={item.naem}
+  width={70}
+  height={70}
+/>
+
                     <div className="flex-1">
                       <p className="text-[15px] line-clamp-2 text-[#141629] ml-5">
                         {item.title}

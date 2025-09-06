@@ -1,18 +1,29 @@
-import ProductDetails from "@/@modules/product/product-details";
+import ProductDetails from "@/@modules/home/product-details"
 
-export default async function ProductDetailsPage({ params }: any) {
-  const { slug } = params;
+// app/[slug]/page.tsx
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+    const { slug } = await params
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/web/products/${slug}`, {
     cache: "no-store",
-  });
-  const data = await res.json();
-
-  const product = data.find((p: any) => p.slug === slug);
-
-  if (!product) {
-    return <div>Product Not Found</div>;
+  })
+  if (!res.ok) {
+    return <div>product not found</div>
   }
 
-  return <ProductDetails product={product} />;
+  const productData = await res.json()
+  const product = productData.data;
+  
+
+  return (
+    
+    <div>
+     <ProductDetails product={product} />
+     
+    </div>
+  )
 }
