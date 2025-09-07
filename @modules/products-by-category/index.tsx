@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import ListContent from './leftsidelist';
-import CartProduct from './cartproduct';
-import Link from 'next/link';
-import { FaBars } from 'react-icons/fa';
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
+import ProductList from "./components/listproduct";
+import ProductArea from "./components/product-area";
+import ProductSlider from "./components/product-slider";
 
-const ProductAllContent = () => {
+const ProductByCategory = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -15,8 +16,8 @@ const ProductAllContent = () => {
       setIsMobile(window.innerWidth < 1300);
     };
     checkScreen();
-    window.addEventListener('resize', checkScreen);
-    return () => window.removeEventListener('resize', checkScreen);
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
   return (
@@ -33,7 +34,7 @@ const ProductAllContent = () => {
         <p className="text-sm mt-1">
           <Link href="/">
             <span className="text-[16px]">Home</span>
-          </Link>{' '}
+          </Link>{" "}
           / Product
         </p>
       </div>
@@ -55,13 +56,14 @@ const ProductAllContent = () => {
           {/* Sidebar (only visible on large screens) */}
           {!isMobile && (
             <div className="col-span-1">
-              <ListContent />
+              <ProductList />
+              <ProductSlider />
             </div>
           )}
 
           {/* Main Product Grid */}
-          <div className={`w-full ${isMobile ? 'col-span-1' : 'col-span-2'}`}>
-            <CartProduct />
+          <div className={`w-full ${isMobile ? "col-span-1" : "col-span-3"}`}>
+            <ProductArea />
           </div>
         </div>
       </div>
@@ -76,17 +78,17 @@ const ProductAllContent = () => {
             >
               ✕
             </button>
-            <ListContent />
+            <div>
+              <ProductList />
+              <ProductSlider />
+            </div>
           </div>
           {/* Clicking outside closes drawer */}
-          <div
-            className="flex-1"
-            onClick={() => setDrawerOpen(false)}
-          ></div>
+          <div className="flex-1" onClick={() => setDrawerOpen(false)}></div>
         </div>
       )}
     </>
   );
 };
 
-export default ProductAllContent;
+export default ProductByCategory;

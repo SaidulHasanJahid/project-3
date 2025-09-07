@@ -1,17 +1,13 @@
 "use client";
 
+import { baseUrl } from "@/utils/url";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import CartIconActions from "../../buttons/cart-icon-actions";
-import { baseUrl } from "@/utils/url";
-
-
 
 const ProductCard = ({ classes, productsItem }: any) => {
   if (!productsItem) return null;
-
-  console.log("productsItem in ProductCard:", productsItem);
 
   const price = productsItem.price ? Number(productsItem.price) : null;
   const oldPrice = productsItem.oldPrice ? Number(productsItem.oldPrice) : null;
@@ -25,12 +21,11 @@ const ProductCard = ({ classes, productsItem }: any) => {
       : productsItem.product_gallery?.[0]?.image_url || "";
 
   // Safe baseUrl usage
-const imageSrc = imagePath
-  ? imagePath.startsWith("http")
-    ? imagePath
-    : `${baseUrl || ""}/${imagePath}`
+  const imageSrc = imagePath
+    ? imagePath.startsWith("http")
+      ? imagePath
+      : `${baseUrl || ""}/${imagePath}`
     : "https://via.placeholder.com/300";
-
 
   const imageAlt = productsItem.name || "Product Image";
 
@@ -40,7 +35,10 @@ const imageSrc = imagePath
         classes?.root ?? ""
       }`}
     >
-      <Link href={`/product/${productsItem.slug || productsItem.id}`} className="block">
+      <Link
+        href={`/products/${productsItem.slug || productsItem.id}`}
+        className="block"
+      >
         {/* Discount Badge */}
         {productsItem.discount && Number(productsItem.discount) > 0 && (
           <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">
@@ -70,7 +68,9 @@ const imageSrc = imagePath
             {price !== null ? `$${price.toFixed(2)}` : "Price not available"}
           </span>
           {oldPrice !== null && (
-            <span className="line-through text-gray-400">${oldPrice.toFixed(2)}</span>
+            <span className="line-through text-gray-400">
+              ${oldPrice.toFixed(2)}
+            </span>
           )}
         </div>
 

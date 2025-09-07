@@ -3,7 +3,6 @@ import { apiSlice } from "@/appstore/api-slice";
 export const homeApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (build) => ({
-    
     getBestMonthData: build.query<any, void>({
       query: () => "/category/web/best-month",
     }),
@@ -19,16 +18,16 @@ export const homeApi = apiSlice.injectEndpoints({
     catelogueWiseProducts: build.query<any, void>({
       query: () => "/web/catalogue-with-products",
     }),
-   
- 
+    featureCategory: build.query<any, void>({
+      query: () => "/category/web/featured",
+    }),
   }),
-
 });
 
-
-export const { 
-  useGetBestMonthDataQuery, 
-  useGetBestSellingProductsQuery, 
-  useFeatureProductDataQuery, 
+export const {
+  useGetBestMonthDataQuery,
+  useGetBestSellingProductsQuery,
+  useFeatureProductDataQuery,
   useCatelogueWiseProductsQuery,
+  useFeatureCategoryQuery,
 } = homeApi;

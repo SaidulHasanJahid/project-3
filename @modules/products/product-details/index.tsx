@@ -2,7 +2,6 @@ import ProductGallery from "@/@modules/@common/product-gallery";
 import { ProductType } from "@/types/types";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
-import products from "@/@mock-data/product.json";
 
 import CartActions from "@/@modules/@common/buttons/cart-actions";
 import {
@@ -16,16 +15,11 @@ import {
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
-import RelatedProductsSlider from "@/@modules/@components/related-product";
-import ProductTabSlider from "@/@modules/home/product-details/product-tab";
+import ProductTabSlider from "./product-tab";
 
 const ProductDetails = ({ product }: any) => {
-  const { gallery_images } = product || {};
+  const { product_gallery } = product || {};
 
-  const relatedProducts = products.filter(
-    (p) => p.category_id === product.category_id
-  );
-  console.log(relatedProducts, "relatedProducts");
   return (
     <>
       <div
@@ -48,19 +42,22 @@ const ProductDetails = ({ product }: any) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
           {/* Images */}
           <div className="">
-            <ProductGallery galleryImages={gallery_images || []} />
+            <ProductGallery galleryImages={product_gallery || []} />
           </div>
 
           {/* Info */}
           <div className="w-full bg-white text-[#1c1c1c] font-sans leading-[1.6] text-[14px] lg:col-span-2">
             <p className="text-[#141926] text-[16px] mb-3">
-              <Link href={"/"}> Home</Link> / <Link href={""}> Electronic</Link>{" "}
-              / <Link href={""}>TELEVISION</Link> /{" "}
-              <Link href={""}>LCD TV</Link>
+              <Link href={"/"}> Home</Link> /
+              <Link href={""}>
+                {" "}
+                <span className="ml-1"> {product.category_id.name}</span>
+              </Link>{" "}
+              / <Link href={""}>TELEVISION</Link> /<Link href={""}>LCD TV</Link>
             </p>
 
             <h2 className="text-[24px] font-bold text-[#141926] mb-3">
-              {product.title}
+              {product.name}
             </h2>
 
             <div className="flex items-center space-x-2 text-[#6c757d] mb-2">
@@ -73,16 +70,21 @@ const ProductDetails = ({ product }: any) => {
             </div>
 
             <div className="flex items-center space-x-2 mb-2 mt-5">
-              <span className="text-[16px]  text-[#767678]">315$</span>
+              <span className="text-[16px]  text-[#767678]">
+                {" "}
+                {product.price}$
+              </span>
               <span className="line-through text-[#767678] text-[14px]">
-                545$
+                {product.discount_price}$
               </span>
               <span className="bg-[#424A4D] text-white text-xs px-2 py-1.5 rounded">
-                39% Off
+                {product.discount}% Off
               </span>
             </div>
 
-            <p className="text-[#388E3C] mb-2 font-[13px] mt-3">395 In Stock</p>
+            <p className="text-[#388E3C] mb-2 font-[13px] mt-3">
+              {product.stock} In Stock
+            </p>
 
             <div className="  space-x-4  mb-3 mt-3">
               <div className="flex items-center text-[#767678] text-[16px] space-x-1">
@@ -100,11 +102,10 @@ const ProductDetails = ({ product }: any) => {
                   <span className="text-[#141926] font-medium">
                     Product SKU:{" "}
                   </span>
-                  vrX2915O5c1
+                  {product.sku || "N/A"}
                 </span>
               </div>
             </div>
-
             <CartActions product={product} />
 
             <div className="flex items-center space-x-5 text-[12px] mb-6 text-[#1B1B1E] mt-6">
@@ -217,93 +218,10 @@ const ProductDetails = ({ product }: any) => {
           </div>
         </div>
       </div>
+
       <ProductTabSlider />
-      <RelatedProductsSlider relatedProducts={relatedProducts} />
     </>
   );
 };
 
 export default ProductDetails;
-
-// import ProductGallery from "@/@modules/@common/product-gallery";
-// import { ProductType } from "@/types/types";
-// import Link from "next/link";
-// import { FaFlag, FaClock, FaTag, FaHeart, FaExchangeAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaPinterestP, FaWhatsapp } from "react-icons/fa";
-// import products from "@/@mock-data/product.json";
-
-// import CartActions from "@/@modules/@common/buttons/cart-actions";
-// import RelatedProductsSlider from "@/@modules/@components/related-product";
-// import ProductTabSlider from "@/@modules/home/product-details/product-tab";
-
-// // Helper for safe image URL
-// const getImageUrl = (url?: string) => {
-//   if (!url) return "/placeholder.png";
-//   if (url.startsWith("http")) return url;
-//   return `/products/${url}`;
-// };
-
-// const ProductDetails = ({ product }: { product: ProductType }) => {
-//   const galleryImages = product?.gallery_images?.map(getImageUrl) || [];
-
-//   const relatedProducts = products.filter(
-//     (p) => p.category_id === product.category_id && p.slug !== product.slug
-//   );
-
-//   return (
-//     <>
-//       {/* Banner */}
-//       <div
-//         className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
-//         style={{
-//           backgroundImage: `url("${getImageUrl(product?.thumbnail)}")`,
-//         }}
-//       >
-//         <h1 className="text-3xl font-bold">Product Details</h1>
-//         <p className="text-sm mt-1">
-//           <Link href={"/"}>Home</Link> / Product Details
-//         </p>
-//       </div>
-
-//       {/* Product Info */}
-//       <div className="container">
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
-//           <ProductGallery galleryImages={galleryImages} />
-
-//           <div className="w-full bg-white text-[#1c1c1c] font-sans leading-[1.6] text-[14px] lg:col-span-2">
-//             <h2 className="text-[24px] font-bold text-[#141926] mb-3">
-//               {product?.title || "Untitled Product"}
-//             </h2>
-
-//             <div className="flex items-center space-x-2 mb-2 mt-5">
-//               <span className="text-[16px] text-[#767678]">
-//                 {product.price ? `$${product.price}` : "Price not available"}
-//               </span>
-//               {product.oldPrice && (
-//                 <span className="line-through text-[#767678] text-[14px]">
-//                   ${product.oldPrice}
-//                 </span>
-//               )}
-//               {product.discount && (
-//                 <span className="bg-[#424A4D] text-white text-xs px-2 py-1.5 rounded">
-//                   {product.discount}% Off
-//                 </span>
-//               )}
-//             </div>
-
-//             <CartActions product={product} />
-
-//             {/* Social & Warranty/Color */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 leading-6 mt-6">
-//               {/* Warranty and Color options omitted for brevity */}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <ProductTabSlider />
-//       <RelatedProductsSlider relatedProducts={relatedProducts} />
-//     </>
-//   );
-// };
-
-// export default ProductDetails;

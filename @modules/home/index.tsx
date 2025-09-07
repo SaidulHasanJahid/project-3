@@ -8,14 +8,14 @@ import InfoBanner from "./components/InfoBanner";
 import LatestPost from "./components/latest-post";
 import HeroCarousel from "./components/slider";
 
-const Home = ({ categoriesItem, bannerItem, productsItem,   }: any) => {
+const Home = ({ bannerItem }: any) => {
   return (
     <div>
       <HeroCarousel bannerItem={bannerItem} />
-      <CategoryCard categoriesItem={categoriesItem} />
+      <CategoryCard />
       <BestMonthOffer />
       <ProductTabs />
-      <FeaturedProducts  />
+      <FeaturedProducts />
       <InfoBanner />
       <DealOfTheDay />
       <Best_Selling_Product />

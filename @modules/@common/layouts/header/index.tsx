@@ -1,16 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useLazyGetMenuCategoryQuery } from "@/appstore/layout/layout-api";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
-const CartDropdown = dynamic(() => import("./cart-dropdown"), { ssr: false });
+import MenuCategories from "./components/menu-categories";
 import RightDrawer from "./right-drawer";
 import TopBar from "./top-bar";
-import { useLazyGetMenuCategoryQuery } from "@/appstore/layout/layout-api";
-import MenuCategories from "./components/menu-categories";
+const CartDropdown = dynamic(() => import("./cart-dropdown"), { ssr: false });
 
 export default function Header() {
   const [showProductDropdown, setShowProductDropdown] = useState(false);
@@ -25,12 +25,12 @@ export default function Header() {
   const fetchMenus = async () => {
     try {
       const response = await menuTrigger().unwrap();
+      console.log("response", response);
       setMenuCategory(response);
     } catch (error) {
       console.error("Error fetching banners:", error);
     }
   };
-
 
   useEffect(() => {
     function handleResize() {
@@ -113,7 +113,6 @@ export default function Header() {
                           type="product"
                           menuCategory={menuCategory}
                         />
-
                       )}
                       {isPages && (
                         <DropdownMenu isOpen={showPagesDropdown} type="pages" />

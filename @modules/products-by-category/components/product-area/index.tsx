@@ -1,16 +1,10 @@
 "use client";
 
+import ProductCard from "@/@modules/@common/cards/product-card";
+import { useGetProductByCategoryQuery } from "@/appstore/products/api";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import {
-
-  FaChevronDown,
- 
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
-import CartIconActions from "@/@modules/@common/buttons/cart-icon-actions";
-import Link from "next/link";
-import Image from "next/image";
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 // ✅ Your original array
 type Product = {
@@ -415,10 +409,22 @@ const baseProducts: Product[] = [
   },
 ];
 
-export default function CartProduct() {
+export default function ProductArea() {
   const [sort, setSort] = useState("latest");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const params = useParams();
+
+  const { slug } = params;
+  const { data: productsData, isFetching } = useGetProductByCategoryQuery(
+    slug,
+    {
+      skip: !slug,
+    }
+  );
+
+  const products = productsData?.data || [];
 
   const itemsPerPage = 12;
 
@@ -432,9 +438,6 @@ export default function CartProduct() {
 
   const totalPages = Math.ceil(sorted.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
-  const visible = sorted.slice(start, start + itemsPerPage);
-
-
 
   const goPage = (p: number) => {
     if (p >= 1 && p <= totalPages) setCurrentPage(p);
@@ -471,68 +474,19 @@ export default function CartProduct() {
               </div>
             )}
           </div>
-
         </div>
       </div>
 
       {/* Product Grid */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {visible.map((p) => (
-    <div
-      key={p.id}
-      className="group relative bg-white h-[350px] w-[246px] transition overflow-hidden  "
-    >
-      {/* Product Image */}
-  <Link href="/productpage" className="block relative cursor-pointer">
-                <div className="bg-white p-4 relative group/card border-none shadow-none">
-                  {/* Discount Badge */}
-                  {p.discount && (
-                    <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-sm z-10">
-                      {p.discount}
-                    </span>
-                  )}
-
-                  {/* Hover Icons */}
-                  <div className="absolute -translate-y-1/2 right-3 z-20 opacity-0 group-hover/card:opacity-100 translate-x-5 group-hover/card:translate-x-0 transition-all duration-500 ease-in-out flex flex-col gap-2">
-                    <CartIconActions />
-                  </div>
-
-                  {/* Product Image */}
-                  <div className="overflow-hidden rounded-md">
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      width={450}
-                      height={450}
-                      className="w-full object-cover transition-transform duration-300 group-hover/card:scale-105"
-                    />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="text-center mt-4 space-y-1">
-                    <h3 className="text-sm text-gray-800">{p.title}</h3>
-                    <div className="font-bold text-gray-900 text-md">
-                      {p.price}$
-                      {p.oldPrice && (
-                        <span className="text-gray-500 font-normal line-through text-sm ml-2">
-                          {p.oldPrice}$
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-sm text-yellow-500 flex justify-center items-center gap-1">
-                      <span>★</span>
-                      <span className="text-gray-600">0.0 (0)</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-    </div>
-  ))}
-</div>
-
-
-
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products?.map((product: any) => {
+          return (
+            <div className="" key={product.id}>
+              <ProductCard key={product.id} productsItem={product} />
+            </div>
+          );
+        })}
+      </div>
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-3 mt-8">

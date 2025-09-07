@@ -1,5 +1,5 @@
-import ProductAllContent from '@/@modules/product/productpage';
-import React from 'react';
+import ProductAllContent from "@/@modules/products-by-category";
+import React from "react";
 
 const ProductPage = () => {
   return (
