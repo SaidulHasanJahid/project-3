@@ -7,18 +7,19 @@ const CartActions = ({ product }: { product: any }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => state.cart);
   const cartItem = cart.items.find((item: any) => item.id === product.id);
-  console.log(cart);
-  const cartPayload = {
+
+  const cartPayload: any = {
     id: product.id,
-    title: product.title,
+    name: product.name,
     slug: product.slug,
     price: product.price,
-    oldPrice: product.oldPrice,
-    category: product.category,
-    image: product.image,
+    discount_price: product.discount_price,
+    category_id: product.category_id,
+    thumbnail: product.thumbnail,
     quantity: 1,
   };
 
+  console.log("cart", cart);
 
   return (
     <div className="flex items-center space-x-2 my-4 mt-4">
@@ -49,7 +50,7 @@ const CartActions = ({ product }: { product: any }) => {
         Add to Cart
       </button>
       <button className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full	 mt-3 text-[14px] w-[118px] h-[30px] cursor-pointer hover:bg-[#23272b] transition-all">
-        <Link href={'/customer/cart'} >Buy Now</Link>
+        <Link href={"/customer/cart"}>Buy Now</Link>
       </button>
     </div>
   );

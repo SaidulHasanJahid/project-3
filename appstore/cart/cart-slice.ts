@@ -5,12 +5,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const isBrowser = typeof window !== "undefined";
 interface PayloadType {
   id: number;
-  title: string;
+  name: string;
   slug: string;
   price: number;
-  oldPrice: number | null;
-  category: string;
-  image: string;
+  discount_price: number | any;
+  category_id: string;
+  thumbnail: string;
   quantity: number; // Added for managing quantity in cart
 }
 

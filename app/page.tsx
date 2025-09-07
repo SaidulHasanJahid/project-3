@@ -4,7 +4,9 @@ export default async function HomePage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // Fetch categories
-  const resCategories = await fetch(`${baseUrl}/category`, { cache: "no-store" });
+  const resCategories = await fetch(`${baseUrl}/category`, {
+    cache: "no-store",
+  });
   if (!resCategories.ok) {
     throw new Error("Failed to fetch categories");
   }
@@ -18,8 +20,6 @@ export default async function HomePage() {
   }
   const jsonBanner = await resBanner.json();
   let bannerItem = jsonBanner.data;
-
-
 
   // Fetch products
   const resProduct = await fetch(`${baseUrl}/products`, { cache: "no-store" });
@@ -45,4 +45,3 @@ export default async function HomePage() {
     </div>
   );
 }
-
