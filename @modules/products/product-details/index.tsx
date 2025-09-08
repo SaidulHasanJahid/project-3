@@ -219,7 +219,7 @@ const ProductDetails = ({ product }: any) => {
         </div>
       </div>
 
-      <ProductTabSlider />
+      <ProductTabSlider product={product} />
     </>
   );
 };

@@ -22,7 +22,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
           <UserProvider>
             <Header />
             {children}
-                <NewsletterModal ttlDays={0} />
+                <NewsletterModal ttlDays={1} />
 
             <Footer />
           </UserProvider>

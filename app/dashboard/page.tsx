@@ -1,4 +1,4 @@
-import DashbordPage from '@/@modules/dashbordpages';
+import DashbordPage from '@/@modules/dashbord-pages';
 import React from 'react';
 
 const DashBord = () => {

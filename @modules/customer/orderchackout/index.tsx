@@ -1,21 +1,44 @@
 "use client";
 
 import Link from "next/link";
-import {
-  FaUser,
-  FaMapMarkerAlt,
-  FaPhone,
-  FaEnvelope,
-  FaShoppingCart,
-  FaCreditCard,
-} from "react-icons/fa";
-import ProDuctDetileToChackOut from "../product-deatile-chackout";
+import { FaUser, FaShoppingCart, FaCreditCard } from "react-icons/fa";
 
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import PriceDetails from "@/@modules/@common/price-deatile";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const OrderChackOutPage = () => {
+  // Redux থেকে cart data
+  const cart = useSelector((state: any) => state?.cart?.items || []);
+
+  // Quantity state
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+
+  useEffect(() => {
+    const qtys: { [key: string]: number } = {};
+    cart.forEach((item: any) => {
+      qtys[item.id] = quantities[item.id] || 1;
+    });
+    setQuantities(qtys);
+  }, [cart]);
+
+  // Packaging / shipping state
+  const [packaging, setPackaging] = useState("free");
+  const [packagingType, setPackagingType] = useState("default");
+
+  // Price calculations
+  const cartTotal = cart.reduce((acc: number, item: any) => {
+    const qty = quantities[item.id] || 1;
+    return acc + Number(item.price) * qty;
+  }, 0);
+
+  const shippingCost = packaging === "express" ? 10 : 0;
+  const packagingCost = packagingType === "gift" ? 15 : 0;
+  const finalPrice = cartTotal + shippingCost + packagingCost;
+
   const router = useRouter();
   const borderStyle =
     "mt-1 block w-full border border-[#BDCCDB] outline-none rounded-md p-2";
@@ -76,14 +99,18 @@ const OrderChackOutPage = () => {
     }
 
     if (values.payment === "Authorize.Net") {
-      baseSchema.authCardNumber = Yup.string().required("Card number is required");
+      baseSchema.authCardNumber = Yup.string().required(
+        "Card number is required"
+      );
       baseSchema.authCardCode = Yup.string().required("Card code is required");
       baseSchema.authMonth = Yup.string().required("Month is required");
       baseSchema.authYear = Yup.string().required("Year is required");
     }
 
     if (values.payment === "Stripe") {
-      baseSchema.stripeCardNumber = Yup.string().required("Card number is required");
+      baseSchema.stripeCardNumber = Yup.string().required(
+        "Card number is required"
+      );
       baseSchema.stripeCW = Yup.string().required("CW is required");
       baseSchema.stripeMonth = Yup.string().required("Month is required");
       baseSchema.stripeYear = Yup.string().required("Year is required");
@@ -183,12 +210,27 @@ const OrderChackOutPage = () => {
                             desc: "Pay with cash upon delivery.",
                           },
                           { value: "Mobile Money", desc: "(5 - 6 days)" },
-                          { value: "Flutter Wave", desc: "Pay via your Flutter Wave account." },
+                          {
+                            value: "Flutter Wave",
+                            desc: "Pay via your Flutter Wave account.",
+                          },
                           { value: "Mercadopago", desc: "Pay Via MercadoPago" },
-                          { value: "Authorize.Net", desc: "Pay Via Authorize.Net" },
-                          { value: "Mollie Payment", desc: "Pay with Mollie Payment." },
-                          { value: "Stripe", desc: "Pay via your Credit Card." },
-                          { value: "Paypal", desc: "Pay via your PayPal account." },
+                          {
+                            value: "Authorize.Net",
+                            desc: "Pay Via Authorize.Net",
+                          },
+                          {
+                            value: "Mollie Payment",
+                            desc: "Pay with Mollie Payment.",
+                          },
+                          {
+                            value: "Stripe",
+                            desc: "Pay via your Credit Card.",
+                          },
+                          {
+                            value: "Paypal",
+                            desc: "Pay via your PayPal account.",
+                          },
                         ].map((method, idx) => (
                           <div key={method.value}>
                             <label className="flex items-start gap-2 cursor-pointer">
@@ -317,9 +359,13 @@ const OrderChackOutPage = () => {
                                         className={borderStyle}
                                       >
                                         <option value="">DNI</option>
-                                        <option value="passport">Passport</option>
+                                        <option value="passport">
+                                          Passport
+                                        </option>
                                         <option value="idcard">ID Card</option>
-                                        <option value="driver">Driver License</option>
+                                        <option value="driver">
+                                          Driver License
+                                        </option>
                                       </Field>
                                       <ErrorMessage
                                         name="dniType"
@@ -478,7 +524,17 @@ const OrderChackOutPage = () => {
             </div>
           </div>
 
-          <ProDuctDetileToChackOut />
+          <PriceDetails
+            cartTotal={cartTotal}
+            shippingCost={shippingCost}
+            packagingCost={packagingCost}
+            finalPrice={finalPrice}
+            showShippingOptions={true}
+            packaging={packaging}
+            setPackaging={setPackaging}
+            packagingType={packagingType}
+            setPackagingType={setPackagingType}
+          />
         </div>
       </div>
     </div>
@@ -486,6 +542,3 @@ const OrderChackOutPage = () => {
 };
 
 export default OrderChackOutPage;
-
-
-

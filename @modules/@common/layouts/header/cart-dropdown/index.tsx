@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { number } from "yup";
 import { baseUrl } from "@/utils/url";
+import Link from "next/link";
 
 const CartDropdown = ({
   iconSize = "md",
@@ -81,22 +82,17 @@ const CartDropdown = ({
             ) : (
               <>
                 {cart.map((item: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="flex gap-3 mb-3 items-center  "
-                    // optional: prevent hover from closing dropdown if needed
-                    // onMouseEnter={() => setOpen(true)}
-                  >
-<Image
-  src={`${baseUrl}/${item?.thumbnail}`}
-  alt={item.naem}
-  width={70}
-  height={70}
-/>
+                  <div key={idx} className="flex gap-3 mb-3 items-center  ">
+                    <Image
+                      src={`${baseUrl}/${item?.thumbnail}`}
+                      alt={item.naem}
+                      width={70}
+                      height={70}
+                    />
 
                     <div className="flex-1">
                       <p className="text-[15px] line-clamp-2 text-[#141629] ml-5">
-                        {item.title}
+                        {item.name}
                       </p>
                       <p className="text-xs text-gray-500 cursor-pointer mt-3.5 ml-5 ">
                         {item.quantity} × {item.price}$
@@ -118,13 +114,17 @@ const CartDropdown = ({
                   <span>Total:</span>
                   <span>{total}$</span>
                 </div>
-                <div className="flex gap-2 mt-5">
-                  <button className="flex-1 bg-gray-200 hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2  h-[50px] rounded  ">
-                    View cart
-                  </button>
-                  <button className="flex-1 bg-[#141926] text-white hover:text-[#141926]  hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2  h-[50px] rounded">
-                    Check out
-                  </button>
+                <div className="flex justify-center gap-2 mt-5">
+                  <Link href="/customer/cart">
+                    <button className="bg-gray-200 hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2 h-[50px] rounded px-6">
+                      View cart
+                    </button>
+                  </Link>
+                  <Link href="/customer/checkout">
+                    <button className="bg-[#141926] text-white hover:text-[#141926] hover:bg-transparent hover:border-2 hover:border-[#767678] cursor-pointer text-sm py-2 h-[50px] rounded px-6">
+                      Check out
+                    </button>
+                  </Link>
                 </div>
               </>
             )}

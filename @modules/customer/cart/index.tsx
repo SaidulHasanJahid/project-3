@@ -1,5 +1,6 @@
 "use client";
 
+import { removeFromCart } from "@/appstore/cart/cart-slice";
 import { baseUrl } from "@/utils/url";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -7,13 +8,11 @@ import { FaTimes } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 
 const CustomerCart = () => {
-  // Get cart from Redux store
   const cart = useSelector((state: any) => state?.cart?.items || []);
   const dispatch = useDispatch();
 
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
-  // When cart changes, reset quantities for new items with default 1
   useEffect(() => {
     const qtys: { [key: string]: number } = {};
     cart.forEach((item: any) => {
@@ -22,7 +21,6 @@ const CustomerCart = () => {
     setQuantities(qtys);
   }, [cart]);
 
-  // Handle quantity change per product id
   const handleQuantityChange = (id: string | number, delta: number) => {
     setQuantities((prev) => {
       const currentQty = prev[id] || 1;
@@ -32,22 +30,20 @@ const CustomerCart = () => {
     });
   };
 
-  // Calculate subtotal for each product
-  const getSubtotal = (price: number, id: string | number) => {
+  const getSubtotal = (price: string | number, id: string | number) => {
     const qty = quantities[id] || 1;
-    return price * qty;
+    return Number(price) * qty;
   };
 
-  // Calculate total for whole cart
   const total = cart.reduce((acc: number, item: any) => {
     const qty = quantities[item.id] || 1;
-    return acc + item.price * qty;
+    return acc + Number(item.price) * qty;
   }, 0);
 
-  // Dispatch remove action (replace with your actual redux action)
   const handleRemove = (id: string | number) => {
-    dispatch({ type: "cart/removeFromCart", payload: id });
+    dispatch(removeFromCart(Number(id)));
   };
+
 
   return (
     <div className="w-full bg-white">
@@ -91,8 +87,8 @@ const CustomerCart = () => {
                     </td>
                   </tr>
                 )}
-                {cart.map((item: any, index: number) => (
-                  <tr key={item.id || index} className="border-t border-gray-200">
+                {cart.map((item: any) => (
+                  <tr key={item.id} className="border-t border-gray-200">
                     <td className="p-4 flex items-center gap-4 max-w-[250px]">
                       <div className="min-w-[64px] min-h-[64px]">
                         <img
@@ -104,10 +100,10 @@ const CustomerCart = () => {
                         />
                       </div>
                       <span className="truncate font-medium text-gray-800 text-sm">
-                        {item.name || "Product Title"}
+                        {item.slug || "Product Title"}
                       </span>
                     </td>
-                    <td className="p-4 text-sm text-[#767678]">${item.price.toFixed(2)}</td>
+                    <td className="p-4 text-sm text-[#767678]">${Number(item.price).toFixed(2)}</td>
                     <td className="p-4">
                       <div className="flex items-center border-[#767678] border rounded w-[100px]">
                         <button
@@ -159,7 +155,7 @@ const CustomerCart = () => {
               <span>${total.toFixed(2)}</span>
             </div>
             <Link href={"/customer/checkout"}>
-              <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300 cursor-pointer ">
+              <button className="mt-6 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition-all duration-300 cursor-pointer">
                 Proceed to checkout
               </button>
             </Link>

@@ -5,22 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import CartIconActions from "../../buttons/cart-icon-actions";
+import { useState } from "react";
 
-const ProductCard = ({ classes, productsItem }: any) => {
+const ProductCardFeatureProduct = ({ classes, productsItem }: any) => {
   if (!productsItem) return null;
 
+  const [hovered, setHovered] = useState(false); // ✅ hover state
   const price = productsItem.price ? Number(productsItem.price) : null;
   const oldPrice = productsItem.oldPrice ? Number(productsItem.oldPrice) : null;
   const rating = productsItem.rating ? Number(productsItem.rating) : 0;
   const reviews = productsItem.reviews ?? 0;
 
-  // Use thumbnail first, then first gallery image
   const imagePath =
     productsItem.thumbnail && productsItem.thumbnail.trim() !== ""
       ? productsItem.thumbnail
       : productsItem.product_gallery?.[0]?.image_url || "";
 
-  // Safe baseUrl usage
   const imageSrc = imagePath
     ? imagePath.startsWith("http")
       ? imagePath
@@ -31,38 +31,44 @@ const ProductCard = ({ classes, productsItem }: any) => {
 
   return (
     <div
-      className={`group text-center relative overflow-hidden transition duration-300 bg-white px-4 sm:px-2 md:px-0 h-[496px] ${
+      className={`text-center relative overflow-hidden transition duration-300 bg-white px-4 sm:px-2 md:px-0 h-[496px] ${
         classes?.root ?? ""
       }`}
+      onMouseEnter={() => setHovered(true)} // ✅ hover on card
+      onMouseLeave={() => setHovered(false)}
     >
       <Link
         href={`/products/${productsItem.slug || productsItem.id}`}
         className="block"
       >
-        {/* Discount Badge */}
         {productsItem.discount && Number(productsItem.discount) > 0 && (
           <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">
             {productsItem.discount}%
           </span>
         )}
 
-        {/* Product Image */}
         <div className="relative w-full max-w-[300px] h-[300px] mx-auto flex items-center justify-center overflow-hidden rounded-lg">
           <Image
             src={imageSrc}
             alt={imageAlt}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className={`object-cover transition-transform duration-300 ${
+              hovered ? "scale-105" : ""
+            }`}
           />
-          <CartIconActions />
+
+          {/* ✅ Cart icons visible only when hovered */}
+          {hovered && (
+            <div className="absolute top-2 right-2 transition-all duration-300">
+              <CartIconActions />
+            </div>
+          )}
         </div>
 
-        {/* Title */}
         <h2 className="text-[15px] text-[#767678] font-medium mt-4 line-clamp-2">
           {productsItem.name ?? "No Name"}
         </h2>
 
-        {/* Price */}
         <div className="mt-1 space-x-2 text-sm">
           <span className="text-[#767678] font-bold">
             {price !== null ? `$${price.toFixed(2)}` : "Price not available"}
@@ -74,7 +80,6 @@ const ProductCard = ({ classes, productsItem }: any) => {
           )}
         </div>
 
-        {/* Rating */}
         <div className="flex items-center justify-center text-sm text-yellow-500 mt-1">
           <FaStar className="mr-1" />
           {rating.toFixed(1)} ({reviews})
@@ -84,5 +89,4 @@ const ProductCard = ({ classes, productsItem }: any) => {
   );
 };
 
-export default ProductCard;
-
+export default ProductCardFeatureProduct;

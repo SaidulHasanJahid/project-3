@@ -35,21 +35,24 @@ export default function CategoryCard() {
                 href={`/products-by-category/${item.slug}`}
                 key={`${item.slug}-${index}`}
               >
-                <div className="cursor-pointer group rounded shadow-md overflow-hidden transition duration-500 ease-in-out relative w-[281px] h-[359px]">
-                  <Image
-                    src={imageUrl}
-                    alt={item.name}
-                    width={281}
-                    height={359}
-                    className="object-cover w-full h-full transition-transform duration-700 ease-in-out group-hover:scale-110"
-                  />
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[75px] w-[90%] bg-white text-center py-2 px-3 rounded shadow-md transition-all duration-500 ease-in-out group-hover:-translate-y-1">
-                    <h3 className="font-semibold text-gray-900 mt-1">
-                      {item.name}
-                    </h3>
-                    <p className="text-gray-500">{item.count ?? 0}</p>
-                  </div>
-                </div>
+              <div className="cursor-pointer group rounded shadow-md overflow-hidden transition duration-500 ease-in-out relative w-full max-w-[281px]">
+  <div className="relative w-full aspect-[281/359]">
+    <Image
+      src={imageUrl}
+      alt={item.name}
+      fill
+      className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+    />
+  </div>
+
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[75px] w-[90%] bg-white text-center py-2 px-3 rounded shadow-md transition-all duration-500 ease-in-out group-hover:-translate-y-1">
+    <h3 className="font-semibold text-gray-900 mt-1">
+      {item.name}
+    </h3>
+    <p className="text-gray-500">{item.count ?? 0}</p>
+  </div>
+</div>
+
               </Link>
             );
           })

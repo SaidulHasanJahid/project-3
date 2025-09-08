@@ -26,7 +26,7 @@ export default function Header() {
     try {
       const response = await menuTrigger().unwrap();
       console.log("response", response);
-      setMenuCategory(response);
+      setMenuCategory(response?.data);
     } catch (error) {
       console.error("Error fetching banners:", error);
     }

@@ -1,14 +1,12 @@
-
 "use client";
 
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import ProductCardFeatureProduct from "@/@modules/@common/cards/post-cart-f-p";
+import { useFeatureProductDataQuery } from "@/appstore/home/home-api";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Changed icons
 import "swiper/css";
 import "swiper/css/navigation";
-
-import { useFeatureProductDataQuery } from "@/appstore/home/home-api";
-import ProductCardFeatureProduct from "@/@modules/@common/cards/post-cart-f-p";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 type Product = {
   id: number;
@@ -20,30 +18,16 @@ type Product = {
 };
 
 export default function FeaturedProducts() {
-  const { data: featureProducts, isLoading } = useFeatureProductDataQuery();
+  const { data: featureProducts } = useFeatureProductDataQuery();
 
-  if (isLoading) {
-    return (
-      <section className="px-4 py-16 w-full text-center">
-        <p>Loading best selling products...</p>
-      </section>
-    );
-  }
-
-  if (!featureProducts?.data || featureProducts.data.length === 0) {
-    return (
-      <section className="px-4 py-16 w-full text-center">
-        <p>No best Peature products available.</p>
-      </section>
-    );
-  }
+  if (!featureProducts?.data || featureProducts.data.length === 0) return null;
 
   return (
     <section className="relative px-4 py-16 bg-white w-full">
       <div className="text-center mb-12">
         <p className="uppercase text-gray-500 text-sm">Featured Products</p>
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Our Featured Products
+          Our Featured Products
         </h2>
       </div>
 
@@ -52,18 +36,20 @@ export default function FeaturedProducts() {
         <div className="absolute top-1/2 -translate-y-1/2 left-[-30px] z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
             aria-label="Previous"
-            className="swiper-button-prev p-8 w-16 h-16 cursor-pointer bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition"
+            className="featured-swiper-button-prev p-8 w-16 h-16 cursor-pointer bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition"
           >
-            <AiOutlineLeft size={20} className="text-white" />
+            <FaArrowLeft size={20} className="text-white" />{" "}
+            {/* Changed icon */}
           </button>
         </div>
 
         <div className="absolute top-1/2 -translate-y-1/2 right-[-30px] z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
             aria-label="Next"
-            className="swiper-button-next p-8 w-16 h-16 cursor-pointer bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition"
+            className="featured-swiper-button-next p-8 w-16 h-16 cursor-pointer bg-[#767678] flex items-center justify-center rounded-full shadow-md hover:bg-black transition"
           >
-            <AiOutlineRight size={20} className="text-white" />
+            <FaArrowRight size={20} className="text-white" />{" "}
+            {/* Changed icon */}
           </button>
         </div>
 
@@ -75,12 +61,12 @@ export default function FeaturedProducts() {
           slidesPerGroup={1}
           loop={false}
           navigation={{
-            prevEl: ".swiper-button-prev",
-            nextEl: ".swiper-button-next",
+            prevEl: ".featured-swiper-button-prev",
+            nextEl: ".featured-swiper-button-next",
           }}
           speed={500}
         >
-          {featureProducts?.data?.map((product: Product) => (
+          {featureProducts.data.map((product: Product) => (
             <SwiperSlide key={product.id}>
               <ProductCardFeatureProduct productsItem={product} />
             </SwiperSlide>
