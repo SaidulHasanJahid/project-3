@@ -7,14 +7,14 @@ interface CartActionsProps {
   product: any;
 }
 
-const CartActions: React.FC<CartActionsProps> = ({ product }) => {
+const CartActions: React.FC<CartActionsProps> = ({ product }:any) => {
   if (!product?.id) return null;
 
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => state.cart);
   const cartItem = cart.items.find((item: any) => item.id === product.id);
 
-  const cartPayload = {
+  const cartPayload:any = {
     id: product.id,
     name: product.name ?? product.slug,
     slug: product.slug,
