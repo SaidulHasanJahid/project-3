@@ -44,7 +44,6 @@ const CustomerCart = () => {
     dispatch(removeFromCart(Number(id)));
   };
 
-
   return (
     <div className="w-full bg-white">
       {/* Top Banner */}
@@ -103,7 +102,9 @@ const CustomerCart = () => {
                         {item.slug || "Product Title"}
                       </span>
                     </td>
-                    <td className="p-4 text-sm text-[#767678]">${Number(item.price).toFixed(2)}</td>
+                    <td className="p-4 text-sm text-[#767678]">
+                      ${Number(item.price).toFixed(2)}
+                    </td>
                     <td className="p-4">
                       <div className="flex items-center border-[#767678] border rounded w-[100px]">
                         <button
@@ -112,7 +113,9 @@ const CustomerCart = () => {
                         >
                           -
                         </button>
-                        <span className="w-8 text-center">{quantities[item.id] || 1}</span>
+                        <span className="w-8 text-center">
+                          {quantities[item.id] || 1}
+                        </span>
                         <button
                           onClick={() => handleQuantityChange(item.id, 1)}
                           className="w-8 h-8 text-lg font-semibold flex items-center justify-center cursor-pointer"
@@ -141,7 +144,9 @@ const CustomerCart = () => {
 
           {/* Right - Cart Totals */}
           <div className="border border-gray-200 rounded p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">CART TOTALS</h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              CART TOTALS
+            </h2>
             <div className="flex justify-between py-2 border-b text-sm text-gray-700">
               <span>Subtotal</span>
               <span>${total.toFixed(2)}</span>

@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { FaUser, FaShoppingCart, FaCreditCard } from "react-icons/fa";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
 import PriceDetails from "@/@modules/@common/price-deatile";
+import { Input } from "antd";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { FaCreditCard, FaShoppingCart, FaUser } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import * as Yup from "yup";
 
 export default function CheckoutForm() {
   const router = useRouter();
@@ -39,50 +40,64 @@ export default function CheckoutForm() {
   const packagingCost = packagingType === "gift" ? 15 : 0;
   const finalPrice = cartTotal + shippingCost + packagingCost;
 
+  // const initialValues = {
+  //   name: "",
+  //   email: "",
+  //   phone: "",
+  //   createAccount: false,
+  //   shipTo: "Home",
+  //   fullNameBilling: "",
+  //   emailBilling: "",
+  //   phoneBilling: "",
+  //   addressBilling: "",
+  //   cityBilling: "",
+  //   stateBilling: "",
+  //   postalBilling: "",
+  //   countryBilling: "",
+  //   diffAddress: false,
+  //   fullNameShipping: "",
+  //   phoneShipping: "",
+  //   addressShipping: "",
+  //   postalShipping: "",
+  //   cityShipping: "",
+  //   stateShipping: "",
+  //   countryShipping: "",
+  //   orderNote: "",
+  // };
   const initialValues = {
-    name: "",
-    email: "",
-    phone: "",
-    createAccount: false,
-    shipTo: "Home",
-    fullNameBilling: "",
-    emailBilling: "",
-    phoneBilling: "",
-    addressBilling: "",
-    cityBilling: "",
-    stateBilling: "",
-    postalBilling: "",
-    countryBilling: "",
-    diffAddress: false,
-    fullNameShipping: "",
-    phoneShipping: "",
-    addressShipping: "",
-    postalShipping: "",
-    cityShipping: "",
-    stateShipping: "",
-    countryShipping: "",
-    orderNote: "",
+    full_name: null,
+    email: null,
+    phone: null,
+    billing_address: {
+      full_name: null,
+      phone: null,
+      address_line: null,
+      city: null,
+      state: null,
+      postal_code: null,
+      country: null,
+      address_type: "billing",
+    },
+    shipping_address: {
+      full_name: null,
+      phone: null,
+      address_line: null,
+      city: null,
+      state: null,
+      postal_code: null,
+      country: null,
+      address_type: "shipping",
+    },
+    shipping_method: "free",
+    packaging: "default",
+    items: [],
+    payment_method: "cod",
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Required"),
+    full_name: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     phone: Yup.string().required("Required"),
-    fullNameBilling: Yup.string().required("Required"),
-    emailBilling: Yup.string().email("Invalid email").required("Required"),
-    phoneBilling: Yup.string().required("Required"),
-    addressBilling: Yup.string().required("Required"),
-    cityBilling: Yup.string().required("Required"),
-    stateBilling: Yup.string().required("Required"),
-    postalBilling: Yup.string().required("Required"),
-    countryBilling: Yup.string().required("Required"),
-    fullNameShipping: showShipping ? Yup.string() : Yup.string(),
-    phoneShipping: showShipping ? Yup.string() : Yup.string(),
-    addressShipping: showShipping ? Yup.string() : Yup.string(),
-    postalShipping: showShipping ? Yup.string() : Yup.string(),
-    cityShipping: showShipping ? Yup.string() : Yup.string(),
-    stateShipping: showShipping ? Yup.string() : Yup.string(),
-    countryShipping: showShipping ? Yup.string() : Yup.string(),
   });
 
   return (
@@ -153,51 +168,6 @@ export default function CheckoutForm() {
             validationSchema={validationSchema}
             validateOnMount
             onSubmit={(values, { setSubmitting }) => {
-              const billing_address = {
-                full_name: values.fullNameBilling,
-                phone: values.phoneBilling,
-                address_line: values.addressBilling,
-                city: values.cityBilling,
-                state: values.stateBilling,
-                postal_code: values.postalBilling,
-                country: values.countryBilling,
-                address_type: "billing",
-              };
-
-              let shipping_address;
-              if (showShipping) {
-                shipping_address = {
-                  full_name: values.fullNameShipping || values.fullNameBilling,
-                  phone: values.phoneShipping || values.phoneBilling,
-                  address_line: values.addressShipping || values.addressBilling,
-                  city: values.cityShipping || values.cityBilling,
-                  state: values.stateShipping || values.stateBilling,
-                  postal_code: values.postalShipping || values.postalBilling,
-                  country: values.countryShipping || values.countryBilling,
-                  address_type: "shipping",
-                };
-              } else {
-                shipping_address = { ...billing_address, address_type: "shipping" };
-              }
-
-              const items = cart.map((item: any) => ({
-                product_id: item.id,
-                quantity: quantities[item.id] || 1,
-              }));
-
-              const orderData = {
-                full_name: values.name,
-                email: values.email,
-                phone: values.phone,
-                billing_address,
-                shipping_address,
-                shipping_method: packaging,
-                packaging: packagingType,
-                items,
-                payment_method: "cod",
-              };
-
-              console.log("Submitted:", orderData);
               router.push("/customer/product-summary-p");
               setSubmitting(false);
             }}
@@ -206,6 +176,7 @@ export default function CheckoutForm() {
               <Form>
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Left Column */}
+                  {console.log("values", values)}
                   <div className="flex-1 border border-[#BDCCDB] p-4 md:p-6 space-y-6 shadow-sm max-w-full">
                     {/* Personal Info */}
                     <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
@@ -214,11 +185,19 @@ export default function CheckoutForm() {
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <Field
-                            name="name"
+                          <Input
                             type="text"
                             placeholder="Enter Your Name"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("full_name", value);
+                              setFieldValue("billing_address.full_name", value);
+                              setFieldValue(
+                                "shipping_address.full_name",
+                                value
+                              );
+                            }}
                           />
                           <ErrorMessage
                             name="name"
@@ -227,11 +206,16 @@ export default function CheckoutForm() {
                           />
                         </div>
                         <div>
-                          <Field
-                            name="email"
+                          <Input
                             type="email"
                             placeholder="Enter Your Email"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("email", value);
+                              setFieldValue("billing_address.email", value);
+                              setFieldValue("shipping_address.email", value);
+                            }}
                           />
                           <ErrorMessage
                             name="email"
@@ -240,11 +224,17 @@ export default function CheckoutForm() {
                           />
                         </div>
                         <div>
-                          <Field
+                          <Input
                             name="phone"
                             type="text"
                             placeholder="Phone Number"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("phone", value);
+                              setFieldValue("billing_address.phone", value);
+                              setFieldValue("shipping_address.phone", value);
+                            }}
                           />
                           <ErrorMessage
                             name="phone"
@@ -253,7 +243,7 @@ export default function CheckoutForm() {
                           />
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      {/* <div className="flex items-center gap-2">
                         <Field
                           type="checkbox"
                           id="createAccount"
@@ -263,7 +253,7 @@ export default function CheckoutForm() {
                         <label htmlFor="createAccount" className="text-sm">
                           Create an account ?
                         </label>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Billing Info */}
@@ -279,7 +269,7 @@ export default function CheckoutForm() {
                           onChange={(e: any) =>
                             setFieldValue("shipTo", e.target.value)
                           }
-                          value={values.shipTo}
+                          // value={values.shipTo}
                         >
                           <option value="Home">Home</option>
                           <option value="Office">Office</option>
@@ -287,42 +277,36 @@ export default function CheckoutForm() {
                         </Field>
 
                         <div>
-                          <Field
-                            name="fullNameBilling"
+                          <Input
                             type="text"
                             placeholder="Full Name"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="fullNameBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.full_name", value);
+                            }}
                           />
                         </div>
                         <div>
-                          <Field
-                            name="emailBilling"
+                          <Input
                             type="email"
                             placeholder="Email"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="emailBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.email", value);
+                            }}
                           />
                         </div>
                         <div>
-                          <Field
-                            name="phoneBilling"
+                          <Input
                             type="text"
                             placeholder="Phone Number"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="phoneBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.phone", value);
+                            }}
                           />
                         </div>
                         <div>

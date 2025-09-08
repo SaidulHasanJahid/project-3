@@ -1,5 +1,4 @@
 import ProductGallery from "@/@modules/@common/product-gallery";
-import { ProductType } from "@/types/types";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
 
@@ -19,6 +18,8 @@ import ProductTabSlider from "./product-tab";
 
 const ProductDetails = ({ product }: any) => {
   const { product_gallery } = product || {};
+
+  console.log("product_gallery", product);
 
   return (
     <>
@@ -49,11 +50,10 @@ const ProductDetails = ({ product }: any) => {
           <div className="w-full bg-white text-[#1c1c1c] font-sans leading-[1.6] text-[14px] lg:col-span-2">
             <p className="text-[#141926] text-[16px] mb-3">
               <Link href={"/"}> Home</Link> /
-              <Link href={""}>
+              <Link href={`/products-by-category/${product.category_id.slug}`}>
                 {" "}
                 <span className="ml-1"> {product.category_id.name}</span>
               </Link>{" "}
-              / <Link href={""}>TELEVISION</Link> /<Link href={""}>LCD TV</Link>
             </p>
 
             <h2 className="text-[24px] font-bold text-[#141926] mb-3">

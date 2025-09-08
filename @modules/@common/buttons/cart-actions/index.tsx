@@ -1,20 +1,23 @@
 "use client";
 import { addToCart, decreaseQuantity } from "@/appstore/cart/cart-slice";
-import Link from "next/link";
+import { message } from "antd";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 interface CartActionsProps {
   product: any;
 }
 
-const CartActions: React.FC<CartActionsProps> = ({ product }:any) => {
+const CartActions: React.FC<CartActionsProps> = ({ product }: any) => {
   if (!product?.id) return null;
+  const router = useRouter();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => state.cart);
   const cartItem = cart.items.find((item: any) => item.id === product.id);
 
-  const cartPayload:any = {
+  const cartPayload: any = {
     id: product.id,
     name: product.name ?? product.slug,
     slug: product.slug,
@@ -25,8 +28,14 @@ const CartActions: React.FC<CartActionsProps> = ({ product }:any) => {
     quantity: 1,
   };
 
+  const cartAddHandler = () => {
+    dispatch(addToCart(cartPayload));
+    messageApi.success("Product added to cart");
+  };
+
   return (
     <div className="flex flex-col md:flex-row items-center gap-2 my-4">
+      {contextHolder}
       <div className="flex items-center gap-3">
         <button
           onClick={() => dispatch(decreaseQuantity(product.id))}
@@ -50,18 +59,21 @@ const CartActions: React.FC<CartActionsProps> = ({ product }:any) => {
       </div>
 
       <button
-        onClick={() => dispatch(addToCart(cartPayload))}
+        onClick={cartAddHandler}
         className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full mt-3 text-[14px] w-[118px] h-[30px] cursor-pointer hover:bg-[#23272b] transition-all"
       >
         Add to Cart
       </button>
 
-      <Link
-        href="/customer/cart"
-        className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full mt-3 text-[14px] w-[118px] h-[30px] flex items-center justify-center hover:bg-[#23272b] transition-all"
+      <button
+        className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full mt-3 text-[14px] w-[118px] h-[30px] flex items-center justify-center hover:bg-[#23272b] transition-all cursor-pointer"
+        onClick={() => {
+          dispatch(addToCart(cartPayload));
+          router.push("/customer/cart");
+        }}
       >
         Buy Now
-      </Link>
+      </button>
     </div>
   );
 };
