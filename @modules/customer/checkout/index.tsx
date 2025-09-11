@@ -40,30 +40,6 @@ export default function CheckoutForm() {
   const packagingCost = packagingType === "gift" ? 15 : 0;
   const finalPrice = cartTotal + shippingCost + packagingCost;
 
-  // const initialValues = {
-  //   name: "",
-  //   email: "",
-  //   phone: "",
-  //   createAccount: false,
-  //   shipTo: "Home",
-  //   fullNameBilling: "",
-  //   emailBilling: "",
-  //   phoneBilling: "",
-  //   addressBilling: "",
-  //   cityBilling: "",
-  //   stateBilling: "",
-  //   postalBilling: "",
-  //   countryBilling: "",
-  //   diffAddress: false,
-  //   fullNameShipping: "",
-  //   phoneShipping: "",
-  //   addressShipping: "",
-  //   postalShipping: "",
-  //   cityShipping: "",
-  //   stateShipping: "",
-  //   countryShipping: "",
-  //   orderNote: "",
-  // };
   const initialValues = {
     full_name: null,
     email: null,
@@ -269,7 +245,7 @@ export default function CheckoutForm() {
                           onChange={(e: any) =>
                             setFieldValue("shipTo", e.target.value)
                           }
-                          // value={values.shipTo}
+                          value={values.shipTo}
                         >
                           <option value="Home">Home</option>
                           <option value="Office">Office</option>
@@ -310,79 +286,74 @@ export default function CheckoutForm() {
                           />
                         </div>
                         <div>
-                          <Field
-                            name="addressBilling"
+                          <Input
                             type="text"
                             placeholder="Address"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="addressBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue(
+                                "billing_address.address_line",
+                                value
+                              );
+                            }}
                           />
                         </div>
+
+                      
+
                         <div>
-                          <Field
-                            name="cityBilling"
+                          <Input
                             type="text"
                             placeholder="City"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="cityBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                           onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("phone", value);
+                              setFieldValue("billing_address.city", value);
+                              setFieldValue("shipping_address.city", value);
+                            }}
                           />
                         </div>
-                        <div>
-                          <Field
-                            name="stateBilling"
+                <div>
+                          <Input
                             type="text"
                             placeholder="State"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="stateBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.state", value);
+                              setFieldValue("shipping_address.state", value);
+                            }}
                           />
                         </div>
+
                         <div>
-                          <Field
-                            name="postalBilling"
+                          <Input
                             type="text"
                             placeholder="Postal Code"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                          />
-                          <ErrorMessage
-                            name="postalBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            as="select"
-                            name="countryBilling"
-                            className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                            onChange={(e: any) =>
-                              setFieldValue("countryBilling", e.target.value)
-                            }
-                            value={values.countryBilling}
-                          >
-                            <option value="">Select Country</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="India">India</option>
-                            <option value="USA">USA</option>
-                            <option value="UK">UK</option>
-                          </Field>
-                          <ErrorMessage
-                            name="countryBilling"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.postal_code",value);
+                              setFieldValue("shipping_address.postal_code",value);
+                            }}
                           />
                         </div>
+
+                        <select
+                          name="billing_address.country"
+                          className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#767678] bg-white"
+                          defaultValue=""
+                        >
+                          <option value="" disabled>
+                            Select Country
+                          </option>
+                          <option value="Bangladesh">Bangladesh</option>
+                          <option value="India">India</option>
+                          <option value="USA">USA</option>
+                          <option value="UK">UK</option>
+                        </select>
                       </div>
 
                       <div className="flex items-center gap-2 mt-4">
@@ -412,95 +383,97 @@ export default function CheckoutForm() {
                           </h2>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <Field
-                                name="fullNameShipping"
+                              <Input
                                 type="text"
                                 placeholder="Full Name"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
                               />
-                              <ErrorMessage
-                                name="fullNameShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
+                        
                             </div>
+
+
+        
+                              <div>
+                          <Input
+                            type="text"
+                            placeholder="Phone Number"
+                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("billing_address.phone", value);
+                            }}
+                          />
+                        </div>
+                           
                             <div>
-                              <Field
-                                name="phoneShipping"
-                                type="text"
-                                placeholder="Phone Number"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                              />
-                              <ErrorMessage
-                                name="phoneShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Field
-                                name="addressShipping"
+                              <Input
+                              
                                 type="text"
                                 placeholder="Address"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                 onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("shipping_address.address_line", value);
+                            }}
                               />
-                              <ErrorMessage
-                                name="addressShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
+                          
                             </div>
                             <div>
                               <Field
-                                name="postalShipping"
+                                name="postal_code"
                                 type="text"
                                 placeholder="Postal Code"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                                  onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("shipping_address.postal_code",value);
+                            }}
+                          
                               />
-                              <ErrorMessage
-                                name="postalShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
+                          
                             </div>
                             <div>
-                              <Field
+                              <Input
                                 name="cityShipping"
                                 type="text"
                                 placeholder="City"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                         
+                                                  onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("shipping_address.city",value);
+                            }}
                               />
-                              <ErrorMessage
-                                name="cityShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
+                             
                             </div>
+                                            
+
                             <div>
-                              <Field
+                              <Input
                                 name="stateShipping"
                                 type="text"
                                 placeholder="State"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                    onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("shipping_address.state",value);
+                            }}
+                                
                               />
-                              <ErrorMessage
-                                name="stateShipping"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
+                       
                             </div>
                             <div>
                               <Field
                                 as="select"
-                                name="countryShipping"
+                                name="country"
                                 className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
                                 onChange={(e: any) =>
                                   setFieldValue(
-                                    "countryShipping",
+                                    "country",
                                     e.target.value
                                   )
                                 }
-                                value={values.countryShipping}
+                                value={values.country}
                               >
                                 <option value="">Select Country</option>
                                 <option value="Bangladesh">Bangladesh</option>

@@ -1,3 +1,5 @@
+"use client";
+
 import ProductGallery from "@/@modules/@common/product-gallery";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
@@ -15,12 +17,40 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import ProductTabSlider from "./product-tab";
+import { useState } from "react";
 
 const ProductDetails = ({ product }: any) => {
+  const [selectedColor, setSelectedColor] = useState<any>(null);
+  const [selectedSize, setSelectedSize] = useState<any>(null);
+
   const { product_gallery } = product || {};
 
-  console.log("product_gallery", product);
+  // Handle toggle for color
 
+  const handleSelect = (c: any) => {
+    if (selectedColor?.id === c.id) {
+      setSelectedColor(null);
+    } else {
+      setSelectedColor(c);
+    }
+  };
+
+  // Handle toggle for size
+
+  const handleSizeSelect = (s: any) => {
+    if (selectedSize?.id === s.id) {
+      setSelectedSize(null);
+    } else {
+      setSelectedSize(s);
+    }
+  };
+
+    // Calculate stock from sizes & colors
+  const totalStock =
+    product.sizes?.reduce((acc: number, cur: any) => acc + Number(cur.qty || 0), 0) +
+    product.colors?.reduce((acc: number, cur: any) => acc + Number(cur.qty || 0), 0);
+
+  console.log("product details:", product);
   return (
     <>
       <div
@@ -72,7 +102,12 @@ const ProductDetails = ({ product }: any) => {
             <div className="flex items-center space-x-2 mb-2 mt-5">
               <span className="text-[16px]  text-[#767678]">
                 {" "}
-                {product.price}$
+                $
+                {selectedColor
+                  ? selectedColor.price
+                  : selectedSize
+                  ? selectedSize.price
+                  : product.price}
               </span>
               <span className="line-through text-[#767678] text-[14px]">
                 {product.discount_price}$
@@ -82,10 +117,20 @@ const ProductDetails = ({ product }: any) => {
               </span>
             </div>
 
-            <p className="text-[#388E3C] mb-2 font-[13px] mt-3">
-              {product.stock} In Stock
-            </p>
 
+
+
+           <div className="mt-3 mb-3">
+              {totalStock > 0 ? (
+                <p className="text-[#388E3C] font-semibold mb-2 text-[13px] mt-3">
+                  In Stock ({totalStock})
+                </p>
+              ) : (
+                <p className="text-red-600 font-semibold mb-2 text-[13px] mt-3">
+                  Out of Stock
+                </p>
+              )}
+            </div>
             <div className="  space-x-4  mb-3 mt-3">
               <div className="flex items-center text-[#767678] text-[16px] space-x-1">
                 <FaClock />
@@ -106,6 +151,7 @@ const ProductDetails = ({ product }: any) => {
                 </span>
               </div>
             </div>
+
             <CartActions product={product} />
 
             <div className="flex items-center space-x-5 text-[12px] mb-6 text-[#1B1B1E] mt-6">
@@ -174,44 +220,55 @@ const ProductDetails = ({ product }: any) => {
                   </label>
                 </div>
               </div>
+              <div>
+                <h4 className="font-bold text-[16px] text-[#767678] mb-2">
+                  Select Size :
+                </h4>
+                <div className="space-y-2 text-[#767678]">
+                  {product.sizes?.map((s: any) => (
+                    <label
+                      key={s.id}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedSize?.id === s.id}
+                        onChange={() => handleSizeSelect(s)}
+                        className="w-4 h-4 rounded-full border border-gray-400 checked:bg-[#767678] checked:border-[#767678] appearance-none cursor-pointer"
+                      />
+                      <span>
+                        {s.size.toUpperCase()}  ${s.price}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               <div>
                 <h4 className="font-bold text-[16px] text-[#767678] mb-2">
                   Color Family :
                 </h4>
                 <div className="space-y-2 text-[#767678]">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="color"
-                      className="text-[#767678]"
-                    />
-                    <span>Black + $ 10</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="color"
-                      className="text-[#767678]"
-                    />
-                    <span>White + $ 12</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="color"
-                      className="text-[#767678]"
-                    />
-                    <span>Sliver + $ 15</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="color"
-                      className="text-[#767678]"
-                    />
-                    <span>Red + $ 20</span>
-                  </label>
+                  {product.colors?.map((c: any) => (
+                    <label
+                      key={c.id}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedColor?.id === c.id}
+                        onChange={() => handleSelect(c)}
+                        className="w-4 h-4 rounded-full border border-gray-400 checked:bg-[#767678] checked:border-[#767678] appearance-none cursor-pointer"
+                      />
+
+                      {/* Color name + price */}
+                      <span>
+                        {c.color || "Default Color"}  ${c.price}
+                      </span>
+                    </label>
+                  ))}
+
+   
                 </div>
               </div>
             </div>
