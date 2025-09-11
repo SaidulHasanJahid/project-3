@@ -1,27 +1,35 @@
 "use client";
 
 import PriceDetails from "@/@modules/@common/price-deatile";
-import { Input } from "antd";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { clearCart } from "@/appstore/cart/cart-slice";
+import { useSaveOrderMutation } from "@/appstore/cart/checkout-api";
+import { Checkbox, Input } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import { ErrorMessage, Form, Formik } from "formik";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { FaCreditCard, FaShoppingCart, FaUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { FaCreditCard, FaUser } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 export default function CheckoutForm() {
-  const router = useRouter();
-  const [showShipping, setShowShipping] = useState(false);
   const [packaging, setPackaging] = useState("free");
   const [packagingType, setPackagingType] = useState("default");
+  const [isShipping, setIsShipping] = useState(false);
+  const [isBilling, setIsBilling] = useState(false);
+  const dispatch = useDispatch();
+  const [createTrigger, { isLoading }] = useSaveOrderMutation();
 
   // Access cart data from Redux store
   const cart = useSelector((state: any) => state?.cart?.items || []);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
+  const cart_payload = cart?.map((item: any) => ({
+    product_id: item.id,
+    quantity: item.quantity,
+  }));
   // Initialize quantities based on cart items
-  React.useEffect(() => {
+  useEffect(() => {
     const qtys: { [key: string]: number } = {};
     cart.forEach((item: any) => {
       qtys[item.id] = quantities[item.id] || 1;
@@ -29,7 +37,6 @@ export default function CheckoutForm() {
     setQuantities(qtys);
   }, [cart]);
 
-  // Calculate cart total
   const cartTotal = cart.reduce((acc: number, item: any) => {
     const qty = quantities[item.id] || 1;
     return acc + Number(item.price) * qty;
@@ -40,10 +47,27 @@ export default function CheckoutForm() {
   const packagingCost = packagingType === "gift" ? 15 : 0;
   const finalPrice = cartTotal + shippingCost + packagingCost;
 
+  const handleSaveOrder = async (values: any) => {
+    try {
+      const response = await createTrigger(values).unwrap();
+      if (response?.success) {
+        localStorage.clear();
+        dispatch(clearCart());
+        alert("Order placed successfully!");
+      }
+    } catch (error) {
+      console.log(error, "test");
+    }
+  };
+
   const initialValues = {
     full_name: null,
     email: null,
     phone: null,
+    country: "Bangladesh",
+    state: null,
+    city: null,
+    address_line: null,
     billing_address: {
       full_name: null,
       phone: null,
@@ -51,7 +75,7 @@ export default function CheckoutForm() {
       city: null,
       state: null,
       postal_code: null,
-      country: null,
+      country: "Bangladesh",
       address_type: "billing",
     },
     shipping_address: {
@@ -61,7 +85,7 @@ export default function CheckoutForm() {
       city: null,
       state: null,
       postal_code: null,
-      country: null,
+      country: "Bangladesh",
       address_type: "shipping",
     },
     shipping_method: "free",
@@ -71,14 +95,16 @@ export default function CheckoutForm() {
   };
 
   const validationSchema = Yup.object({
-    full_name: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    phone: Yup.string().required("Required"),
+    full_name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    phone: Yup.string().required("Phone number is required"),
+    country: Yup.string().required("Country is required"),
+    city: Yup.string().required("City is required"),
+    address_line: Yup.string().required("Address is required"),
   });
 
   return (
     <>
-      {/* Top Banner Section with Background Image */}
       <div
         className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
         style={{
@@ -113,18 +139,6 @@ export default function CheckoutForm() {
                   <div className="w-0 h-0 border-l-[20px] border-l-slate-600 border-t-[28px] border-t-transparent border-b-[28px] border-b-transparent"></div>
                 </div>
 
-                {/* Step 2 - Orders (Inactive) */}
-                <div className="relative flex items-center -ml-1">
-                  <div className="flex items-center bg-gray-200 text-gray-600 px-6 py-4 pr-8 pl-8">
-                    <div className="flex items-center justify-center w-8 h-8 bg-gray-400 text-white rounded-full text-sm font-semibold mr-3">
-                      2
-                    </div>
-                    <FaShoppingCart className="w-5 h-5 mr-2" />
-                    <span className="font-medium text-lg">Orders</span>
-                  </div>
-                  <div className="w-0 h-0 border-l-[20px] border-l-gray-200 border-t-[28px] border-t-transparent border-b-[28px] border-b-transparent"></div>
-                </div>
-
                 {/* Step 3 - Payment (Inactive) */}
                 <div className="relative flex items-center -ml-1">
                   <div className="flex items-center bg-gray-200 text-gray-600 px-6 py-4 pl-8">
@@ -132,7 +146,7 @@ export default function CheckoutForm() {
                       3
                     </div>
                     <FaCreditCard className="w-5 h-5 mr-2" />
-                    <span className="font-medium text-lg">Payment</span>
+                    <span className="font-medium text-lg">Confirmation</span>
                   </div>
                 </div>
               </div>
@@ -143,16 +157,15 @@ export default function CheckoutForm() {
             initialValues={initialValues}
             validationSchema={validationSchema}
             validateOnMount
-            onSubmit={(values, { setSubmitting }) => {
-              router.push("/customer/product-summary-p");
-              setSubmitting(false);
+            onSubmit={(values) => {
+              handleSaveOrder(values);
             }}
           >
             {({ values, isSubmitting, isValid, setFieldValue }) => (
               <Form>
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Left Column */}
-                  {console.log("values", values)}
+
                   <div className="flex-1 border border-[#BDCCDB] p-4 md:p-6 space-y-6 shadow-sm max-w-full">
                     {/* Personal Info */}
                     <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
@@ -176,7 +189,7 @@ export default function CheckoutForm() {
                             }}
                           />
                           <ErrorMessage
-                            name="name"
+                            name="full_name"
                             component="div"
                             className="text-red-500 text-sm mt-1"
                           />
@@ -189,8 +202,6 @@ export default function CheckoutForm() {
                             onChange={(e: any) => {
                               const value = e.target.value;
                               setFieldValue("email", value);
-                              setFieldValue("billing_address.email", value);
-                              setFieldValue("shipping_address.email", value);
                             }}
                           />
                           <ErrorMessage
@@ -218,127 +229,138 @@ export default function CheckoutForm() {
                             className="text-red-500 text-sm mt-1"
                           />
                         </div>
-                      </div>
-                      {/* <div className="flex items-center gap-2">
-                        <Field
-                          type="checkbox"
-                          id="createAccount"
-                          name="createAccount"
-                          className="accent-gray-800 focus:outline-none focus:ring-0"
-                        />
-                        <label htmlFor="createAccount" className="text-sm">
-                          Create an account ?
-                        </label>
-                      </div> */}
-                    </div>
 
-                    {/* Billing Info */}
-                    <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
-                      <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
-                        Billing Details
-                      </h2>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <Field
-                          as="select"
-                          name="shipTo"
-                          className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                          onChange={(e: any) =>
-                            setFieldValue("shipTo", e.target.value)
-                          }
-                          value={values.shipTo}
-                        >
-                          <option value="Home">Home</option>
-                          <option value="Office">Office</option>
-                          <option value="Other">Other</option>
-                        </Field>
-
-                        <div>
+                        <div className="">
                           <Input
                             type="text"
-                            placeholder="Full Name"
+                            placeholder="Enter City"
                             className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
                             onChange={(e: any) => {
                               const value = e.target.value;
-                              setFieldValue("billing_address.full_name", value);
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Input
-                            type="email"
-                            placeholder="Email"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("billing_address.email", value);
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Phone Number"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("billing_address.phone", value);
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Address"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue(
-                                "billing_address.address_line",
-                                value
-                              );
-                            }}
-                          />
-                        </div>
-
-                      
-
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="City"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                           onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("phone", value);
+                              setFieldValue("city", value);
                               setFieldValue("billing_address.city", value);
                               setFieldValue("shipping_address.city", value);
                             }}
                           />
-                        </div>
-                <div>
-                          <Input
-                            type="text"
-                            placeholder="State"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("billing_address.state", value);
-                              setFieldValue("shipping_address.state", value);
-                            }}
+                          <ErrorMessage
+                            name="city"
+                            component="div"
+                            className="text-red-500 text-sm mt-1"
                           />
                         </div>
+                        <div className="col-span-2">
+                          <TextArea
+                            placeholder="Enter Full Address"
+                            className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
+                            rows={2}
+                            onChange={(e: any) => {
+                              const value = e.target.value;
+                              setFieldValue("address_line", value);
+                              setFieldValue(
+                                "billing_address.address_line",
+                                value
+                              );
+                              setFieldValue(
+                                "shipping_address.address_line",
+                                value
+                              );
+                            }}
+                          />
+                          <ErrorMessage
+                            name="address_line"
+                            component="div"
+                            className="text-red-500 text-sm mt-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Postal Code"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("billing_address.postal_code",value);
-                              setFieldValue("shipping_address.postal_code",value);
-                            }}
-                          />
+                    {/* Billing Info */}
+
+                    <div className="flex items-center gap-2 ">
+                      <Checkbox
+                        checked={isBilling}
+                        onChange={() => setIsBilling(!isBilling)}
+                      >
+                        Bill to a Different Address?
+                      </Checkbox>
+                    </div>
+
+                    {isBilling && (
+                      <div className="space-y-4 border-b border-[#BDCCDB]">
+                        <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
+                          Billing Details
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <Input
+                              type="text"
+                              placeholder="Full Name"
+                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                              onChange={(e: any) => {
+                                const value = e.target.value;
+                                setFieldValue(
+                                  "billing_address.full_name",
+                                  value
+                                );
+                              }}
+                            />
+                          </div>
+
+                          <div>
+                            <Input
+                              type="text"
+                              placeholder="Phone Number"
+                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                              onChange={(e: any) => {
+                                const value = e.target.value;
+                                setFieldValue("billing_address.phone", value);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <Input
+                              type="text"
+                              placeholder="Country"
+                              value={values.billing_address.country}
+                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                              onChange={(e: any) => {
+                                const value = e.target.value;
+                                setFieldValue("billing_address.country", value);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <Input
+                              type="text"
+                              placeholder="City"
+                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                              onChange={(e: any) => {
+                                const value = e.target.value;
+                                setFieldValue("billing_address.city", value);
+                              }}
+                            />
+                          </div>
+
+                          <div className="col-span-2">
+                            <TextArea
+                              placeholder="Enter Full Address"
+                              className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
+                              rows={2}
+                              onChange={(e: any) => {
+                                const value = e.target.value;
+                                setFieldValue(
+                                  "billing_address.address_line",
+                                  value
+                                );
+                              }}
+                            />
+                            <ErrorMessage
+                              name="address_line"
+                              component="div"
+                              className="text-red-500 text-sm mt-1"
+                            />
+                          </div>
                         </div>
 
                         <select
@@ -355,30 +377,21 @@ export default function CheckoutForm() {
                           <option value="UK">UK</option>
                         </select>
                       </div>
+                    )}
 
-                      <div className="flex items-center gap-2 mt-4">
-                        <Field
-                          type="checkbox"
-                          id="diffAddress"
-                          name="diffAddress"
-                          className="accent-gray-800 focus:outline-none focus:ring-0"
-                          checked={values.diffAddress}
-                          onChange={(e: any) => {
-                            setFieldValue("diffAddress", e.target.checked);
-                            setShowShipping(e.target.checked);
-                          }}
-                        />
-                        <label
-                          htmlFor="diffAddress"
-                          className="text-sm font-bold text-[#767678]"
-                        >
-                          Ship to a Different Address?
-                        </label>
-                      </div>
+                    <div className="flex items-center gap-2 ">
+                      <Checkbox
+                        checked={isShipping}
+                        onChange={() => setIsShipping(!isShipping)}
+                      >
+                        Ship to a Different Address?
+                      </Checkbox>
+                    </div>
 
-                      {showShipping && (
-                        <div className="space-y-4 border-t border-[#BDCCDB] pt-4 transition-all duration-300">
-                          <h2 className="font-bold text-lg text-[#141926]">
+                    {isShipping && (
+                      <div className="space-y-4 border-[#BDCCDB] pt-4 transition-all duration-300">
+                        <div className="space-y-4 border-b border-[#BDCCDB]">
+                          <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
                             Shipping Details
                           </h2>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -387,128 +400,86 @@ export default function CheckoutForm() {
                                 type="text"
                                 placeholder="Full Name"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                onChange={(e: any) => {
+                                  const value = e.target.value;
+                                  setFieldValue(
+                                    "shipping_address.full_name",
+                                    value
+                                  );
+                                }}
                               />
-                        
                             </div>
 
-
-        
-                              <div>
-                          <Input
-                            type="text"
-                            placeholder="Phone Number"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("billing_address.phone", value);
-                            }}
-                          />
-                        </div>
-                           
                             <div>
                               <Input
-                              
                                 type="text"
-                                placeholder="Address"
+                                placeholder="Phone Number"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                 onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("shipping_address.address_line", value);
-                            }}
+                                onChange={(e: any) => {
+                                  const value = e.target.value;
+                                  setFieldValue(
+                                    "shipping_address.phone",
+                                    value
+                                  );
+                                }}
                               />
-                          
-                            </div>
-                            <div>
-                              <Field
-                                name="postal_code"
-                                type="text"
-                                placeholder="Postal Code"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                                  onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("shipping_address.postal_code",value);
-                            }}
-                          
-                              />
-                          
                             </div>
                             <div>
                               <Input
-                                name="cityShipping"
+                                type="text"
+                                placeholder="Country"
+                                value={values.shipping_address.country}
+                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
+                                onChange={(e: any) => {
+                                  const value = e.target.value;
+                                  setFieldValue(
+                                    "shipping_address.country",
+                                    value
+                                  );
+                                }}
+                              />
+                            </div>
+                            <div>
+                              <Input
                                 type="text"
                                 placeholder="City"
                                 className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                         
-                                                  onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("shipping_address.city",value);
-                            }}
+                                onChange={(e: any) => {
+                                  const value = e.target.value;
+                                  setFieldValue("shipping_address.city", value);
+                                }}
                               />
-                             
                             </div>
-                                            
 
-                            <div>
-                              <Input
-                                name="stateShipping"
-                                type="text"
-                                placeholder="State"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                    onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("shipping_address.state",value);
-                            }}
-                                
-                              />
-                       
-                            </div>
-                            <div>
-                              <Field
-                                as="select"
-                                name="country"
-                                className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-0 text-[#767678]"
-                                onChange={(e: any) =>
+                            <div className="col-span-2">
+                              <TextArea
+                                placeholder="Enter Full Address"
+                                className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
+                                rows={2}
+                                onChange={(e: any) => {
+                                  const value = e.target.value;
                                   setFieldValue(
-                                    "country",
-                                    e.target.value
-                                  )
-                                }
-                                value={values.country}
-                              >
-                                <option value="">Select Country</option>
-                                <option value="Bangladesh">Bangladesh</option>
-                                <option value="India">India</option>
-                                <option value="USA">USA</option>
-                              </Field>
+                                    "shipping_address.address_line",
+                                    value
+                                  );
+                                }}
+                              />
                               <ErrorMessage
-                                name="countryShipping"
+                                name="address_line"
                                 component="div"
                                 className="text-red-500 text-sm mt-1"
                               />
                             </div>
                           </div>
                         </div>
-                      )}
-
-                      <div className="mt-4">
-                        <Field
-                          name="orderNote"
-                          type="text"
-                          placeholder="Order Note (Optional)"
-                          className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                        />
                       </div>
-                    </div>
+                    )}
 
                     <button
                       type="submit"
-                      disabled={isSubmitting || !isValid}
-                      className={`bg-[#424A4D] text-white px-6 py-2 rounded-md w-fit cursor-pointer transition hover:bg-gray-700 ${
-                        (isSubmitting || !isValid) &&
-                        "opacity-50 cursor-not-allowed"
-                      }`}
+                      className={`bg-[#424A4D] text-white px-6 py-2 rounded-md w-fit cursor-pointer transition hover:bg-gray-700 opacity-50 `}
                     >
-                      {isSubmitting ? "Submitting..." : "Continue"}
+                      {isLoading ? "Submitting..." : "Continue"}
                     </button>
                   </div>
 
