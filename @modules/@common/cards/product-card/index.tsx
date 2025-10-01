@@ -14,13 +14,13 @@ const ProductCard = ({ classes, productsItem }: any) => {
   const rating = productsItem.rating ? Number(productsItem.rating) : 0;
   const reviews = productsItem.reviews ?? 0;
 
-  // Use thumbnail first, then first gallery image
+  // ✅ Use thumbnail first, then gallery fallback
   const imagePath =
     productsItem.thumbnail && productsItem.thumbnail.trim() !== ""
       ? productsItem.thumbnail
       : productsItem.product_gallery?.[0]?.image_url || "";
 
-  // Safe baseUrl usage
+  // ✅ Safe baseUrl usage
   const imageSrc = imagePath
     ? imagePath.startsWith("http")
       ? imagePath
@@ -39,14 +39,7 @@ const ProductCard = ({ classes, productsItem }: any) => {
         href={`/products/${productsItem.slug || productsItem.id}`}
         className="block"
       >
-        {/* Discount Badge */}
-        {productsItem.discount && Number(productsItem.discount) > 0 && (
-          <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">
-            {productsItem.discount}%
-          </span>
-        )}
-
-        {/* Product Image */}
+        {/* ✅ Product Image wrapper */}
         <div className="relative w-full max-w-[300px] h-[300px] mx-auto flex items-center justify-center overflow-hidden rounded-lg">
           <Image
             src={imageSrc}
@@ -54,17 +47,25 @@ const ProductCard = ({ classes, productsItem }: any) => {
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <CartIconActions />
+
+          {/* ✅ Discount Badge inside image (top-right) */}
+          {productsItem.discount && Number(productsItem.discount) > 0 && (
+            <span className="absolute top-3 right-3 bg-gray-800 text-white text-xs px-2 py-1 rounded-md z-20">
+              -{productsItem.discount}%
+            </span>
+          )}
+
+          <div className="absolute top-12 right-3 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <CartIconActions />
+          </div>
         </div>
 
-        {/* Title */}
         <h2 className="text-[15px] text-[#767678] font-medium mt-4 line-clamp-2">
           {productsItem.name ?? "No Name"}
         </h2>
 
-        {/* Price */}
         <div className="mt-1 space-x-2 text-sm">
-          <span className="text-[#767678] font-bold">
+          <span className="text-[#000000] font-bold">
             {price !== null ? `$${price.toFixed(2)}` : "Price not available"}
           </span>
           {oldPrice !== null && (
@@ -74,7 +75,7 @@ const ProductCard = ({ classes, productsItem }: any) => {
           )}
         </div>
 
-        {/* Rating */}
+        {/* ✅ Rating */}
         <div className="flex items-center justify-center text-sm text-yellow-500 mt-1">
           <FaStar className="mr-1" />
           {rating.toFixed(1)} ({reviews})
@@ -85,4 +86,3 @@ const ProductCard = ({ classes, productsItem }: any) => {
 };
 
 export default ProductCard;
-

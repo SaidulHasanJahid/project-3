@@ -70,7 +70,6 @@ export default function Best_Selling_Product() {
         {/* Swiper */}
         <Swiper
           modules={[Navigation]}
-          slidesPerView={4}
           spaceBetween={20}
           slidesPerGroup={1}
           loop={false}
@@ -79,6 +78,11 @@ export default function Best_Selling_Product() {
             nextEl: ".swiper-button-next",
           }}
           speed={500}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 }, 
+          }}
         >
           {best_product_selling?.data?.map((product: Product) => (
             <SwiperSlide key={product.id}>

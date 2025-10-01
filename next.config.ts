@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       "api.rafiinternational.com",
       "api.shottershondhan.com",
       "unsplash.it",
-      "https://api.shottershondhan.com ",
+      "api.rafiinternational.com ",
       "source.unsplash.com",
       "images.unsplash.com",
       "plus.unsplash.com",

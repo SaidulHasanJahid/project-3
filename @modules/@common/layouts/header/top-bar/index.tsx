@@ -12,7 +12,7 @@ type Option = {
 };
 
 const TopBar = () => {
-  const currencies = ['USD', 'BDT', 'INR', 'EURO'];
+  // const currencies = ['USD', 'BDT', 'INR', 'EURO'];
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   const languages = ['English', 'Spanish', 'French', 'Bangla'];
@@ -85,7 +85,7 @@ const TopBar = () => {
         </div>
 
         {/* Currency dropdown */}
-        <div className="relative group cursor-pointer">
+        {/* <div className="relative group cursor-pointer">
           <div className="flex items-center gap-2 sm:gap-4 pr-4 border-r border-[#767678d2] h-[25px]">
             $ {selectedCurrency} <FaChevronDown className="text-xs" />
           </div>
@@ -104,7 +104,7 @@ const TopBar = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         {/* My Account */}
         <div

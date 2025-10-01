@@ -1,6 +1,7 @@
 "use client";
 import { addToCart, decreaseQuantity } from "@/appstore/cart/cart-slice";
 import { message } from "antd";
+import { div } from "framer-motion/client";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -58,12 +59,12 @@ const CartActions: React.FC<CartActionsProps> = ({ product }: any) => {
         </button>
       </div>
 
-      <button
+   {product.stock == 0 ? <div className="text-red-600 font-semibold mb-2 text-[13px] mt-"> Out Of Stock </div> : <button
         onClick={cartAddHandler}
         className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full mt-3 text-[14px] w-[118px] h-[30px] cursor-pointer hover:bg-[#23272b] transition-all"
       >
         Add to Cart
-      </button>
+      </button>}
 
       <button
         className="bg-[#424A4D] text-white px-[18px] py-0 rounded-full mt-3 text-[14px] w-[118px] h-[30px] flex items-center justify-center hover:bg-[#23272b] transition-all cursor-pointer"

@@ -10,7 +10,8 @@ import { useState } from "react";
 const ProductCardFeatureProduct = ({ classes, productsItem }: any) => {
   if (!productsItem) return null;
 
-  const [hovered, setHovered] = useState(false); // ✅ hover state
+  const [hovered, setHovered] = useState(false);
+
   const price = productsItem.price ? Number(productsItem.price) : null;
   const oldPrice = productsItem.oldPrice ? Number(productsItem.oldPrice) : null;
   const rating = productsItem.rating ? Number(productsItem.rating) : 0;
@@ -31,23 +32,18 @@ const ProductCardFeatureProduct = ({ classes, productsItem }: any) => {
 
   return (
     <div
-      className={`text-center relative overflow-hidden transition duration-300 bg-white px-4 sm:px-2 md:px-0 h-[496px] ${
+      className={`text-center relative overflow-hidden transition duration-300 bg-white px-4 sm:px-2 md:px-0 h-auto ${
         classes?.root ?? ""
       }`}
-      onMouseEnter={() => setHovered(true)} // ✅ hover on card
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <Link
         href={`/products/${productsItem.slug || productsItem.id}`}
         className="block"
       >
-        {productsItem.discount && Number(productsItem.discount) > 0 && (
-          <span className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 z-10">
-            {productsItem.discount}%
-          </span>
-        )}
-
-        <div className="relative w-full max-w-[300px] h-[300px] mx-auto flex items-center justify-center overflow-hidden rounded-lg">
+        {/* ✅ Image wrapper full responsive */}
+        <div className="relative w-full h-[280px] sm:h-[300px] md:h-[320px] lg:h-[340px] xl:h-[360px] 2xl:h-[380px] mx-auto flex items-center justify-center overflow-hidden rounded-lg">
           <Image
             src={imageSrc}
             alt={imageAlt}
@@ -57,20 +53,31 @@ const ProductCardFeatureProduct = ({ classes, productsItem }: any) => {
             }`}
           />
 
-          {/* ✅ Cart icons visible only when hovered */}
-          {hovered && (
-            <div className="absolute top-2 right-2 transition-all duration-300">
-              <CartIconActions />
-            </div>
+          {/* ✅ Discount badge → always fixed top-right */}
+          {productsItem.discount && Number(productsItem.discount) > 0 && (
+            <span className="absolute top-3 right-3 bg-gray-800 text-white text-xs px-2 py-1 rounded-md z-20">
+              -{productsItem.discount}%
+            </span>
           )}
+
+          {/* ✅ Cart button always in fixed place */}
+          <div
+            className={`absolute bottom-3 right-3 transition-all duration-300 ${
+              hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+            }`}
+          >
+            <CartIconActions />
+          </div>
         </div>
 
+        {/* ✅ Product Name */}
         <h2 className="text-[15px] text-[#767678] font-medium mt-4 line-clamp-2">
           {productsItem.name ?? "No Name"}
         </h2>
 
+        {/* ✅ Price */}
         <div className="mt-1 space-x-2 text-sm">
-          <span className="text-[#767678] font-bold">
+          <span className="text-[#000000] font-bold">
             {price !== null ? `$${price.toFixed(2)}` : "Price not available"}
           </span>
           {oldPrice !== null && (
@@ -80,6 +87,7 @@ const ProductCardFeatureProduct = ({ classes, productsItem }: any) => {
           )}
         </div>
 
+        {/* ✅ Rating */}
         <div className="flex items-center justify-center text-sm text-yellow-500 mt-1">
           <FaStar className="mr-1" />
           {rating.toFixed(1)} ({reviews})

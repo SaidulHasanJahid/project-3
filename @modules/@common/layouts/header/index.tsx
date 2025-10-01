@@ -68,7 +68,7 @@ export default function Header() {
         <TopBar />
       </div>
 
-      <div className="px-[40px] lg:px-[71px] py-4">
+      <div className="px-[20px] lg:px-[71px] py-4">
         <div className="flex items-center justify-between flex-wrap">
           {windowWidth >= 1464 ? (
             <div className="w-full flex justify-between items-center gap-6">
@@ -232,43 +232,61 @@ export default function Header() {
           </div>
         )}
 
-        {windowWidth < 980 && (
-          <div className="w-full mt-3">
-            <div
-              className="flex items-center border border-gray-300 rounded-full overflow-hidden"
-              style={{ height: 50, backgroundColor: "#e7e7e898" }}
-            >
-              <input
-                type="text"
-                placeholder="Search Product For"
-                className="px-4 text-sm text-[#444] outline-none bg-transparent"
-                style={{
-                  height: "100%",
-                  flexGrow: 1,
-                  minWidth: windowWidth < 500 ? "140px" : "auto",
-                }}
-              />
-              <select
-                className="text-sm text-[#444] bg-transparent px-3 outline-none border-l border-gray-300"
-                style={{
-                  height: "100%",
-                  width: windowWidth < 500 ? "100px" : "160px",
-                }}
-              >
-                <option>All Categories</option>
-                <option>Smartphone</option>
-                <option>Laptop</option>
-                <option>Gaming</option>
-              </select>
-              <button
-                className="bg-black text-white flex items-center justify-center !ml-[-15px] "
-                style={{ height: 50, width: 50 }}
-              >
-                <FaSearch className="text-sm" />
-              </button>
-            </div>
-          </div>
-        )}
+{windowWidth < 980 && (
+  <div className="w-full mt-3">
+    <div
+      className="flex items-center border border-gray-300 rounded-full overflow-hidden"
+      style={{ height: 50, backgroundColor: "#e7e7e898" }}
+    >
+      <input
+        type="text"
+        placeholder="Search Product For"
+        className="px-4 text-sm text-[#444] outline-none bg-transparent"
+        style={{
+          height: "100%",
+          flexGrow: 1,
+          minWidth:
+            windowWidth <= 420
+              ? "140px"
+              : windowWidth > 420 && windowWidth <= 500
+              ? "calc(100% - 130px - 50px)" 
+              : "auto",
+        }}
+      />
+
+      {/* Dropdown */}
+      {windowWidth > 420 && (
+        <select
+          className="text-sm text-[#444] bg-transparent px-3 outline-none border-l border-gray-300"
+          style={{
+            height: "100%",
+            width:
+              windowWidth > 420 && windowWidth <= 500
+                ? "130px" // full All Categories দেখাবে
+                : windowWidth < 500
+                ? "100px"
+                : "160px",
+          }}
+        >
+          <option>All Categories</option>
+          <option>Smartphone</option>
+          <option>Laptop</option>
+          <option>Gaming</option>
+        </select>
+      )}
+
+      {/* Search button */}
+      <button
+        className="bg-black text-white h-full flex items-center justify-center"
+        style={{  width: 50 }}
+      >
+        <FaSearch className="text-sm" />
+      </button>
+    </div>
+  </div>
+)}
+
+        
       </div>
     </header>
   );

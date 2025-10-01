@@ -26,7 +26,6 @@ const ProductDetails = ({ product }: any) => {
   const { product_gallery } = product || {};
 
   // Handle toggle for color
-
   const handleSelect = (c: any) => {
     if (selectedColor?.id === c.id) {
       setSelectedColor(null);
@@ -36,7 +35,6 @@ const ProductDetails = ({ product }: any) => {
   };
 
   // Handle toggle for size
-
   const handleSizeSelect = (s: any) => {
     if (selectedSize?.id === s.id) {
       setSelectedSize(null);
@@ -45,7 +43,7 @@ const ProductDetails = ({ product }: any) => {
     }
   };
 
-    // Calculate stock from sizes & colors
+  // Calculate stock from sizes & colors
   const totalStock =
     product.sizes?.reduce((acc: number, cur: any) => acc + Number(cur.qty || 0), 0) +
     product.colors?.reduce((acc: number, cur: any) => acc + Number(cur.qty || 0), 0);
@@ -61,7 +59,7 @@ const ProductDetails = ({ product }: any) => {
         }}
       >
         <h1 className="text-3xl font-bold">Product Details</h1>
-        <p className="text-sm mt-1   ">
+        <p className="text-sm mt-1">
           <Link href={"/"}>
             <span className="text-[16px]">Home</span>
           </Link>{" "}
@@ -100,14 +98,8 @@ const ProductDetails = ({ product }: any) => {
             </div>
 
             <div className="flex items-center space-x-2 mb-2 mt-5">
-              <span className="text-[16px]  text-[#767678]">
-                {" "}
-                $
-                {selectedColor
-                  ? selectedColor.price
-                  : selectedSize
-                  ? selectedSize.price
-                  : product.price}
+              <span className="text-[16px] text-[#767678]">
+                ${selectedSize ? selectedSize.price : selectedColor ? selectedColor.price : product.price}
               </span>
               <span className="line-through text-[#767678] text-[14px]">
                 {product.discount_price}$
@@ -117,13 +109,10 @@ const ProductDetails = ({ product }: any) => {
               </span>
             </div>
 
-
-
-
-           <div className="mt-3 mb-3">
-              {totalStock > 0 ? (
+            <div className="mt-3 mb-3">
+              {product.stock > 0 ? (
                 <p className="text-[#388E3C] font-semibold mb-2 text-[13px] mt-3">
-                  In Stock ({totalStock})
+                  In Stock ({product.stock})
                 </p>
               ) : (
                 <p className="text-red-600 font-semibold mb-2 text-[13px] mt-3">
@@ -131,7 +120,7 @@ const ProductDetails = ({ product }: any) => {
                 </p>
               )}
             </div>
-            <div className="  space-x-4  mb-3 mt-3">
+            <div className="space-x-4 mb-3 mt-3">
               <div className="flex items-center text-[#767678] text-[16px] space-x-1">
                 <FaClock />
                 <span>
@@ -163,7 +152,7 @@ const ProductDetails = ({ product }: any) => {
               </span>
             </div>
 
-            <p className="text-[#424A4D] flex items-center  mb-4 text-[16px] font-semibold cursor-pointer hover:underline">
+            <p className="text-[#424A4D] flex items-center mb-4 text-[16px] font-semibold cursor-pointer hover:underline">
               <FaFlag /> <span className="ml-2">Report This Item</span>
             </p>
 
@@ -237,7 +226,7 @@ const ProductDetails = ({ product }: any) => {
                         className="w-4 h-4 rounded-full border border-gray-400 checked:bg-[#767678] checked:border-[#767678] appearance-none cursor-pointer"
                       />
                       <span>
-                        {s.size.toUpperCase()}  ${s.price}
+                        {s.size.toUpperCase()} ${s.price}
                       </span>
                     </label>
                   ))}
@@ -260,15 +249,11 @@ const ProductDetails = ({ product }: any) => {
                         onChange={() => handleSelect(c)}
                         className="w-4 h-4 rounded-full border border-gray-400 checked:bg-[#767678] checked:border-[#767678] appearance-none cursor-pointer"
                       />
-
-                      {/* Color name + price */}
                       <span>
-                        {c.color || "Default Color"}  ${c.price}
+                        {c.color || "Default Color"} ${c.price}
                       </span>
                     </label>
                   ))}
-
-   
                 </div>
               </div>
             </div>
