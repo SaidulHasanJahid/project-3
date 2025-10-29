@@ -5,9 +5,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./globals.css";
 import "@/styles/main.scss";
-import Header from "@/@modules/@common/layouts/header";
 import { UserProvider } from "@/@modules/context/user-context";
 import NewsletterModal from "@/@modules/modal";
+import Header from "@/@modules/@common/layouts/header";
+import MobileBottomNav from "@/@modules/@common/button-bottom";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +24,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
             <Header />
             {children}
                 <NewsletterModal ttlDays={1} />
-
+                <MobileBottomNav />
             <Footer />
           </UserProvider>
         </StateProvider>

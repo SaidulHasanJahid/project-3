@@ -1,5 +1,5 @@
-import CustomerCheckout from "@/@modules/customer/checkout";
+import CheckoutPage from "@/@modules/customer/checkout";
 
-export default function CheckoutForm() {
-  return <CustomerCheckout />;
+export default function CheckoutFormPage() {
+  return <CheckoutPage />;
 }

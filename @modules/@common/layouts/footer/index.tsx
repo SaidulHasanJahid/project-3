@@ -1,165 +1,153 @@
-'use client';
+"use client";
 
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
-  FaGooglePlusG,
-  FaDribbble,
-} from "react-icons/fa";
+import React from "react";
 import Image from "next/image";
-
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { FaFacebookF, FaInstagram, FaAngleDoubleRight } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
+import { FiPhone, FiMail } from "react-icons/fi";
+import { BsDashLg } from "react-icons/bs";
 
 const Footer = () => {
-  const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email address').required('Email is required'),
-  });
-
-  const handleSubmit = (values: { email: string }) => {
-    console.log('Submitted:', values);
-    // Your submit logic here
-  };
-
   return (
-    <footer className="bg-white text-[#222] text-sm font-sans mt-10">
-      {/* Newsletter Section */}
-        <div className="bg-[#1c1c1c] text-white w-full">
-      <div className="container px-4 mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between py-8">
-          <h2 className="text-xl font-semibold mb-4 lg:mb-0 uppercase">
-            Sign up to newslatter
-          </h2>
+    <footer className="bg-[#0d0d0d] text-white text-[14px] font-sans">
+      {/* === MAIN FOOTER === */}
+      <div className="max-w-[1300px] mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        {/* ===== Column 1: Logo & Info ===== */}
+        <div>
+          <Image
+            src="https://tasa.com.bd/wp-content/uploads/2022/11/Untitled-12.png"
+            alt="TASA Logo"
+            width={150}
+            height={40}
+            className="mb-6"
+          />
 
-          <Formik
-            initialValues={{ email: '' }}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {() => (
-              <Form className="w-full max-w-xl">
-                <div className="flex flex-col w-full lg:flex-row lg:items-center">
-                  {/* Error text above input */}
-                  <div className="text-red-500 text-sm mb-2 lg:mb-0">
-                    <ErrorMessage name="email" />
-                  </div>
+          <p className="leading-relaxed text-[#cfcfcf] mb-5">
+            TASA is more than just a leather brand – it’s a symbol of quality,
+            style, and value. We hope to be a part of your journey as you make
+            your fashion exploration with TASA leather products.
+          </p>
 
-                  <div className="flex w-full">
-                    <Field
-                      type="text"
-                      name="email"
-                      placeholder="Enter your email"
-                      className="w-full lg:w-[500px] p-3 rounded-l-full text-black bg-white outline-none"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-[#2f2f2f] hover:bg-[#444] px-6 py-3 rounded-r-full transition-colors"
-                    >
-                      Send
-                    </button>
-                  </div>
-                </div>
-              </Form>
-            )}
-          </Formik>
+          <ul className="space-y-3 text-[#cfcfcf]">
+            <li className="flex items-start gap-2">
+              <IoLocationSharp className="mt-[2px] text-[#999]" size={18} />
+              <p>
+                Tasa villa, Pahartali DT road, Beside Bheluaar Dighi School,
+                Pahartali, Chattogram
+              </p>
+            </li>
+            <li className="flex items-center gap-2">
+              <FiPhone className="text-[#999]" size={18} />
+              <p>+880 1755-377017</p>
+            </li>
+            <li className="flex items-center gap-2">
+              <FiMail className="text-[#999]" size={18} />
+              <p>supports@tasa.com.bd</p>
+            </li>
+          </ul>
         </div>
-      </div>
-    </div>
-      {/* Footer Content */}
-      <div className="container">
-        <div className="w-full border-t border-gray-200">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
-            {/* Column 1 */}
-            <div className="space-y-2 leading-[30px]">
-              <h3 className="text-blue-600 text-lg mb-[35px] font-bold">
-                eCommerce
-              </h3>
-              <p className="text-[18px] font-bold">
-                Got Questions ? Call us 24/7!
-              </p>
-              <p className="text-lg font-bold">00 000 000 000</p>
-              <p>
-                <span className="font-semibold">Address :</span> <br />
-                <span className="text-[16px] font-medium text-[#767676]">
-                  3584 Hickory Heights Drive , USA
-                </span>
-              </p>
-              <p>
-                <span className="font-semibold">Email :</span> <br />
-                <span className="text-[16px] font-medium text-[#767676]">
-                  admin@geniusocean.com
-                </span>
-              </p>
-              <div className="flex gap-4 mt-4 text-[#222] text-lg">
-                <FaFacebookF className="hover:text-blue-600 cursor-pointer transition" />
-                <FaTwitter className="hover:text-blue-400 cursor-pointer transition" />
-                <FaLinkedinIn className="hover:text-blue-700 cursor-pointer transition" />
-                <FaGooglePlusG className="hover:text-red-600 cursor-pointer transition" />
-                <FaDribbble className="hover:text-pink-500 cursor-pointer transition" />
-              </div>
-            </div>
 
-            {/* Column 2 */}
-            <div className="border-t lg:border-t-0 lg:border-l border-gray-200 pl-0 lg:pl-6 pt-6 lg:pt-0">
-              <h4 className="font-semibold mb-[35px]">PRODUCT CATEGORY</h4>
-              <ul className="space-y-2 text-[15px] leading-[35px] text-[#818181] cursor-pointer">
-                <li>Electronic</li>
-                <li>Fashion & Beauty</li>
-                <li>Camera & Photo</li>
-                <li>Smart Phone & Tablet</li>
-                <li>Sport & Outdoor</li>
-                <li>Jewelry & Watches</li>
-              </ul>
-            </div>
+        {/* ===== Column 2 ===== */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <BsDashLg className="text-[#999]" size={18} />
+            <h4 className="font-semibold text-white text-[16px]">Quick Links</h4>
+          </div>
+          <ul className="space-y-3">
+            {[
+              "Our Story",
+              "Shipping and Returns",
+              "Terms & Conditions",
+              "Privacy Policy",
+            ].map((item, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-2 text-[18px] font-semibold text-[#cfcfcf] hover:text-gray-400 transition cursor-pointer"
+              >
+                <FaAngleDoubleRight size={18} className="text-[#999]" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            {/* Column 3 */}
-            <div className="border-t lg:border-t-0 lg:border-l border-gray-200 pl-0 lg:pl-6 pt-6 lg:pt-0">
-              <h4 className="font-semibold mb-[35px]">CUSTOMER CARE</h4>
-              <ul className="space-y-2 text-[15px] leading-[35px] text-[#818181] cursor-pointer">
-                <li>Home</li>
-                <li>Blog</li>
-                <li>Faq</li>
-                <li>Privacy & Policy</li>
-                <li>Terms & Condition</li>
-                <li>Contact Us</li>
-              </ul>
-            </div>
+        {/* ===== Column 3 ===== */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <BsDashLg className="text-[#999]" size={18} />
+            <h4 className="font-semibold text-white text-[16px]">Support</h4>
+          </div>
+          <ul className="space-y-3">
+            {[
+              "Contact Us",
+              "Leather Care",
+              "Materials",
+              "Daraz Flagship Store",
+              "About Us",
+            ].map((item, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-2 text-[18px] font-semibold text-[#cfcfcf] hover:text-gray-400 transition cursor-pointer"
+              >
+                <FaAngleDoubleRight size={18} className="text-[#999]" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            {/* Column 4 */}
-            <div className="border-t lg:border-t-0 lg:border-l border-gray-200 pl-0 lg:pl-6 pt-6 lg:pt-0">
-              <h4 className="font-semibold mb-[30px]">RECENT POST</h4>
-              <div className="space-y-4">
-                {[1, 2, 3].map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-3 items-start hover:text-blue-600 transition cursor-pointer"
-                  >
-                    <Image
-                      src={`https://eco.rafiinternational.com/assets/images/blogs/1645433377${i}1572852720blog${3 - i}.png`}
-                      alt={`Post ${i + 1}`}
-                      width={50}
-                      height={50}
-                      className="object-cover rounded-sm"
-                    />
-                    <div>
-                      <p className="font-medium leading-snug">
-                        How to design effective arts?
-                      </p>
-                      <span className="text-xs text-gray-500">
-                        {i === 2 ? "Aug 03 - 2018" : "Jan 03 - 2019"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* ===== Column 4: Newsletter ===== */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <BsDashLg className="text-[#999]" size={18} />
+            <h4 className="font-semibold text-white text-[16px]">Subscribe</h4>
+          </div>
+
+          <div className="flex flex-col space-y-3">
+            <input
+              type="email"
+              placeholder="Enter Your Email"
+              className="p-3 bg-transparent border border-[#444] text-white w-full outline-none placeholder:text-gray-400"
+            />
+            <button className="bg-black text-white py-3 hover:bg-[#111] transition uppercase font-semibold">
+              Subscribe
+            </button>
+          </div>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-5 mt-6">
+            <a
+              href="#"
+              className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
+            >
+              <FaFacebookF size={18} />
+            </a>
+            <a
+              href="#"
+              className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
+            >
+              <FaInstagram size={18} />
+            </a>
           </div>
         </div>
+      </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-200 py-4 text-center text-sm text-gray-600">
-          COPYRIGHT © 2022. All Rights Reserved By GeniusOcean
+      {/* === BOTTOM COPYRIGHT BAR === */}
+      <div className="border-t border-[#222]">
+        <div className="max-w-[1300px] mx-auto flex flex-col md:flex-row justify-between items-center px-6 py-4 text-[#aaa] text-sm">
+          <p className="text-center md:text-left">
+            TASA ©2022 all rights reserve
+          </p>
+
+          <div className="mt-4 md:mt-0">
+            <Image
+              src="https://tasa.com.bd/wp-content/themes/woodmart/images/payments.png"
+              alt="Payment Methods"
+              width={250}
+              height={25}
+              className="object-contain"
+            />
+          </div>
         </div>
       </div>
     </footer>

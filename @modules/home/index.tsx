@@ -1,25 +1,33 @@
-import BestMonthOffer from "./components/best-month-offer";
-import Best_Selling_Product from "./components/best-selling-products";
 import CategoryCard from "./components/category";
-import ProductTabs from "./components/category-wise-products";
-import DealOfTheDay from "./components/deal-of-the-day";
-import FeaturedProducts from "./components/featured-products";
-import InfoBanner from "./components/InfoBanner";
 import LatestPost from "./components/latest-post";
 import HeroCarousel from "./components/slider";
+import BeltSection from "./components/belt-section";
+import SpecialEditionSection from "./components/special-edition-sectio";
+import BagSection from "./components/bag-section";
+import BifoldWalletSection from "./components/bifold-wallet-section";
+import ComboOfferSection from "./components/combo-offer-section";
+import FashionSlider from "./components/explore-section";
+import FashionIntroSection from "./components/discover-section";
+import VideoSection from "./components/vedio";
+import WalletCategories from "./components/categori-walet-secton";
+import FeatureSection from "./components/feature-section";
 
-const Home = ({ bannerItem }: any) => {
+const Home = () => {
   return (
     <div>
-      <HeroCarousel bannerItem={bannerItem} />
+      <HeroCarousel />
       <CategoryCard />
-      <BestMonthOffer />
-      <ProductTabs />
-      <FeaturedProducts />
-      <InfoBanner />
-      <DealOfTheDay />
-      <Best_Selling_Product />
+      <BeltSection />
+      <SpecialEditionSection />
+      <BagSection />
+      <BifoldWalletSection />
+      <FashionSlider />
+      <ComboOfferSection />
+      <VideoSection />
+      <WalletCategories />
+      <FashionIntroSection />
       <LatestPost />
+      <FeatureSection />
     </div>
   );
 };

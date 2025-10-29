@@ -3,18 +3,18 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     domains: [
-      "eco.rafiinternational.com", 
-      "api.rafiinternational.com",
-      "api.shottershondhan.com",
-      "unsplash.it",
-      "api.rafiinternational.com ",
-      "source.unsplash.com",
-      "images.unsplash.com",
+      "images.pexels.com",
       "plus.unsplash.com",
+      "images.unsplash.com",
+      "media.istockphoto.com",
       "via.placeholder.com",
       "picsum.photos",
       "api.eyniyl.com",
       "placehold.co",
+      "cdn.pixabay.com",
+      "tasa.com.bd",
+      "eco.rafiinternational.com",
+      "i.ibb.co", // ✅ Added for your wallet images
     ],
   },
 };

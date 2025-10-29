@@ -1,506 +1,349 @@
 "use client";
 
-import PriceDetails from "@/@modules/@common/price-deatile";
-import { clearCart } from "@/appstore/cart/cart-slice";
-import { useSaveOrderMutation } from "@/appstore/cart/checkout-api";
-import { Checkbox, Input } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import { ErrorMessage, Form, Formik } from "formik";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FaCreditCard, FaUser } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Link from "next/link";
 
-export default function CheckoutForm() {
-  const [packaging, setPackaging] = useState("free");
-  const [packagingType, setPackagingType] = useState("default");
-  const [isShipping, setIsShipping] = useState(false);
-  const [isBilling, setIsBilling] = useState(false);
-  const dispatch = useDispatch();
-  const [createTrigger, { isLoading }] = useSaveOrderMutation();
+interface FormValues {
+  fullName: string;
+  country: string;
+  address: string;
+  district: string;
+  phone: string;
+  email: string;
+  orderNotes: string;
+  shipping: string;
+  paymentMethod: string;
+  quantity: number;
+}
 
-  // Access cart data from Redux store
-  const cart = useSelector((state: any) => state?.cart?.items || []);
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
-
-  const cart_payload = cart?.map((item: any) => ({
-    product_id: item.id,
-    quantity: item.quantity,
-  }));
-  // Initialize quantities based on cart items
-  useEffect(() => {
-    const qtys: { [key: string]: number } = {};
-    cart.forEach((item: any) => {
-      qtys[item.id] = quantities[item.id] || 1;
-    });
-    setQuantities(qtys);
-  }, [cart]);
-
-  const cartTotal = cart.reduce((acc: number, item: any) => {
-    const qty = quantities[item.id] || 1;
-    return acc + Number(item.price) * qty;
-  }, 0);
-
-  // Calculate additional costs based on shipping and packaging
-  const shippingCost = packaging === "express" ? 10 : 0;
-  const packagingCost = packagingType === "gift" ? 15 : 0;
-  const finalPrice = cartTotal + shippingCost + packagingCost;
-
-  const handleSaveOrder = async (values: any) => {
-    try {
-      const response = await createTrigger(values).unwrap();
-      if (response?.success) {
-        localStorage.clear();
-        dispatch(clearCart());
-        alert("Order placed successfully!");
-      }
-    } catch (error) {
-      console.log(error, "test");
-    }
-  };
-
-  const initialValues = {
-    full_name: null,
-    email: null,
-    phone: null,
+export default function CheckoutPage() {
+  const initialValues: FormValues = {
+    fullName: "",
     country: "Bangladesh",
-    state: null,
-    city: null,
-    address_line: null,
-    billing_address: {
-      full_name: null,
-      phone: null,
-      address_line: null,
-      city: null,
-      state: null,
-      postal_code: null,
-      country: "Bangladesh",
-      address_type: "billing",
-    },
-    shipping_address: {
-      full_name: null,
-      phone: null,
-      address_line: null,
-      city: null,
-      state: null,
-      postal_code: null,
-      country: "Bangladesh",
-      address_type: "shipping",
-    },
-    shipping_method: "free",
-    packaging: "default",
-    items: [],
-    payment_method: "cod",
+    address: "",
+    district: "Chattogram",
+    phone: "",
+    email: "",
+    orderNotes: "",
+    shipping: "60",
+    paymentMethod: "cash",
+    quantity: 1,
   };
 
   const validationSchema = Yup.object({
-    full_name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phone: Yup.string().required("Phone number is required"),
+    fullName: Yup.string().required("Full name is required"),
     country: Yup.string().required("Country is required"),
-    city: Yup.string().required("City is required"),
-    address_line: Yup.string().required("Address is required"),
+    address: Yup.string().required("Address is required"),
+    district: Yup.string().required("District is required"),
+    phone: Yup.string()
+      .required("Phone number is required")
+      .matches(/^\d+$/, "Phone must be numeric"),
+    email: Yup.string().email("Invalid email format").optional(),
   });
 
+  const handleSubmit = async (values: FormValues) => {
+    console.log("Form Data:", values);
+
+    // Simulate API submission (so you can see it in Network tab)
+    await fetch("/api/submit-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    alert("Order placed successfully!");
+  };
+
   return (
-    <>
+  <>
+    {/* Top Banner */}
       <div
-        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
+        className="w-full h-[260px] flex flex-col justify-center items-center text-white bg-cover bg-center relative"
         style={{
           backgroundImage:
-            'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
+            'url("https://tasa.com.bd/wp-content/uploads/2023/02/h9ip.jpg")',
         }}
       >
-        <h1 className="text-3xl font-bold">Checkout</h1>
-        <p className="text-sm mt-1">
-          <Link href={"/"}>
-            <span className="text-[16px]">Home</span>
-          </Link>{" "}
-          / Checkout
-        </p>
-      </div>
-
-      <div className="container">
-        <div className="mx-auto p-4 md:p-8">
-          {/* Stepper */}
-          <div className="flex flex-wrap items-center gap-3 md:gap-5 justify-center md:justify-start mb-8">
-            <div className="w-full max-w-4xl mx-auto p-8">
-              <div className="flex items-center gap-5">
-                {/* Step 1 - Address (Active) */}
-                <div className="relative flex items-center">
-                  <div className="flex items-center bg-slate-600 text-white px-6 py-4 pr-8">
-                    <div className="flex items-center justify-center w-8 h-8 bg-white text-slate-600 rounded-full text-sm font-semibold mr-3">
-                      1
-                    </div>
-                    <FaUser className="w-5 h-5 mr-2" />
-                    <span className="font-medium text-lg">Address</span>
-                  </div>
-                  <div className="w-0 h-0 border-l-[20px] border-l-slate-600 border-t-[28px] border-t-transparent border-b-[28px] border-b-transparent"></div>
-                </div>
-
-                {/* Step 3 - Payment (Inactive) */}
-                <div className="relative flex items-center -ml-1">
-                  <div className="flex items-center bg-gray-200 text-gray-600 px-6 py-4 pl-8">
-                    <div className="flex items-center justify-center w-8 h-8 bg-gray-400 text-white rounded-full text-sm font-semibold mr-3">
-                      3
-                    </div>
-                    <FaCreditCard className="w-5 h-5 mr-2" />
-                    <span className="font-medium text-lg">Confirmation</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            validateOnMount
-            onSubmit={(values) => {
-              handleSaveOrder(values);
-            }}
-          >
-            {({ values, isSubmitting, isValid, setFieldValue }) => (
-              <Form>
-                <div className="flex flex-col md:flex-row gap-6">
-                  {/* Left Column */}
-
-                  <div className="flex-1 border border-[#BDCCDB] p-4 md:p-6 space-y-6 shadow-sm max-w-full">
-                    {/* Personal Info */}
-                    <div className="space-y-4 border-b border-[#BDCCDB] pb-6">
-                      <h2 className="font-bold text-[#141926] border-b border-[#BDCCDB] pb-2 text-lg">
-                        Personal Information :
-                      </h2>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Enter Your Name"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("full_name", value);
-                              setFieldValue("billing_address.full_name", value);
-                              setFieldValue(
-                                "shipping_address.full_name",
-                                value
-                              );
-                            }}
-                          />
-                          <ErrorMessage
-                            name="full_name"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Input
-                            type="email"
-                            placeholder="Enter Your Email"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("email", value);
-                            }}
-                          />
-                          <ErrorMessage
-                            name="email"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Input
-                            name="phone"
-                            type="text"
-                            placeholder="Phone Number"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("phone", value);
-                              setFieldValue("billing_address.phone", value);
-                              setFieldValue("shipping_address.phone", value);
-                            }}
-                          />
-                          <ErrorMessage
-                            name="phone"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-
-                        <div className="">
-                          <Input
-                            type="text"
-                            placeholder="Enter City"
-                            className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("city", value);
-                              setFieldValue("billing_address.city", value);
-                              setFieldValue("shipping_address.city", value);
-                            }}
-                          />
-                          <ErrorMessage
-                            name="city"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-                        <div className="col-span-2">
-                          <TextArea
-                            placeholder="Enter Full Address"
-                            className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
-                            rows={2}
-                            onChange={(e: any) => {
-                              const value = e.target.value;
-                              setFieldValue("address_line", value);
-                              setFieldValue(
-                                "billing_address.address_line",
-                                value
-                              );
-                              setFieldValue(
-                                "shipping_address.address_line",
-                                value
-                              );
-                            }}
-                          />
-                          <ErrorMessage
-                            name="address_line"
-                            component="div"
-                            className="text-red-500 text-sm mt-1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Billing Info */}
-
-                    <div className="flex items-center gap-2 ">
-                      <Checkbox
-                        checked={isBilling}
-                        onChange={() => setIsBilling(!isBilling)}
-                      >
-                        Bill to a Different Address?
-                      </Checkbox>
-                    </div>
-
-                    {isBilling && (
-                      <div className="space-y-4 border-b border-[#BDCCDB]">
-                        <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
-                          Billing Details
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <Input
-                              type="text"
-                              placeholder="Full Name"
-                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                              onChange={(e: any) => {
-                                const value = e.target.value;
-                                setFieldValue(
-                                  "billing_address.full_name",
-                                  value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div>
-                            <Input
-                              type="text"
-                              placeholder="Phone Number"
-                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                              onChange={(e: any) => {
-                                const value = e.target.value;
-                                setFieldValue("billing_address.phone", value);
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <Input
-                              type="text"
-                              placeholder="Country"
-                              value={values.billing_address.country}
-                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                              onChange={(e: any) => {
-                                const value = e.target.value;
-                                setFieldValue("billing_address.country", value);
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <Input
-                              type="text"
-                              placeholder="City"
-                              className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                              onChange={(e: any) => {
-                                const value = e.target.value;
-                                setFieldValue("billing_address.city", value);
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-span-2">
-                            <TextArea
-                              placeholder="Enter Full Address"
-                              className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
-                              rows={2}
-                              onChange={(e: any) => {
-                                const value = e.target.value;
-                                setFieldValue(
-                                  "billing_address.address_line",
-                                  value
-                                );
-                              }}
-                            />
-                            <ErrorMessage
-                              name="address_line"
-                              component="div"
-                              className="text-red-500 text-sm mt-1"
-                            />
-                          </div>
-                        </div>
-
-                        <select
-                          name="billing_address.country"
-                          className="border border-[#BDCCDB] px-4 py-2 rounded-md w-full h-11 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#767678] bg-white"
-                          defaultValue=""
-                        >
-                          <option value="" disabled>
-                            Select Country
-                          </option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="India">India</option>
-                          <option value="USA">USA</option>
-                          <option value="UK">UK</option>
-                        </select>
-                      </div>
-                    )}
-
-                    <div className="flex items-center gap-2 ">
-                      <Checkbox
-                        checked={isShipping}
-                        onChange={() => setIsShipping(!isShipping)}
-                      >
-                        Ship to a Different Address?
-                      </Checkbox>
-                    </div>
-
-                    {isShipping && (
-                      <div className="space-y-4 border-[#BDCCDB] pt-4 transition-all duration-300">
-                        <div className="space-y-4 border-b border-[#BDCCDB]">
-                          <h2 className="font-bold text-lg text-[#141926] border-b border-[#BDCCDB] pb-2">
-                            Shipping Details
-                          </h2>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                              <Input
-                                type="text"
-                                placeholder="Full Name"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                onChange={(e: any) => {
-                                  const value = e.target.value;
-                                  setFieldValue(
-                                    "shipping_address.full_name",
-                                    value
-                                  );
-                                }}
-                              />
-                            </div>
-
-                            <div>
-                              <Input
-                                type="text"
-                                placeholder="Phone Number"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                onChange={(e: any) => {
-                                  const value = e.target.value;
-                                  setFieldValue(
-                                    "shipping_address.phone",
-                                    value
-                                  );
-                                }}
-                              />
-                            </div>
-                            <div>
-                              <Input
-                                type="text"
-                                placeholder="Country"
-                                value={values.shipping_address.country}
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                onChange={(e: any) => {
-                                  const value = e.target.value;
-                                  setFieldValue(
-                                    "shipping_address.country",
-                                    value
-                                  );
-                                }}
-                              />
-                            </div>
-                            <div>
-                              <Input
-                                type="text"
-                                placeholder="City"
-                                className="border border-[#BDCCDB] w-full h-11 px-4 py-2 rounded-md focus:outline-none focus:ring-0"
-                                onChange={(e: any) => {
-                                  const value = e.target.value;
-                                  setFieldValue("shipping_address.city", value);
-                                }}
-                              />
-                            </div>
-
-                            <div className="col-span-2">
-                              <TextArea
-                                placeholder="Enter Full Address"
-                                className="border border-[#BDCCDB] w-full px-4 py-2 rounded-md focus:outline-none focus:ring-0 h-[44px]"
-                                rows={2}
-                                onChange={(e: any) => {
-                                  const value = e.target.value;
-                                  setFieldValue(
-                                    "shipping_address.address_line",
-                                    value
-                                  );
-                                }}
-                              />
-                              <ErrorMessage
-                                name="address_line"
-                                component="div"
-                                className="text-red-500 text-sm mt-1"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <button
-                      type="submit"
-                      className={`bg-[#424A4D] text-white px-6 py-2 rounded-md w-fit cursor-pointer transition hover:bg-gray-700 opacity-50 `}
-                    >
-                      {isLoading ? "Submitting..." : "Continue"}
-                    </button>
-                  </div>
-
-                  {/* Right Column - PRICE DETAILS */}
-                  <PriceDetails
-                    cartTotal={cartTotal}
-                    shippingCost={shippingCost}
-                    packagingCost={packagingCost}
-                    finalPrice={finalPrice}
-                    showShippingOptions={true}
-                    packaging={packaging}
-                    setPackaging={setPackaging}
-                    packagingType={packagingType}
-                    setPackagingType={setPackagingType}
-                  />
-                </div>
-              </Form>
-            )}
-          </Formik>
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 text-center">
+          <h1 className="text-[48px] md:text-[60px] font-semibold text-[#fff]">
+            Chackout
+          </h1>
+          <p className="text-[16px] text-white mt-1">
+            <Link href="/" className="hover:underline">
+              Home
+            </Link>{' '}
+            / Chackout
+          </p>
         </div>
       </div>
-    </>
+    <div className="container bg-white py-10 px-4 md:px-10 lg:px-20">
+      <p className="text-sm mb-5">
+        Have a coupon?{" "}
+        <a href="#" className="text-[#000] underline">
+          Click here to enter your code
+        </a>
+      </p>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, handleChange, setFieldValue }) => {
+          const subtotal = 1600 * values.quantity;
+          const shippingCost =
+            values.shipping === "60" ? 60 : values.shipping === "100" ? 100 : 120;
+          const total = subtotal + shippingCost;
+
+          return (
+            <Form className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+              {/* LEFT SIDE */}
+              <div>
+                <h2 className="text-lg font-semibold mb-6 tracking-wide">
+                  BILLING & SHIPPING
+                </h2>
+
+                {/* Full Name */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Full Name(আপনার সম্পূর্ণ নাম) <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    name="fullName"
+                    type="text"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  />
+                  <ErrorMessage
+                    name="fullName"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Country */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Country / Region <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    as="select"
+                    name="country"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  >
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="India">India</option>
+                    <option value="Nepal">Nepal</option>
+                  </Field>
+                  <ErrorMessage
+                    name="country"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Address */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Full address(আপনার সম্পূর্ণ ঠিকানা লিখুন){" "}
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    name="address"
+                    type="text"
+                    placeholder="House number and street name"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  />
+                  <ErrorMessage
+                    name="address"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* District */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    District (জেলা) <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    as="select"
+                    name="district"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  >
+                    <option value="Chattogram">Chattogram</option>
+                    <option value="Dhaka">Dhaka</option>
+                    <option value="Outside District">Outside District</option>
+                  </Field>
+                  <ErrorMessage
+                    name="district"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Phone(আপনার যেকোন নাম্বারটি দিন){" "}
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    name="phone"
+                    type="text"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  />
+                  <ErrorMessage
+                    name="phone"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium mb-1">
+                    Email address (optional)
+                  </label>
+                  <Field
+                    name="email"
+                    type="email"
+                    className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-black"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Additional Info */}
+                <h2 className="text-lg font-semibold mb-3 tracking-wide">
+                  ADDITIONAL INFORMATION
+                </h2>
+                <label className="block text-sm font-medium mb-1">
+                  Order notes (optional)
+                </label>
+                <Field
+                  as="textarea"
+                  name="orderNotes"
+                  placeholder="Notes about your order, e.g. special notes for delivery."
+                  className="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm h-28 resize-none focus:outline-none focus:border-black"
+                />
+              </div>
+
+              {/* RIGHT SIDE */}
+              <div className="bg-[#f9f9f9] border border-gray-200 rounded-sm p-6">
+                <h2 className="text-lg font-semibold mb-6 tracking-wide text-center">
+                  YOUR ORDER
+                </h2>
+
+                {/* Table */}
+                <div className="border bg-white border-gray-200">
+                  <div className="flex justify-between bg-gray-100 text-sm font-medium px-4 py-2 border-b border-gray-200">
+                    <p>PRODUCT</p>
+                    <p>SUBTOTAL</p>
+                  </div>
+
+                  {/* Product */}
+                  <div className="px-4 py-4 border-b border-gray-200 text-sm">
+                    <p className="mb-2">
+                      Combo offer 2 (Long Wallet Series 1 & Eyewear Case Series 1)
+                    </p>
+                    <div className="flex items-center gap-2 mb-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFieldValue(
+                            "quantity",
+                            Math.max(1, values.quantity - 1)
+                          )
+                        }
+                        className="px-2 py-[2px] border border-gray-400 text-xs cursor-pointer hover:bg-gray-200 transition"
+                      >
+                        -
+                      </button>
+                      <span>{values.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => setFieldValue("quantity", values.quantity + 1)}
+                        className="px-2 py-[2px] border border-gray-400 text-xs cursor-pointer hover:bg-gray-200 transition"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className="text-right">৳ {subtotal.toFixed(2)}</p>
+                  </div>
+
+                  {/* Subtotal */}
+                  <div className="flex justify-between px-4 py-2 text-sm border-b border-gray-200">
+                    <p>Subtotal</p>
+                    <p>৳ {subtotal.toFixed(2)}</p>
+                  </div>
+
+                  {/* Shipping */}
+                  <div className="px-4 py-3 text-sm border-b border-gray-200">
+                    <p className="font-medium mb-2">Shipping</p>
+                    <div className="space-y-1">
+                      <label className="flex items-center gap-2 cursor-pointer hover:text-black transition">
+                        <Field type="radio" name="shipping" value="60" />
+                        Home Delivery–Chattogram City: ৳ 60.00
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer hover:text-black transition">
+                        <Field type="radio" name="shipping" value="100" />
+                        Home Delivery–Dhaka City: ৳ 100.00
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer hover:text-black transition">
+                        <Field type="radio" name="shipping" value="120" />
+                        Home Delivery–Outside District: ৳ 120.00
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div className="flex justify-between px-4 py-3 text-sm font-semibold">
+                    <p>Total</p>
+                    <p>৳ {total.toFixed(2)}</p>
+                  </div>
+                </div>
+
+                {/* Payment */}
+                <div className="mt-6 border border-gray-200 text-sm">
+                  <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 cursor-pointer">
+                    <Field type="radio" name="paymentMethod" value="cash" />
+                    <p className="font-medium">Cash on delivery</p>
+                  </div>
+                  <div className="px-4 py-3">
+                    <p>Pay with cash upon delivery.</p>
+                  </div>
+                </div>
+
+                {/* Privacy Note */}
+                <p className="text-xs text-gray-600 mt-6 leading-relaxed">
+                  Your personal data will be used to process your order, support
+                  your experience throughout this website, and for other purposes
+                  described in our{" "}
+                  <a href="#" className="underline">
+                    privacy policy
+                  </a>
+                  .
+                </p>
+
+                {/* Place Order */}
+                <button
+                  type="submit"
+                  className="mt-6 w-full bg-black text-white text-sm font-semibold py-3 hover:bg-gray-800 transition cursor-pointer"
+                >
+                  PLACE ORDER
+                </button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  </>
   );
 }

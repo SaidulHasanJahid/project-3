@@ -1,193 +1,80 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
-const products = [
+const topRatedProducts = [
   {
-    title: "Physical Product Title will be here",
-    price: 45,
-    oldPrice: 543,
-    discount: 92,
-    rating: 4.2,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1675053446iCxPWgtT.png",
+    name: "Classic Bifold Series 2",
+    image: "https://tasa.com.bd/wp-content/uploads/2024/01/DSC01434-800x800.jpg",
+    oldPrice: "৳ 1,350.00",
+    price: "৳ 1,090.00",
+    rating: 5,
   },
   {
-    title: "Physical Product Title Title will Be Here 99",
-    price: 34,
-    oldPrice: 99,
-    discount: 66,
-    rating: 4.7,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1675053315Z9yfuKPk.png",
+    name: "Mulberry Bifold Series 1",
+    image:  "https://tasa.com.bd/wp-content/uploads/2023/03/DSC01734-800x800.jpg",
+    oldPrice: "",
+    price: "৳ 1,299.00 – ৳ 1,390.00",
+    rating: 5,
   },
   {
-    title: "Top Rated product title will be here according to your wish 123",
-    price: 80,
-    oldPrice: 129,
-    discount: 38,
-    rating: 3.9,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1639377187LerG6ypK.png",
-  },
-  {
-    title: "Zain - Digital Agency and Startup HTML Template",
-    price: 20,
-    oldPrice: 35,
-    discount: 42,
-    rating: 4.5,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1648013375aGqS3Zgd.png",
-  },
-  {
-    title: "Top Rated product title will be here according to your wish 123",
-    price: 199,
-    oldPrice: 249,
-    discount: 20,
-    rating: 4.8,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/16480134488OmlUgJN.png",
-  },
-  {
-    title: "Physical Product Title will be here",
-    price: 45,
-    oldPrice: 543,
-    discount: 92,
-    rating: 4.2,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1639377739mqNT2g2x.png",
-  },
-  {
-    title: "Physical Product Title Title will Be Here 99",
-    price: 34,
-    oldPrice: 99,
-    discount: 66,
-    rating: 4.7,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1648013500i2EEZrBt.png",
-  },
-  {
-    title: "Top Rated product title will be here according to your wish 123",
-    price: 80,
-    oldPrice: 129,
-    discount: 38,
-    rating: 3.9,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1648013669fVYfMbbZ.png",
-  },
-  {
-    title: "Zain - Digital Agency and Startup HTML Template",
-    price: 20,
-    oldPrice: 35,
-    discount: 42,
-    rating: 4.5,
-    image:
-      "https://eco.rafiinternational.com/assets/images/products/1639392531ypne3xL8.png",
+    name: "Minimalist Wallet Series 2",
+    image: "https://tasa.com.bd/wp-content/uploads/2024/06/IMG_9228-800x800.jpg",
+    oldPrice: "৳ 749.00",
+    price: "৳ 649.00",
+    rating: 5,
   },
 ];
 
-export default function ProductSlider() {
-  const [startIndex, setStartIndex] = useState(0);
-  const itemsPerPage = 4;
-
-  const handleNext = () => {
-    setStartIndex((prev) => (prev + itemsPerPage) % products.length);
-  };
-
-  const handlePrev = () => {
-    setStartIndex((prev) =>
-      prev - itemsPerPage < 0
-        ? products.length - itemsPerPage
-        : prev - itemsPerPage
-    );
-  };
-
-  const currentProducts = products.slice(startIndex, startIndex + itemsPerPage);
-  const visible =
-    currentProducts.length < itemsPerPage
-      ? [
-          ...currentProducts,
-          ...products.slice(0, itemsPerPage - currentProducts.length),
-        ]
-      : currentProducts;
-
+export default function TopRatedProducts() {
   return (
-    <div className="w-full text-[14px] mt-10">
-      {/* Header */}
-      <div className="flex justify-between text-[#1B1B1E] text-[18px] items-center border-b pb-2 font-bold">
-        <span>Seller&apos;s Product</span>
-        <div className="text-xs font-bold space-x-3">
-          <button
-            onClick={handlePrev}
-            className="text-gray-500 text-[16px] hover:text-black hover:font-bold cursor-pointer"
-          >
-            Prev
-          </button>
-          <button
-            onClick={handleNext}
-            className="text-[#1B1B1E] text-[16px] hover:text-black hover:font-bold cursor-pointer"
-          >
-            Next
-          </button>
-        </div>
-      </div>
+    <div className=" bg-white text-[14px] font-sans mt-8 w-full">
+      <h3 className="uppercase text-[13px] font-semibold mb-4 text-[#222] tracking-wide">
+        TOP RATED PRODUCTS
+      </h3>
 
-      {/* Swiper with 1 Slide that updates every 3 products */}
-      <Swiper
-        slidesPerView={1}
-        direction="vertical"
-        allowTouchMove={false}
-        speed={500}
-        modules={[Navigation]}
-        className="mt-4"
-      >
-        <SwiperSlide>
-          <div className="space-y-4 transition-all duration-500">
-            {visible.map((product, index) => (
-              <div
-                key={index}
-                className="flex h-[155px] gap-4 cursor-pointer pb-4 rounded-md p-2 hover:shadow bg-white transition transform hover:scale-[1.02]"
-              >
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  width={98}
-                  height={98}
-                  className="rounded object-cover border w-[98px] h-[98px]"
-                />
-                <div className="flex-1">
-                  <h4 className="text-[#141926] text-[16px] font-medium">
-                    {product.title}
-                  </h4>
-                  <div className="flex gap-2 items-center mt-1 text-sm">
-                    {product.oldPrice > 0 && (
-                      <span className="line-through text-gray-500">
-                        {product.oldPrice} ৳
-                      </span>
-                    )}
-                    <span className="font-bold">{product.price} ৳</span>
-                    {product.discount > 0 && (
-                      <span className="text-white bg-red-500 px-2 py-0.5 text-xs rounded">
-                        {product.discount}% off
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex text-xs mt-1 text-gray-500 items-center">
-                    <FaStar className="text-yellow-500 mr-1 text-[14px]" />
-                    <span>{product.rating.toFixed(1)} (0)</span>
-                  </div>
-                </div>
+      <div className="space-y-4">
+        {topRatedProducts.map((product, index) => (
+          <div
+            key={index}
+            className="group cursor-pointer w-full flex items-start gap-3 pb-3 border-b border-[#e6e6e6] last:border-none transition-all duration-300 hover:bg-[#f9f9f9] hover:shadow-sm py-2 px-2"
+          >
+            <div className="w-[80px] h-[80px] flex-shrink-0 overflow-hidden ">
+              <Image
+                src={product.image}
+                alt={product.name}
+                width={80}
+                height={80}
+                className="object-cover w-[80px] h-[80px] transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+
+            <div className="flex-1">
+              <h4 className="text-[14px] text-[#111] font-medium leading-[18px] group-hover:text-[#ff9900] cursor-pointer transition-colors duration-300">
+                {product.name}
+              </h4>
+
+              <div className="flex text-[#ffc107] mt-[2px] mb-[3px]">
+                {Array.from({ length: product.rating }).map((_, i) => (
+                  <FaStar key={i} className="text-[13px]" />
+                ))}
               </div>
-            ))}
+
+              <div className="text-[13px] text-[#333] font-medium">
+                {product.oldPrice && (
+                  <span className="line-through text-[#999] mr-[5px]">
+                    {product.oldPrice}
+                  </span>
+                )}
+                <span className="text-[#111] font-semibold">
+                  {product.price}
+                </span>
+              </div>
+            </div>
           </div>
-        </SwiperSlide>
-      </Swiper>
+        ))}
+      </div>
     </div>
   );
 }

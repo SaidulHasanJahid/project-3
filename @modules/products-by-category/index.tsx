@@ -6,6 +6,7 @@ import { FaBars } from "react-icons/fa";
 import ProductList from "./components/listproduct";
 import ProductArea from "./components/product-area";
 import ProductSlider from "./components/product-slider";
+import CategoryMenu from "../@common/category-menu";
 
 const ProductByCategory = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -23,28 +24,14 @@ const ProductByCategory = () => {
   return (
     <>
       {/* Top Banner */}
-      <div
-        className="w-full h-[180px] flex flex-col justify-center items-center text-white bg-cover bg-center bg-[#1A1A1E99]"
-        style={{
-          backgroundImage:
-            'url("https://eco.rafiinternational.com/assets/images/1648110638breadpng.png")',
-        }}
-      >
-        <h1 className="text-3xl font-bold">Product</h1>
-        <p className="text-sm mt-1">
-          <Link href="/">
-            <span className="text-[16px]">Home</span>
-          </Link>{" "}
-          / Product
-        </p>
-      </div>
+      <CategoryMenu />
 
       {/* Main Content */}
-      <div className="container  mx-auto">
+      <div className="container mx-auto mt-4">
         {/* Show sidebar toggle on small screens */}
         {isMobile && (
           <button
-            className="flex items-center gap-2 text-black border px-4 py-2 rounded mt-4"
+            className="flex items-center gap-2 text-black border px-4 py-2 rounded mb-4"
             onClick={() => setDrawerOpen(true)}
           >
             <FaBars /> Filter Products
@@ -52,17 +39,17 @@ const ProductByCategory = () => {
         )}
 
         {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
+        <div className="lg:flex lg:gap-4">
           {/* Sidebar (only visible on large screens) */}
           {!isMobile && (
-            <div className="col-span-1">
+            <div className="lg:w-1/4 flex-shrink-0">
               <ProductList />
               <ProductSlider />
             </div>
           )}
 
           {/* Main Product Grid */}
-          <div className={`w-full ${isMobile ? "col-span-1" : "col-span-3"}`}>
+          <div className={`w-full ${isMobile ? "" : "lg:w-3/4"}`}>
             <ProductArea />
           </div>
         </div>
@@ -83,7 +70,6 @@ const ProductByCategory = () => {
               <ProductSlider />
             </div>
           </div>
-          {/* Clicking outside closes drawer */}
           <div className="flex-1" onClick={() => setDrawerOpen(false)}></div>
         </div>
       )}

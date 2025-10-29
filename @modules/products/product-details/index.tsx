@@ -1,6 +1,6 @@
 "use client";
 
-import ProductGallery from "@/@modules/@common/product-gallery";
+import ProductGallery from "@/@modules/deatile-page/components/product-gallery";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
 

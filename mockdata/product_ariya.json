@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "name": "Combo Offer 1",
+    "price": "৳1,990.00",
+    "discount_price": "৳2,250.00",
+    "discount": "-12%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/01/DSC01434-800x800.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Combo Offer 2",
+    "price": "৳1,890.00",
+    "discount_price": "৳2,050.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/03/DSC01734-800x800.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Combo Offer 3",
+    "price": "৳2,150.00",
+    "discount_price": "৳2,450.00",
+    "discount": "-12%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/04/DSC01663-800x800.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Combo Offer 4",
+    "price": "৳1,750.00",
+    "discount_price": "৳1,950.00",
+    "discount": "-10%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/04/DSC01694-800x800.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Combo Offer 5",
+    "price": "৳1,950.00",
+    "discount_price": "৳2,250.00",
+    "discount": "-13%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/10/DSC01226-800x800.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Combo Offer 6",
+    "price": "৳2,050.00",
+    "discount_price": "৳2,350.00",
+    "discount": "-12%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/03/DSC01773-800x800.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Bifold Wallet 1",
+    "price": "৳1,250.00",
+    "discount_price": "৳1,500.00",
+    "discount": "-17%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/4-800x800.png"
+  },
+  {
+    "id": 8,
+    "name": "Bifold Wallet 2",
+    "price": "৳1,350.00",
+    "discount_price": "৳1,550.00",
+    "discount": "-13%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/5-800x800.png"
+  },
+  {
+    "id": 9,
+    "name": "Bifold Wallet 3",
+    "price": "৳1,450.00",
+    "discount_price": "৳1,650.00",
+    "discount": "-12%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/4-800x800.png"
+  },
+  {
+    "id": 10,
+    "name": "Bifold Wallet 4",
+    "price": "৳1,150.00",
+    "discount_price": "৳1,250.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/01/IMG_20240909_165612-800x800.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Bifold Wallet 5",
+    "price": "৳1,290.00",
+    "discount_price": "৳1,450.00",
+    "discount": "-11%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/04/17-800x800.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Bifold Wallet 6",
+    "price": "৳1,350.00",
+    "discount_price": "৳1,550.00",
+    "discount": "-13%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/02/IMG_3026-1-800x800.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Bag Series 1",
+    "price": "৳2,990.00",
+    "discount_price": "৳3,250.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/edited-akbar-473-800x800.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Bag Series 2",
+    "price": "৳2,490.00",
+    "discount_price": "৳2,750.00",
+    "discount": "-10%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/12/IMG_20231101_200306-800x800.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Bag Series 3",
+    "price": "৳2,690.00",
+    "discount_price": "৳2,950.00",
+    "discount": "-9%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/03/IMG_20240108_142914-800x800.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Bag Series 4",
+    "price": "৳2,790.00",
+    "discount_price": "৳3,050.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2025/01/DSC09931-800x800.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Bag Series 5",
+    "price": "৳2,590.00",
+    "discount_price": "৳2,850.00",
+    "discount": "-9%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/DSC02857-784x800.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Bag Series 6",
+    "price": "৳2,890.00",
+    "discount_price": "৳3,150.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2023/01/IMG_20231216_202814-800x800.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Special Edition Belt 1",
+    "price": "৳1,590.00",
+    "discount_price": "৳1,850.00",
+    "discount": "-14%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/05/DSC03126-800x800.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Special Edition Belt 2",
+    "price": "৳1,490.00",
+    "discount_price": "৳1,750.00",
+    "discount": "-15%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/06/IMG_9228-800x800.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Special Edition Belt 3",
+    "price": "৳1,390.00",
+    "discount_price": "৳1,650.00",
+    "discount": "-16%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/06/DSC03988-800x800.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Special Edition Belt 4",
+    "price": "৳1,090.00",
+    "discount_price": "৳1,190.00",
+    "discount": "-8%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2025/01/DSC00093-800x800.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Special Edition Belt 5",
+    "price": "৳1,590.00",
+    "discount_price": "৳1,850.00",
+    "discount": "-14%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/06/IMG_9228-800x800.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Special Edition Belt 6",
+    "price": "৳1,590.00",
+    "discount_price": "৳1,850.00",
+    "discount": "-14%",
+    "thumbnail": "https://tasa.com.bd/wp-content/uploads/2024/01/DSC01434-800x800.jpg"
+  }
+]

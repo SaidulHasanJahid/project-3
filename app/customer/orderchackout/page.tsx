@@ -1,10 +1,10 @@
-import OrderChackOutPage from '@/@modules/customer/orderchackout';
+import CartPage from '@/@modules/customer/orderchackout';
 import React from 'react';
 
 const OrderChackOut = () => {
     return (
         <div>
-            <OrderChackOutPage />
+            <CartPage />
         </div>
     );
 };

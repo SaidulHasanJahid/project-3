@@ -1,64 +1,88 @@
 "use client";
 
-import { useFeatureCategoryQuery } from "@/appstore/home/home-api";
-import { baseUrl } from "@/utils/url";
 import Image from "next/image";
-import Link from "next/link";
+import React from "react";
 
 type Category = {
-  id?: number;
-  count: number;
-  image?: string;
-  name: string;
-  slug: string;
-  parent_id: number;
-  is_feature?: boolean;
-  is_menu?: boolean;
+  id: number;
+  title: string;
+  image: string;
 };
 
-export default function CategoryCard() {
-  const { data: featureCategories } = useFeatureCategoryQuery();
+const categories: Category[] = [
+  {
+    id: 1,
+    title: "Men’s Fashion",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/05/category-4-800x800.jpg",
+  },
+  {
+    id: 2,
+    title: "Women’s Fashion",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/05/edited-akbar-421-800x800.jpg",
+  },
+  {
+    id: 3,
+    title: "Electronics",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/05/category-6-800x800.jpg",
+  },
+  {
+    id: 4,
+    title: "Beauty Products",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/03/yy-800x800.jpg",
+  },
+  {
+    id: 5,
+    title: "Home & Kitchen",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/03/folio-800x800.jpg",
+  },
+  {
+    id: 6,
+    title: "Accessories",
+    image:
+      "https://tasa.com.bd/wp-content/uploads/2023/03/category-5-800x800.jpg",
+  },
+];
 
+export default function CategoryGrid() {
   return (
-    <section className="bg-white px-[70px] py-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {featureCategories?.length > 0 ? (
-          featureCategories?.map((item: any, index: any) => {
-            const imageUrl = item.image
-              ? `${baseUrl}/${item.image}`
-              : "https://placehold.co/281x359?text=No+Image";
+    <section className="w-full container bg-white py-14 px-4 sm:px-8 lg:px-20 overflow-hidden border-b border-gray-200">
+      {/* Section Title */}
+      <h2 className="text-center text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#111111] mb-10 tracking-wide">
+        SHOP BY CATEGORIES
+      </h2>
 
-            console.log("imageUrl", item);
+      {/* Grid */}
+      <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-6 justify-items-center">
+        {categories.map((item) => (
+          <div
+            key={item.id}
+            className="cursor-pointer w-full max-w-[370px] flex flex-col items-center transition-all duration-300"
+          >
+            {/* Image */}
+            <div className="w-full aspect-square overflow-hidden rounded-xl">
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={400}
+                height={400}
+                className="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105"
+              />
+            </div>
 
-            return (
-              <Link
-                href={`/products-by-category/${item.slug}`}
-                key={`${item.slug}-${index}`}
-              >
-              <div className="cursor-pointer group rounded shadow-md overflow-hidden transition duration-500 ease-in-out relative w-full max-w-[281px]">
-  <div className="relative w-full aspect-[281/359]">
-    <Image
-      src={imageUrl}
-      alt={item.name}
-      fill
-      className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
-    />
-  </div>
-
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[75px] w-[90%] bg-white text-center py-2 px-3 rounded shadow-md transition-all duration-500 ease-in-out group-hover:-translate-y-1">
-    <h3 className="font-semibold text-gray-900 mt-1">
-      {item.name}
-    </h3>
-    <p className="text-gray-500">{item.count ?? 0}</p>
-  </div>
-</div>
-
-              </Link>
-            );
-          })
-        ) : (
-          <p>No categories found.</p>
-        )}
+            {/* Title */}
+            <h3 className="mt-3 text-[18px] sm:text-[20px] md:text-[22px] text-[#333333] text-center">
+              {item.title}
+            </h3>
+            <p className="text-gray-400 text-[14px] sm:text-[16px]">
+              71 products
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

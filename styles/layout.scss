@@ -1,9 +1,14 @@
 .container {
-  max-width: 1440px;
+  max-width: 1212px;
   margin: auto;
 }
 
-
+.arrow{
+    color: #1b1b1b !important;
+}
+.swiper-pagination-bullet-active{
+    background: black !important;
+}
 @media only screen and (min-width: 1500px) {
   .container {
     max-width: 1440px;
