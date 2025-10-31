@@ -1,2 +1,42 @@
 @import "tailwindcss";
 
+/* 🧱 Drawer Fix — Always show above header */
+.fixed-drawer .ant-drawer-content-wrapper {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 2000 !important;
+  height: 100vh !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* Drawer Body */
+.fixed-drawer .ant-drawer-content {
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Mask fix (dark background behind drawer) */
+.fixed-drawer .ant-drawer-mask {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.45) !important;
+  z-index: 1999 !important;
+}
+
+/* Smooth open animation */
+.fixed-drawer .ant-drawer-content-wrapper {
+  animation: drawerSlideIn 0.3s ease forwards;
+}
+
+@keyframes drawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

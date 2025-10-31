@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
-import ProductList from "./components/listproduct";
-import ProductArea from "./components/product-area";
-import ProductSlider from "./components/product-slider";
+import ProductList from "./layout/listproduct";
+import ProductArea from "./layout/product-area";
+import ProductSlider from "./layout/product-slider";
 import CategoryMenu from "../@common/category-menu";
 
 const ProductByCategory = () => {

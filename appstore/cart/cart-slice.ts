@@ -6,12 +6,11 @@ const isBrowser = typeof window !== "undefined";
 interface PayloadType {
   id: number;
   name: string;
-  slug: string;
   price: number;
   discount_price: number | any;
-  category_id: string;
   thumbnail: string;
-  quantity: number; // Added for managing quantity in cart
+  discount:number;
+  quantity: number; 
 }
 
 interface CartState {

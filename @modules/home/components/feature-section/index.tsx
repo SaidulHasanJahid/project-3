@@ -28,21 +28,22 @@ const features: Feature[] = [
 
 const FeatureSection: React.FC = () => {
   return (
-    <section className="w-full py-16 bg-white">
-      <div className="max-w-[1000px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-center">
+    <section className="w-full py-10 bg-white overflow-x-auto mt-[-50px]">
+      {/* Wrapper with horizontal scroll on small devices */}
+      <div className="flex items-center justify-center gap-10 sm:gap-16 lg:gap-24 px-4 sm:px-10 lg:px-20 min-w-max lg:min-w-0">
         {features.map((feature) => (
           <div
             key={feature.id}
-            className="flex flex-col items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105"
+            className="flex flex-col items-center justify-between flex-shrink-0 cursor-pointer transition-transform duration-300 hover:scale-105"
           >
-            <div className="w-[250px] h-[250px] mb-2 flex items-center justify-center">
+            <div className="flex items-center justify-center mb-2">
               <img
                 src={feature.icon}
                 alt={feature.title}
-                className="w-[250px] h-[250px] object-contain"
+                className="w-[120px] h-[120px] sm:w-[160px] sm:h-[160px] lg:w-[200px] lg:h-[200px] object-contain"
               />
             </div>
-            <p className="text-lg font-medium text-gray-900 ]">
+            <p className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 text-center">
               {feature.title}
             </p>
           </div>

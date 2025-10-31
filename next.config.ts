@@ -14,7 +14,8 @@ const nextConfig: NextConfig = {
       "cdn.pixabay.com",
       "tasa.com.bd",
       "eco.rafiinternational.com",
-      "i.ibb.co", // ✅ Added for your wallet images
+      "i.ibb.co", // ✅ wallet images
+      "clinicmaster.goeasyapp.com", // ✅ added for your drawer/cart product images
     ],
   },
 };

@@ -21,6 +21,8 @@ export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
   const [activeNav, setActiveNav] = useState("BAGS");
   const [isMobile, setIsMobile] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const navItems = [
     {
@@ -59,10 +61,28 @@ export default function Header() {
     }
   }, [openMenu, openCart, openUser, openSearch]);
 
+  // ✅ Scroll behavior for mobile search bar
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShowMobileSearch(false); // hide when scrolling down
+      } else {
+        setShowMobileSearch(true); // show when scrolling up
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, isMobile]);
+
   return (
     <>
       {/* ===== Fixed Header ===== */}
-      <header className="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-[9999] shadow-sm">
+      <header className="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-[9999] shadow-sm transition-all duration-300">
         {!isMobile ? (
           // ===== Desktop Header =====
           <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 py-3">
@@ -231,33 +251,45 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Search Input */}
-            <div className="px-4 pb-3 pt-2">
-              <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search for products"
-                  className="w-full border border-gray-300  px-10 py-2 text-[15px] focus:outline-none focus:ring-1 focus:ring-black"
-                  onClick={() => setOpenSearch(true)}
-                />
+            {/* ✅ Search Input (hide/show on scroll) */}
+            <motion.div
+              initial={{ opacity: 1, height: "auto" }}
+              animate={{
+                opacity: showMobileSearch ? 1 : 0,
+                height: showMobileSearch ? "auto" : 0,
+              }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="px-4 pb-3 pt-2">
+                <div className="relative">
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search for products"
+                    className="w-full border border-gray-300 px-10 py-2 text-[15px] focus:outline-none focus:ring-1 focus:ring-black"
+                    onClick={() => setOpenSearch(true)}
+                  />
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         )}
       </header>
 
-      {/* ===== Drawers ===== */}
-      <MenuDrawer open={false} onClose={() => setOpenMenu(false)} />
-      <MobileMenuDrawer open={openMenu} onClose={() => setOpenMenu(false)} />
-      <CartDrawer open={openCart} onClose={() => setOpenCart(false)} />
-      <UserDrawer open={openUser} onClose={() => setOpenUser(false)} />
+      {/* ===== Drawers (now above header) ===== */}
+      <div className="relative z-[10000]">
+        <MenuDrawer open={false} onClose={() => setOpenMenu(false)} />
+        <MobileMenuDrawer open={openMenu} onClose={() => setOpenMenu(false)} />
+        <CartDrawer open={openCart} onClose={() => setOpenCart(false)} />
+        <UserDrawer open={openUser} onClose={() => setOpenUser(false)} />
+      </div>
 
       {/* ===== Search Drawer ===== */}
       <AnimatePresence>
         {openSearch && (
           <motion.div
-            className="fixed inset-0 bg-white z-[10000] flex flex-col items-center justify-start pt-24 px-6"
+            className="fixed inset-0 bg-white z-[10001] flex flex-col items-center justify-start pt-24 px-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

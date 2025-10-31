@@ -4,7 +4,7 @@ import ProductGallery from "@/@modules/deatile-page/components/product-gallery";
 import Link from "next/link";
 import { FaFlag } from "react-icons/fa6";
 
-import CartActions from "@/@modules/@common/buttons/cart-actions";
+import CartActions from "@/@modules/@common/buttons/icon-cart-categori";
 import {
   FaClock,
   FaExchangeAlt,

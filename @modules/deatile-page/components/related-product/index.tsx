@@ -1,137 +1,109 @@
 "use client";
 
-import { ProductType } from "@/types/types";
-import Image from "next/image";
-import { useState } from "react";
-import { FaHeart, FaRandom, FaShoppingCart } from "react-icons/fa";
-import { FaBagShopping, FaEye } from "react-icons/fa6";
+import { useRef } from "react";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import CartCard from "@/@modules/@common/cards/post-cart-f-b";
 
-interface PropsType {
-  relatedProducts: ProductType[];
-}
+type Product = {
+  id: number;
+  name: string;
+  price: string;
+  discount_price?: string;
+  discount?: string;
+  thumbnail: string;
+};
 
-export default function RelatedProductsSlider({ relatedProducts }: any) {
-  const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
-  const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
+const products: Product[] = [
+  { id: 1, name: "Special Edition Belt 1", price: "৳1,590.00", discount_price: "৳1,850.00", discount: "-14%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2024/05/DSC03126-800x800.jpg" },
+  { id: 2, name: "Special Edition Belt 2", price: "৳1,490.00", discount_price: "৳1,750.00", discount: "-15%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2024/06/IMG_9228-800x800.jpg" },
+  { id: 3, name: "Special Edition Belt 3", price: "৳1,390.00", discount_price: "৳1,650.00", discount: "-16%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2024/06/DSC03988-800x800.jpg" },
+  { id: 4, name: "Special Edition Belt 4", price: "৳1,090.00", discount_price: "৳1,190.00", discount: "-8%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2025/01/DSC00093-800x800.jpg" },
+  { id: 5, name: "Special Edition Belt 5", price: "৳1,590.00", discount_price: "৳1,850.00", discount: "-14%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2024/06/IMG_9228-800x800.jpg" },
+  { id: 6, name: "Special Edition Belt 6", price: "৳1,590.00", discount_price: "৳1,850.00", discount: "-14%", thumbnail: "https://tasa.com.bd/wp-content/uploads/2024/01/DSC01434-800x800.jpg" },
+];
+
+export default function RealatedProducts() {
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <div className="container">
-      <div className="w-full bg-white mt-14">
-        {/* Header with custom border color */}
-        <div className="flex items-center justify-between border-b border-b-[#767678] pb-3 mb-6">
-          <h2 className="text-xl font-bold text-[#141926]">Related Products</h2>
-          <div className="flex items-center gap-3 text-sm font-medium">
-            <span
-              ref={(node) => setPrevEl(node)}
-              className="cursor-pointer text-gray-400 hover:text-black transition "
-            >
-              Prev
-            </span>
-            <span
-              ref={(node) => setNextEl(node)}
-              className="cursor-pointer text-[#141926] hover:text-black transition"
-            >
-              Next
-            </span>
-          </div>
-        </div>
-
-        {/* Swiper */}
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={10}
-          navigation={{ prevEl, nextEl }}
-          pagination={{ clickable: true }}
-          breakpoints={{
-            640: { slidesPerView: 2 },
-            768: { slidesPerView: 3 },
-            1024: { slidesPerView: 5 },
-            1280: { slidesPerView: 5 },
-          }}
-          modules={[Navigation, Pagination]}
-        >
-          {relatedProducts?.length > 0 &&
-            relatedProducts.map((product: any, index: any) => (
-              <SwiperSlide key={product.id}>
-                <div
-                  className={`group relative p-4 transition-all duration-300 hover:shadow-xl bg-white rounded-md cursor-pointer ${
-                    index === 0 ? "col-span-5 w-full" : ""
-                  }`}
-                >
-                  {/* Discount badge */}
-                  <div className="absolute top-2 right-2 z-20 bg-black text-white text-xs  py-1 rounded">
-                    {product.discount}%
-                  </div>
-
-                  {/* Product image */}
-                  <div
-                    className={`${
-                      index === 0 ? "w-full h-[235px]" : "w-[235px] h-[235px]"
-                    } mx-auto relative`}
-                  >
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      fill={index === 0}
-                      width={index !== 0 ? 235 : undefined}
-                      height={index !== 0 ? 235 : undefined}
-                      className={`object-contain transition-transform duration-300 group-hover:scale-105 ${
-                        index === 0 ? "rounded-md" : ""
-                      }`}
-                    />
-                  </div>
-
-                  {/* Hover icons - 5 buttons */}
-                  {index !== 0 && (
-                    <div className="absolute top-10 right-[-50px] opacity-0 group-hover:right-3 group-hover:opacity-100 flex flex-col gap-2 transition-all duration-300 z-10">
-                      {[
-                        FaHeart,
-                        FaRandom,
-                        FaShoppingCart,
-                        FaBagShopping,
-                        FaEye,
-                      ].map((Icon, i) => (
-                        <div
-                          key={i}
-                          className="w-7 h-7 flex items-center justify-center bg-white rounded shadow hover:bg-gray-100"
-                        >
-                          <Icon className="text-gray-700 text-[12px]" />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Product Info */}
-                  <div className="mt-4 text-center text-[#141926] cursor-pointer">
-                    <h3 className="text-sm font-medium line-clamp-2">
-                      {product.title}
-                    </h3>
-                    <div className="mt-2 flex items-center justify-center gap-2">
-                      <span className="font-semibold">${product.price}</span>
-                      <span className="line-through text-gray-400 text-sm">
-                        ${product.oldPrice}
-                      </span>
-                    </div>
-                    <div className="text-sm text-yellow-500 mt-1">
-                      ★ 0.0 (0)
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
-
-        {/* Pagination Dots */}
-        <div className="swiper-pagination mt-4 flex justify-center gap-2"></div>
-
-        {/* Optional Bottom Spacing */}
-        <div className="mt-8"></div>
+    <section className="relative px-4 bg-white w-full overflow-hidden mt-[-10px]">
+      <div className=" mb-4">
+        <h2 className="text-[24px] ml-5 sm:text-[28px] text-[#242424] ">
+          RELATED PRODUCTS
+        </h2>
       </div>
-    </div>
+    <div className="w-[50px] rounded-full h-[2px]  bg-[#242424] mt-[-10px] ml-5"></div>
+      <div className="relative max-w-[96%] sm:max-w-7xl px-2 sm:px-4 py-4 mx-auto group rounded-lg">
+ {/* Left Arrow */}
+<div className="absolute top-1/2 -translate-y-1/2 z-30 transition-all duration-300
+                left-0 sm:-left-6 md:-left-10 
+                [@media(max-width:1000px)]:-left-2">
+  <button
+    ref={prevRef}
+    aria-label="Previous"
+    className="swiper-button-prev w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full arrow"
+  >
+    <AiOutlineLeft size={14} className="sm:text-[20px]" />
+  </button>
+</div>
+
+{/* Right Arrow */}
+<div className="absolute top-1/2 -translate-y-1/2 z-30 transition-all duration-300
+                right-0 sm:-right-6 md:-right-10 
+                [@media(max-width:1000px)]:-right-2">
+  <button
+    ref={nextRef}
+    aria-label="Next"
+    className="swiper-button-next w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full arrow"
+  >
+    <AiOutlineRight size={14} className="sm:text-[20px]" />
+  </button>
+</div>
+
+
+        {/* Swiper Slider */}
+        <Swiper
+          modules={[Navigation, Autoplay, Pagination]}
+          slidesPerView={2}
+          spaceBetween={10}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          speed={500}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          onBeforeInit={(swiper: any) => {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+          }}
+          pagination={{
+            clickable: true,
+            el: ".custom-pagination",
+          }}
+          breakpoints={{
+            0: { slidesPerView: 2, spaceBetween: 8 },
+            640: { slidesPerView: 3, spaceBetween: 12 },
+            1024: { slidesPerView: 4, spaceBetween: 20 },
+          }}
+        >
+          {products.map((product) => (
+            <SwiperSlide key={product.id} className="flex justify-center">
+              <div className="relative w-[90%] sm:w-[95%] md:w-full flex justify-center items-center">
+                <CartCard product={product} />
+              </div>
+            </SwiperSlide>
+          ))}
+
+          {/* Pagination visible only on large screens */}
+          <div className="custom-pagination hidden lg:flex justify-center mt-4"></div>
+        </Swiper>
+      </div>
+    </section>
   );
 }
