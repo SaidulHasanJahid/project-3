@@ -92,7 +92,7 @@ export default function RealatedProducts() {
             1024: { slidesPerView: 4, spaceBetween: 20 },
           }}
         >
-          {products.map((product) => (
+          {products.map((product :any) => (
             <SwiperSlide key={product.id} className="flex justify-center">
               <div className="relative w-[90%] sm:w-[95%] md:w-full flex justify-center items-center">
                 <CartCard product={product} />

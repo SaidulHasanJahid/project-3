@@ -23,6 +23,7 @@
     "react-range": "^1.10.0",
     "react-redux": "^9.2.0",
     "sass": "^1.89.2",
+    "sweetalert2": "^11.26.17",
     "swiper": "^11.2.8",
     "yup": "^1.7.0"
   },

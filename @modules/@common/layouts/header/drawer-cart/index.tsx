@@ -1,165 +1,141 @@
-"use client";
-
+// CartDrawer.tsx
 import React from "react";
 import { Drawer } from "antd";
-import { IoMdClose } from "react-icons/io";
-import { FiMinus, FiPlus, FiTrash2, FiTag, FiGift, FiTruck } from "react-icons/fi";
+import { X, Minus, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, decreaseQuantity, removeFromCart } from "@/appstore/cart/cart-slice";
-import { useRouter } from "next/navigation";
-import "./index.css";
+import {
+  addToCart,
+  decreaseQuantity,
+  removeFromCart,
+} from "@/appstore/cart/cart-slice";
 
-interface DrawerCartProps {
+interface CartDrawerProps {
   open: boolean;
   onClose: () => void;
 }
 
-const DrawerCart: React.FC<DrawerCartProps> = ({ open, onClose }) => {
+export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const cart = useSelector((state: any) => state.cart.items || []);
-
-  const subtotal = cart.reduce(
-    (sum: number, item: any) => sum + item.price * item.quantity,
+  const cartItems = useSelector((state: any) => state.cart?.items || []);
+  const subtotal = cartItems.reduce(
+    (sum: number, item: any) =>
+      sum + (item.discount_price || item.price) * item.quantity,
     0
   );
 
-  const handleNavigate = (path: string) => {
-    onClose();
-    router.push(path);
+  const handleIncrease = (id: number) => {
+    const item = cartItems.find((i: any) => i.id === id);
+    if (item) {
+      dispatch(addToCart({ ...item, quantity: 1 }));
+    }
+  };
+  const handleDecrease = (id: number) => {
+    dispatch(decreaseQuantity(id));
+  };
+  const handleRemove = (id: number) => {
+    dispatch(removeFromCart(id));
   };
 
   return (
     <Drawer
       title={null}
       placement="right"
-      onClose={onClose}
+      width={
+        typeof window !== "undefined" && window.innerWidth < 768 ? "100%" : 460
+      }
       open={open}
-      width={460}
+      onClose={onClose}
       closeIcon={false}
-      maskClosable
-      className="custom-cart-drawer flex flex-col"
-      rootClassName="z-[2000] fixed top-0"
+      styles={{ body: { padding: "0" } }}
+      className="flex flex-col"
     >
-      {/* Header */}
-      <div className="flex items-center justify-between mb-5 flex-shrink-0">
-        <h2 className="text-[20px] font-semibold text-black leading-snug">
-          Shopping Cart
-        </h2>
-        <button
-          onClick={onClose}
-          className="text-black cursor-pointer hover:text-red-500 transition-transform hover:scale-110"
-        >
-          <IoMdClose size={22} />
-        </button>
-      </div>
-
-      {/* Cart Items */}
-      <div className="flex-1 overflow-y-auto pr-1">
-        {cart.length === 0 ? (
-          <p className="text-gray-500">Your cart is empty.</p>
-        ) : (
-          cart.map((item: any) => (
-            <div
-              key={item.id}
-              className="flex gap-4 items-center border-b border-gray-200 pb-4 mb-4 cursor-pointer transition-all hover:bg-gray-50 rounded-md"
-            >
-              <Image
-                src={item.image || item.thumbnail}
-                alt={item.name}
-                width={100}
-                height={100}
-                className="object-contain rounded-md"
-              />
-              <div className="flex-1 flex flex-col">
-                <p className="text-[16px] font-medium text-black">{item.name}</p>
-                <p className="text-[#f2072f] font-semibold text-[16px] mt-1">${item.price}</p>
-
-                <div className="flex items-center gap-2 mt-2">
-                  <button
-                    onClick={() => dispatch(decreaseQuantity(item.id))}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded bg-white text-gray-700 hover:bg-gray-100 hover:scale-110 transition-all cursor-pointer"
-                  >
-                    <FiMinus size={16} />
-                  </button>
-
-                  <span className="w-[45px] text-center border border-gray-200 rounded text-sm text-gray-700 py-1">
-                    {item.quantity}
-                  </span>
-
-                  <button
-                    onClick={() => dispatch(addToCart({ ...item, quantity: 1 }))}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded bg-white text-gray-700 hover:bg-gray-100 hover:scale-110 transition-all cursor-pointer"
-                  >
-                    <FiPlus size={16} />
-                  </button>
-
-                  <button
-                    onClick={() => dispatch(removeFromCart(item.id))}
-                    className="ml-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                  >
-                    <FiTrash2 size={18} />
-                  </button>
+      <div className="flex flex-col h-full">
+        {/* Cart Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold">Shopping Cart</h2>
+          <X className="w-6 h-6 cursor-pointer" onClick={onClose} />
+        </div>
+        {/* Cart Items */}
+        <div className="flex-1 overflow-y-auto px-6">
+          {cartItems.length === 0 ? (
+            <p className="text-center text-gray-500 mt-12">
+              Your cart is empty.
+            </p>
+          ) : (
+            cartItems.map((item: any) => (
+              <div
+                key={item.id}
+                className="flex gap-4 py-6 border-b border-gray-200 last:border-b-0"
+              >
+                <div className="w-24 h-24 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
+                  <Image
+                    src={item.thumbnail || "/placeholder.jpg"}
+                    alt={item.name}
+                    width={96}
+                    height={96}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-medium text-base">{item.name}</h4>
+                  <p className="text-lg font-semibold mt-1 text-black">
+                    ৳ {(item.discount_price || item.price).toLocaleString()}
+                  </p>
+                  <div className="flex items-center gap-3 mt-4">
+                    <button
+                      onClick={() => handleDecrease(item.id)}
+                      className="w-8 h-8 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-100 transition"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="w-12 text-center font-medium">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => handleIncrease(item.id)}
+                      className="w-8 h-8 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-100 transition"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleRemove(item.id)}
+                      className="ml-auto text-gray-500 hover:text-red-600 transition"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
+            ))
+          )}
+        </div>
+        {/* Subtotal & Buttons */}
+        {cartItems.length > 0 && (
+          <div className="border-t border-gray-200 p-6 bg-gray-50">
+            <div className="flex justify-between text-xl font-semibold mb-4">
+              <span>Subtotal</span>
+              <span>৳ {subtotal.toLocaleString()}</span>
             </div>
-          ))
+            <p className="text-sm text-gray-600 mb-6">
+              Taxes and shipping calculated at checkout
+            </p>
+            <div className="flex gap-7 ml-10">
+              <Link href="/customer/cart-view" onClick={onClose}>
+                <button className="flex-1 py-4 px-8 border border-black  text-black bg-white text-center font-medium hover:bg-black hover:text-white transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg">
+                  VIEW CART
+                </button>
+              </Link>
+              <Link href="/customer/checkout" onClick={onClose}>
+                <button className="flex-1 py-4 px-8 bg-black text-white  text-center font-medium hover:bg-white hover:text-black transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg">
+                  CHECKOUT
+                </button>
+              </Link>
+            </div>
+          </div>
         )}
-      </div>
-
-      {/* Bottom Fixed Section */}
-      <div className="flex-shrink-0 mt-4 border-t border-gray-200 pt-4 bg-white">
-        {/* Action Icons */}
-        <div className="flex justify-between text-black mb-4">
-          <button className="flex flex-col items-center gap-1 text-[13px] cursor-pointer py-2 px-3 w-[100px] hover:text-[#f2072f] transition-all">
-            <FiTag size={22} />
-            <span>Add Coupon</span>
-          </button>
-          <button className="flex flex-col items-center gap-1 text-[13px] cursor-pointer py-2 px-3 w-[100px] hover:text-[#f2072f] transition-all">
-            <FiGift size={22} />
-            <span>Add Gift</span>
-          </button>
-          <button className="flex flex-col items-center gap-1 text-[13px] cursor-pointer py-2 px-3 w-[100px] hover:text-[#f2072f] transition-all">
-            <FiTruck size={22} />
-            <span>Shipping</span>
-          </button>
-        </div>
-
-        {/* Subtotal + Buttons */}
-        <div className="bg-[#f7f7f7] p-4 rounded">
-          <div className="flex justify-between text-black font-semibold text-lg">
-            <span>Subtotal</span>
-            <span className="text-[#f2072f]">${subtotal}</span>
-          </div>
-
-          <p className="text-xs text-gray-500 mt-1">
-            Taxes and Shipping Calculated at checkout
-          </p>
-
-          <label className="flex items-center gap-2 text-xs text-gray-600 mt-2">
-            <input type="checkbox" className="w-4 h-4" />
-            I agree with the Terms and Conditions
-          </label>
-
-          <div className="flex gap-5 justify-center mt-4">
-            <button
-              onClick={() => handleNavigate("/cart")}
-              className="px-6 py-3 text-[14px] font-medium border w-[160px] h-[48px] rounded-[3px] text-black bg-white cursor-pointer transition-all duration-300 hover:bg-[#f2072f] hover:text-white"
-            >
-              View Cart
-            </button>
-            <button
-              onClick={() => handleNavigate("/check-out")}
-              className="px-6 py-3 w-[160px] h-[48px] text-[14px] font-medium rounded-[3px] bg-black text-white border border-transparent cursor-pointer transition-all duration-300 hover:bg-[#f2072f]"
-            >
-              Check Out
-            </button>
-          </div>
-        </div>
       </div>
     </Drawer>
   );
-};
-
-export default DrawerCart;
+}

@@ -1,6 +1,0 @@
-/* Ensure Ant Drawer stays above all elements like header */
-.custom-cart-drawer .ant-drawer-content-wrapper {
-  z-index: 2000 !important;
-  position: fixed !important;
-  top: 0 !important;
-}

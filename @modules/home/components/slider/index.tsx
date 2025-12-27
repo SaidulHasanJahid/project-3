@@ -8,53 +8,39 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState, useRef } from "react";
+import { useGetHomeBannerQuery } from "@/appstore/banner/api";
 
 interface Banner {
-  id: number | string;
-  title: string;
+  slug: string;
+  name: string;
   subtitle: string;
   description: string;
   offer: string;
   buttonText: string;
-  image: string;
+  thumbnailUrl: string;
 }
 
 export default function HeroCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<any>(null);
 
-  const bannerItem: Banner[] = [
-    {
-      id: 1,
-      title: "THE VINTAGE",
-      subtitle: "MAMBA",
-      description: "TRIFOLD WALLET",
-      offer: "Special Sale\nUpto 25% Off.",
-      buttonText: "SEE SALE PRODUCT",
-      image:
-        "https://media.istockphoto.com/id/513982438/photo/spices-for-sale-on-local-market.jpg?s=612x612&w=0&k=20&c=qthhP21ndsPFCQq8JnuhpbPa_kMAznaZqo1589L-VwE=",
-    },
-    {
-      id: 2,
-      title: "CLASSIC STYLE",
-      subtitle: "LEATHER BAG",
-      description: "LIMITED EDITION",
-      offer: "Get Flat 20% Off.",
-      buttonText: "SHOP NOW",
-      image:
-        "https://cdn.pixabay.com/photo/2022/09/28/04/37/market-7484192_1280.jpg",
-    },
-    {
-      id: 3,
-      title: "MODERN ELEGANCE",
-      subtitle: "URBAN PACK",
-      description: "PREMIUM DESIGN",
-      offer: "Save More — Up to 30% Off.",
-      buttonText: "EXPLORE NOW",
-      image:
-        "https://images.unsplash.com/photo-1713947506242-8fcae733d158?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1632",
-    },
-  ];
+  const { data: bannerData } = useGetHomeBannerQuery();
+  const bannerItem: Banner[] = bannerData?.data || [];
+
+  // Helper function to create full image URL
+  const getImageUrl = (path: string) => {
+    if (!path) return "/placeholder.jpg"; // fallback image (optional)
+
+    // If already full URL (starts with http), return as is
+    if (path.startsWith("http")) return path;
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_IMAGE_URL || "https://grocery.reclinerbdking.com";
+
+    // Ensure no double slash
+    const cleanPath = path.startsWith("/") ? path : `/${path}`;
+    return `${baseUrl}${cleanPath}`;
+  };
 
   return (
     <div className="relative w-full h-[45vh] sm:h-[55vh] md:h-[65vh] lg:h-[100vh] overflow-hidden">
@@ -67,18 +53,20 @@ export default function HeroCarousel() {
         className="w-full h-full"
       >
         {bannerItem.map((slide, index) => (
-          <SwiperSlide key={slide.id}>
+          <SwiperSlide key={slide.slug}>
             <div
               className="relative w-full h-full cursor-pointer"
               onClick={() => swiperRef.current?.slideNext()}
             >
               {/* Background Image */}
               <Image
-                src={slide.image}
-                alt={slide.title}
+                src={getImageUrl(slide.thumbnailUrl)}
+                alt={slide.name}
                 fill
                 className="object-cover transition-transform duration-700 ease-in-out hover:scale-105"
-                priority
+                priority={index === 0} // Only first image gets priority
+                placeholder="blur"
+                blurDataURL="/placeholder.jpg" // optional low-res placeholder
               />
 
               {/* Black Overlay */}
@@ -88,7 +76,7 @@ export default function HeroCarousel() {
               {activeIndex === index && (
                 <div className="absolute inset-0 flex items-center justify-start px-3 sm:px-6 md:px-12 lg:px-24">
                   <motion.div
-                    key={slide.id}
+                    key={slide.slug}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
@@ -99,9 +87,9 @@ export default function HeroCarousel() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1, delay: 0.3 }}
-                      className="text-[12px] sm:text-[14px] md:text-[16px] tracking-[1.5px] uppercase"
+                      className="text-[36px] sm:text-[50px] md:text-[70px] lg:text-[100px] font-serif leading-[1.1]"
                     >
-                      {slide.title}
+                      {slide.name}
                     </motion.p>
 
                     {/* Big middle text */}
@@ -114,7 +102,7 @@ export default function HeroCarousel() {
                       {slide.subtitle}
                     </motion.h2>
 
-                    {/* Below line */}
+                    {/* Description line */}
                     <motion.p
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -135,7 +123,7 @@ export default function HeroCarousel() {
                       {slide.offer}
                     </motion.p>
 
-                    {/* Button */}
+                    {/* Button - Spelling Fixed */}
                     <Link href="/productpage">
                       <motion.button
                         whileHover={{
@@ -154,7 +142,7 @@ export default function HeroCarousel() {
                         transition={{ duration: 1, delay: 1.5 }}
                         className="mt-3 sm:mt-4 md:mt-5 cursor-pointer bg-white text-black text-[12px] sm:text-[14px] md:text-[16px] tracking-[1px] font-semibold px-4 sm:px-8 md:px-12 py-2 sm:py-3 md:py-4 rounded-sm shadow-md transition-all duration-500 ease-in-out"
                       >
-                        {slide.buttonText}
+                        Explore Now
                       </motion.button>
                     </Link>
                   </motion.div>
